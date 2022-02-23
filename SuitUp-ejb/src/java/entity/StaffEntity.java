@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.enumeration.AccessRightEnum;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -48,18 +49,35 @@ public class StaffEntity implements Serializable {
     @NotNull
     @Size(min = 4, max = 32)
     private String username;
-    @Column(nullable = false, length = 32)
+    // Updated in v4.5 to use CHAR instead of VARCHAR
+    // @Column(nullable = false, length = 32)
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
-    @Size(min = 8, max = 32)
+    // The following bean validation constraint is not applicable since we are only storing the password hashsum which is always 128 bit represented as 32 characters (16 hexadecimal digits)
+    // @Size(min = 8, max = 32)
     private String password;
+    // Newly added in v4.5
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    private String salt;
     
     @OneToMany
     @JoinColumn(nullable = true)
     private List<ManufacturingIssueEntity> manufacturingIssues;
 
     public StaffEntity() {
-        this.manufacturingIssues = new ArrayList<ManufacturingIssueEntity>();
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+        this.manufacturingIssues = new ArrayList<>();
     }
+
+    public StaffEntity(String firstName, String lastName, AccessRightEnum accessRightEnum, String username, String password) {
+        this();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.accessRightEnum = accessRightEnum;
+        this.username = username;
+        setPassword(password);
+    }
+    
     
     
 
@@ -132,8 +150,16 @@ public class StaffEntity implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password)
+    {
+        if(password != null)
+        {
+            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+        }
+        else
+        {
+            this.password = null;
+        }
     }
 
     public List<ManufacturingIssueEntity> getManufacturingIssues() {
@@ -142,6 +168,14 @@ public class StaffEntity implements Serializable {
 
     public void setManufacturingIssues(List<ManufacturingIssueEntity> manufacturingIssues) {
         this.manufacturingIssues = manufacturingIssues;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
     
 }
