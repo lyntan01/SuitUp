@@ -49,7 +49,7 @@ public class StoreEntity implements Serializable {
     @Size(max = 10)
     private String contactNumber;
     
-    @OneToMany
+    @OneToMany(mappedBy = "store")
     @JoinColumn(nullable = false)
     private List<StaffEntity> staff;
     

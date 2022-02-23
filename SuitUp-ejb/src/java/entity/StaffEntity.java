@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -63,6 +64,10 @@ public class StaffEntity implements Serializable {
     @OneToMany
     @JoinColumn(nullable = true)
     private List<ManufacturingIssueEntity> manufacturingIssues;
+    
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
+    private StoreEntity store;
 
     public StaffEntity() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
@@ -176,6 +181,14 @@ public class StaffEntity implements Serializable {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public StoreEntity getStore() {
+        return store;
+    }
+
+    public void setStore(StoreEntity store) {
+        this.store = store;
     }
     
 }
