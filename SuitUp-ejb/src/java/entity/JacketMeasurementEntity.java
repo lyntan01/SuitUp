@@ -41,7 +41,7 @@ public class JacketMeasurementEntity implements Serializable {
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal chestGrith;
+    private BigDecimal chestGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
     @DecimalMin("0.0")
@@ -56,7 +56,7 @@ public class JacketMeasurementEntity implements Serializable {
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal hipGrith;
+    private BigDecimal hipGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
     @DecimalMin("0.0")
@@ -81,17 +81,17 @@ public class JacketMeasurementEntity implements Serializable {
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal bicepGrith;
+    private BigDecimal bicepGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal forearmGrith;
+    private BigDecimal forearmGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal wristGrith;
+    private BigDecimal wristGirth;
 
     public JacketMeasurementEntity() {
     }
@@ -99,17 +99,17 @@ public class JacketMeasurementEntity implements Serializable {
     public JacketMeasurementEntity(BigDecimal neck, BigDecimal frontLength, BigDecimal chestGrith, BigDecimal frontChestWidth, BigDecimal upperWaistGrith, BigDecimal hipGrith, BigDecimal armhole, BigDecimal shoulderWidth, BigDecimal sleeveLength, BigDecimal backwidth, BigDecimal bicepGrith, BigDecimal forearmGrith, BigDecimal wristGrith) {
         this.neck = neck;
         this.frontLength = frontLength;
-        this.chestGrith = chestGrith;
+        this.chestGirth = chestGrith;
         this.frontChestWidth = frontChestWidth;
         this.upperWaistGrith = upperWaistGrith;
-        this.hipGrith = hipGrith;
+        this.hipGirth = hipGrith;
         this.armhole = armhole;
         this.shoulderWidth = shoulderWidth;
         this.sleeveLength = sleeveLength;
         this.backwidth = backwidth;
-        this.bicepGrith = bicepGrith;
-        this.forearmGrith = forearmGrith;
-        this.wristGrith = wristGrith;
+        this.bicepGirth = bicepGrith;
+        this.forearmGirth = forearmGrith;
+        this.wristGirth = wristGrith;
     }
 
     public Long getJacketMeasurementId() {
@@ -136,12 +136,12 @@ public class JacketMeasurementEntity implements Serializable {
         this.frontLength = frontLength;
     }
 
-    public BigDecimal getChestGrith() {
-        return chestGrith;
+    public BigDecimal getChestGirth() {
+        return chestGirth;
     }
 
-    public void setChestGrith(BigDecimal chestGrith) {
-        this.chestGrith = chestGrith;
+    public void setChestGirth(BigDecimal chestGirth) {
+        this.chestGirth = chestGirth;
     }
 
     public BigDecimal getFrontChestWidth() {
@@ -160,12 +160,12 @@ public class JacketMeasurementEntity implements Serializable {
         this.upperWaistGrith = upperWaistGrith;
     }
 
-    public BigDecimal getHipGrith() {
-        return hipGrith;
+    public BigDecimal getHipGirth() {
+        return hipGirth;
     }
 
-    public void setHipGrith(BigDecimal hipGrith) {
-        this.hipGrith = hipGrith;
+    public void setHipGirth(BigDecimal hipGirth) {
+        this.hipGirth = hipGirth;
     }
 
     public BigDecimal getArmhole() {
@@ -200,28 +200,28 @@ public class JacketMeasurementEntity implements Serializable {
         this.backwidth = backwidth;
     }
 
-    public BigDecimal getBicepGrith() {
-        return bicepGrith;
+    public BigDecimal getBicepGirth() {
+        return bicepGirth;
     }
 
-    public void setBicepGrith(BigDecimal bicepGrith) {
-        this.bicepGrith = bicepGrith;
+    public void setBicepGirth(BigDecimal bicepGirth) {
+        this.bicepGirth = bicepGirth;
     }
 
-    public BigDecimal getForearmGrith() {
-        return forearmGrith;
+    public BigDecimal getForearmGirth() {
+        return forearmGirth;
     }
 
-    public void setForearmGrith(BigDecimal forearmGrith) {
-        this.forearmGrith = forearmGrith;
+    public void setForearmGirth(BigDecimal forearmGirth) {
+        this.forearmGirth = forearmGirth;
     }
 
-    public BigDecimal getWristGrith() {
-        return wristGrith;
+    public BigDecimal getWristGirth() {
+        return wristGirth;
     }
 
-    public void setWristGrith(BigDecimal wristGrith) {
-        this.wristGrith = wristGrith;
+    public void setWristGirth(BigDecimal wristGirth) {
+        this.wristGirth = wristGirth;
     }
 
     @Override

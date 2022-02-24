@@ -51,17 +51,17 @@ public class PantsMeasurementEntity implements Serializable {
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal thighGrith;
+    private BigDecimal thighGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal kneeGrith;
+    private BigDecimal kneeGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
     @DecimalMin("0.0")
     @Digits(integer=7, fraction=1)
-    private BigDecimal calfGrith;
+    private BigDecimal calfGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
     @DecimalMin("0.0")
@@ -77,9 +77,9 @@ public class PantsMeasurementEntity implements Serializable {
         this.lowerWaistGirth = lowerWaistGirth;
         this.hipGirth = hipGirth;
         this.crotch = crotch;
-        this.thighGrith = thighGrith;
-        this.kneeGrith = kneeGrith;
-        this.calfGrith = calfGrith;
+        this.thighGirth = thighGrith;
+        this.kneeGirth = kneeGrith;
+        this.calfGirth = calfGrith;
         this.pantsOpeningWidth = pantsOpeningWidth;
     }
 
@@ -123,28 +123,28 @@ public class PantsMeasurementEntity implements Serializable {
         this.crotch = crotch;
     }
 
-    public BigDecimal getThighGrith() {
-        return thighGrith;
+    public BigDecimal getThighGirth() {
+        return thighGirth;
     }
 
-    public void setThighGrith(BigDecimal thighGrith) {
-        this.thighGrith = thighGrith;
+    public void setThighGirth(BigDecimal thighGirth) {
+        this.thighGirth = thighGirth;
     }
 
-    public BigDecimal getKneeGrith() {
-        return kneeGrith;
+    public BigDecimal getKneeGirth() {
+        return kneeGirth;
     }
 
-    public void setKneeGrith(BigDecimal kneeGrith) {
-        this.kneeGrith = kneeGrith;
+    public void setKneeGirth(BigDecimal kneeGirth) {
+        this.kneeGirth = kneeGirth;
     }
 
-    public BigDecimal getCalfGrith() {
-        return calfGrith;
+    public BigDecimal getCalfGirth() {
+        return calfGirth;
     }
 
-    public void setCalfGrith(BigDecimal calfGrith) {
-        this.calfGrith = calfGrith;
+    public void setCalfGirth(BigDecimal calfGirth) {
+        this.calfGirth = calfGirth;
     }
 
     public BigDecimal getPantsOpeningWidth() {
