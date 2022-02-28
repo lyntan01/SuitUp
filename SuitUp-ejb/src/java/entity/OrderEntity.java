@@ -6,10 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,6 +25,10 @@ public class OrderEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+    
+    @OneToMany
+    @JoinColumn(nullable = true)
+    private List<ManufacturingIssueEntity> manufacturingIssues;
 
     public OrderEntity() {
     }
@@ -57,6 +64,14 @@ public class OrderEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.OrderEntity[ id=" + orderId + " ]";
+    }
+
+    public List<ManufacturingIssueEntity> getManufacturingIssues() {
+        return manufacturingIssues;
+    }
+
+    public void setManufacturingIssues(List<ManufacturingIssueEntity> manufacturingIssues) {
+        this.manufacturingIssues = manufacturingIssues;
     }
     
 }

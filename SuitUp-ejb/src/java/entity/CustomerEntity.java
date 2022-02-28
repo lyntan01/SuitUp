@@ -23,7 +23,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "findCustomerByCreditCardId", query = "SELECT cu FROM CustomerEntity cu, IN (cu.creditCards) cc WHERE cc.creditCardId = :inCardId")
+    @NamedQuery(name = "findCustomerByCreditCardId", query = "SELECT cu FROM CustomerEntity cu, IN (cu.creditCards) cc WHERE cc.creditCardId = :inCardId"),
+    @NamedQuery(name = "findCustomerByAddressId", query = "SELECT cu FROM CustomerEntity cu, IN (cu.addresses) a WHERE a.addressId = :inAddressId")
 })
 public class CustomerEntity implements Serializable {
 
@@ -35,6 +36,10 @@ public class CustomerEntity implements Serializable {
     @OneToMany
     @JoinColumn(nullable = true)
     private List<CreditCardEntity> creditCards;
+    
+    @OneToMany
+    @JoinColumn(nullable = true)
+    private List<AddressEntity> addresses;
 
     public CustomerEntity() {
         this.creditCards = new ArrayList<>();
@@ -79,6 +84,14 @@ public class CustomerEntity implements Serializable {
 
     public void setCreditCards(List<CreditCardEntity> creditCards) {
         this.creditCards = creditCards;
+    }
+
+    public List<AddressEntity> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<AddressEntity> addresses) {
+        this.addresses = addresses;
     }
 
 }
