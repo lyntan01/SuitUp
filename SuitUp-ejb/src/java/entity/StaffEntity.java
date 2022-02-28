@@ -83,9 +83,6 @@ public class StaffEntity implements Serializable {
         setPassword(password);
     }
     
-    
-    
-
     public Long getStaffId() {
         return staffId;
     }
