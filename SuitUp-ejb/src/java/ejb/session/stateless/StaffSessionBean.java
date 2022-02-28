@@ -37,14 +37,14 @@ public class StaffSessionBean implements StaffSessionBeanLocal {
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager entityManager;
+    
+    private final ValidatorFactory validatorFactory;
+    private final Validator validator;
 
     public StaffSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
-
-    private final ValidatorFactory validatorFactory;
-    private final Validator validator;
     
     @Override
     public Long createNewStaff(StaffEntity newStaffEntity) throws StaffUsernameExistException, UnknownPersistenceException, InputDataValidationException
@@ -207,6 +207,10 @@ public class StaffSessionBean implements StaffSessionBeanLocal {
         
         if(staffEntityToRemove.getManufacturingIssues().isEmpty())
         {
+            // Disassociate staff and store
+            staffEntityToRemove.getStore().getStaff().remove(staffEntityToRemove);
+            staffEntityToRemove.setStore(null);
+            
             entityManager.remove(staffEntityToRemove);
         }
         else
