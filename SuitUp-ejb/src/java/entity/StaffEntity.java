@@ -61,17 +61,12 @@ public class StaffEntity implements Serializable {
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     private String salt;
     
-    @OneToMany
-    @JoinColumn(nullable = true)
-    private List<ManufacturingIssueEntity> manufacturingIssues;
-    
     @ManyToOne(optional = true)
     @JoinColumn(nullable = true)
     private StoreEntity store;
 
     public StaffEntity() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
-        this.manufacturingIssues = new ArrayList<>();
     }
 
     public StaffEntity(String firstName, String lastName, AccessRightEnum accessRightEnum, String username, String password) {
@@ -163,15 +158,7 @@ public class StaffEntity implements Serializable {
             this.password = null;
         }
     }
-
-    public List<ManufacturingIssueEntity> getManufacturingIssues() {
-        return manufacturingIssues;
-    }
-
-    public void setManufacturingIssues(List<ManufacturingIssueEntity> manufacturingIssues) {
-        this.manufacturingIssues = manufacturingIssues;
-    }
-
+    
     public String getSalt() {
         return salt;
     }

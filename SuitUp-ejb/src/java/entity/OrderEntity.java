@@ -25,10 +25,6 @@ public class OrderEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-    
-    @OneToMany
-    @JoinColumn(nullable = true)
-    private List<ManufacturingIssueEntity> manufacturingIssues;
 
     public OrderEntity() {
     }
@@ -66,12 +62,4 @@ public class OrderEntity implements Serializable {
         return "entity.OrderEntity[ id=" + orderId + " ]";
     }
 
-    public List<ManufacturingIssueEntity> getManufacturingIssues() {
-        return manufacturingIssues;
-    }
-
-    public void setManufacturingIssues(List<ManufacturingIssueEntity> manufacturingIssues) {
-        this.manufacturingIssues = manufacturingIssues;
-    }
-    
 }
