@@ -39,7 +39,7 @@ public abstract class PromotionEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long promotionId;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, unique = true, length = 20)
     @NotNull
     @Size(min = 3, max = 20)
     private String promotionCode;
