@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -25,6 +26,9 @@ public class OrderEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+    
+    @ManyToOne(optional = true)
+    private PromotionEntity promotion;
 
     public OrderEntity() {
     }
@@ -60,6 +64,14 @@ public class OrderEntity implements Serializable {
     @Override
     public String toString() {
         return "entity.OrderEntity[ id=" + orderId + " ]";
+    }
+
+    public PromotionEntity getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(PromotionEntity promotion) {
+        this.promotion = promotion;
     }
 
 }
