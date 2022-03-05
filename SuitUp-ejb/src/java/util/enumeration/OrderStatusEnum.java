@@ -12,6 +12,7 @@ package util.enumeration;
 public enum OrderStatusEnum {
     UNPAID,
     PAID,
+    PROCESSING,
     READY_FOR_PICKUP,
     PICKED_UP,
     IN_DELIVERY,
