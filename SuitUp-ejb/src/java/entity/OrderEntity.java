@@ -6,31 +6,107 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import util.enumeration.CollectionMethodEnum;
+import util.enumeration.OrderStatusEnum;
 
 /**
  *
- * @author lyntan
+ * @author lyntan, keithcharleschan
  */
 @Entity
 public class OrderEntity implements Serializable {
 
+    //-------[Attributes]-------
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-    
+
+    @NotNull
+    @Min(1)
+    private Integer totalLineItem;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    @NotNull
+    private Date orderDateTime;
+
+    @Column(nullable = false)
+    @NotNull
+    private Boolean expressOrder;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @NotNull
+    private OrderStatusEnum orderStatusEnum;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @NotNull
+    private CollectionMethodEnum collectionMethodEnum;
+
+    //-------[Relationship Attributes]-------
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private CustomerEntity customer;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private AddressEntity deliveryAddress;
+
     @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
     private PromotionEntity promotion;
 
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
+    private StaffEntity staff;
+
+    @OneToOne
+    private TransactionEntity transaction;
+
+    @OneToMany
+    private List<OrderLineItemEntity> orderLineItems;
+
+    //---------[Methods]---------
     public OrderEntity() {
+        this.orderLineItems = new ArrayList<>();
+    }
+
+    public OrderEntity(Integer totalLineItem, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum) {
+        this();
+        this.totalLineItem = totalLineItem;
+        this.orderDateTime = orderDateTime;
+        this.expressOrder = expressOrder;
+        this.orderStatusEnum = orderStatusEnum;
+        this.collectionMethodEnum = collectionMethodEnum;
+    }
+
+    public OrderEntity(Integer totalLineItem, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum, List<OrderLineItemEntity> orderLineItems) {
+        this.totalLineItem = totalLineItem;
+        this.orderDateTime = orderDateTime;
+        this.expressOrder = expressOrder;
+        this.orderStatusEnum = orderStatusEnum;
+        this.collectionMethodEnum = collectionMethodEnum;
+        this.orderLineItems = orderLineItems;
     }
 
     public Long getOrderId() {
@@ -41,10 +117,98 @@ public class OrderEntity implements Serializable {
         this.orderId = orderId;
     }
 
+    public Integer getTotalLineItem() {
+        return totalLineItem;
+    }
+
+    public void setTotalLineItem(Integer totalLineItem) {
+        this.totalLineItem = totalLineItem;
+    }
+
+    public Date getOrderDateTime() {
+        return orderDateTime;
+    }
+
+    public void setOrderDateTime(Date orderDateTime) {
+        this.orderDateTime = orderDateTime;
+    }
+
+    public Boolean getExpressOrder() {
+        return expressOrder;
+    }
+
+    public void setExpressOrder(Boolean expressOrder) {
+        this.expressOrder = expressOrder;
+    }
+
+    public OrderStatusEnum getOrderStatusEnum() {
+        return orderStatusEnum;
+    }
+
+    public void setOrderStatusEnum(OrderStatusEnum orderStatusEnum) {
+        this.orderStatusEnum = orderStatusEnum;
+    }
+
+    public CollectionMethodEnum getCollectionMethodEnum() {
+        return collectionMethodEnum;
+    }
+
+    public void setCollectionMethodEnum(CollectionMethodEnum collectionMethodEnum) {
+        this.collectionMethodEnum = collectionMethodEnum;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    public AddressEntity getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(AddressEntity deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public PromotionEntity getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(PromotionEntity promotion) {
+        this.promotion = promotion;
+    }
+
+    public StaffEntity getStaff() {
+        return staff;
+    }
+
+    public void setStaff(StaffEntity staff) {
+        this.staff = staff;
+    }
+
+    public TransactionEntity getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(TransactionEntity transaction) {
+        this.transaction = transaction;
+    }
+
+    public List<OrderLineItemEntity> getOrderLineItems() {
+        return orderLineItems;
+    }
+
+    public void setOrderLineItems(List<OrderLineItemEntity> orderLineItems) {
+        this.orderLineItems = orderLineItems;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (orderId != null ? orderId.hashCode() : 0);
+        hash += (getOrderId() != null ? getOrderId().hashCode() : 0);
         return hash;
     }
 
@@ -55,7 +219,7 @@ public class OrderEntity implements Serializable {
             return false;
         }
         OrderEntity other = (OrderEntity) object;
-        if ((this.orderId == null && other.orderId != null) || (this.orderId != null && !this.orderId.equals(other.orderId))) {
+        if ((this.getOrderId() == null && other.getOrderId() != null) || (this.getOrderId() != null && !this.orderId.equals(other.orderId))) {
             return false;
         }
         return true;
@@ -63,15 +227,7 @@ public class OrderEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.OrderEntity[ id=" + orderId + " ]";
-    }
-
-    public PromotionEntity getPromotion() {
-        return promotion;
-    }
-
-    public void setPromotion(PromotionEntity promotion) {
-        this.promotion = promotion;
+        return "OrderEntity{" + "orderId=" + orderId + ", totalLineItem=" + totalLineItem + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", staff=" + staff + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
     }
 
 }
