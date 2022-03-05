@@ -29,42 +29,42 @@ public class PantsMeasurementEntity implements Serializable {
     private Long pantsMeasurementId;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal legsLength;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal lowerWaistGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal hipGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal crotch;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal thighGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal kneeGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal calfGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal pantsOpeningWidth;
 
@@ -89,6 +89,33 @@ public class PantsMeasurementEntity implements Serializable {
 
     public void setPantsMeasurementId(Long pantsMeasurementId) {
         this.pantsMeasurementId = pantsMeasurementId;
+    }
+
+    
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (pantsMeasurementId != null ? pantsMeasurementId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the pantsMeasurementId fields are not set
+        if (!(object instanceof PantsMeasurementEntity)) {
+            return false;
+        }
+        PantsMeasurementEntity other = (PantsMeasurementEntity) object;
+        if ((this.pantsMeasurementId == null && other.pantsMeasurementId != null) || (this.pantsMeasurementId != null && !this.pantsMeasurementId.equals(other.pantsMeasurementId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entity.PantsMeasurementEntity[ id=" + pantsMeasurementId + " ]";
     }
 
     public BigDecimal getLegsLength() {
@@ -153,31 +180,6 @@ public class PantsMeasurementEntity implements Serializable {
 
     public void setPantsOpeningWidth(BigDecimal pantsOpeningWidth) {
         this.pantsOpeningWidth = pantsOpeningWidth;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (pantsMeasurementId != null ? pantsMeasurementId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the pantsMeasurementId fields are not set
-        if (!(object instanceof PantsMeasurementEntity)) {
-            return false;
-        }
-        PantsMeasurementEntity other = (PantsMeasurementEntity) object;
-        if ((this.pantsMeasurementId == null && other.pantsMeasurementId != null) || (this.pantsMeasurementId != null && !this.pantsMeasurementId.equals(other.pantsMeasurementId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.PantsMeasurementEntity[ id=" + pantsMeasurementId + " ]";
     }
     
 }

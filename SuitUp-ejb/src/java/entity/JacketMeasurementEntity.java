@@ -29,67 +29,67 @@ public class JacketMeasurementEntity implements Serializable {
     private Long jacketMeasurementId;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal neck;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal frontLength;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal chestGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal frontChestWidth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal upperWaistGrith;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal hipGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal armhole;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal shoulderWidth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal sleeveLength;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal backwidth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal bicepGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal forearmGirth;
     @Column(nullable = false, precision=8, scale=1)
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin("0.1")
     @Digits(integer=7, fraction=1)
     private BigDecimal wristGirth;
 
