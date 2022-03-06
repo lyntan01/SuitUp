@@ -63,7 +63,7 @@ public class AppointmentEntity implements Serializable {
 
     }
 
-    public AppointmentEntity(Date appointmentDateTime, AppointmentTypeEnum appointmentTypeEnum, BigDecimal price) {
+    public AppointmentEntity(Date appointmentDateTime, AppointmentTypeEnum appointmentTypeEnum) {
         this.appointmentDateTime = appointmentDateTime;
         this.appointmentTypeEnum = appointmentTypeEnum;
     }
