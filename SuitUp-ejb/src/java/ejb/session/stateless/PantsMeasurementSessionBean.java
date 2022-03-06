@@ -9,6 +9,7 @@ import entity.CustomerEntity;
 import entity.PantsMeasurementEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,6 +32,9 @@ import util.exception.UpdateEntityException;
 @Stateless
 public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanLocal {
 
+    @EJB
+    private CustomerSessionBeanLocal customerSessionBean;
+
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
 
@@ -45,7 +49,7 @@ public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanL
     
     
     @Override
-    public PantsMeasurementEntity createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException
+    public Long createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<PantsMeasurementEntity>>constraintViolations = validator.validate(newPantsMeasurementEntity);
         
@@ -53,12 +57,12 @@ public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanL
         {
             try
             {
-                CustomerEntity customer = customerSessionBean.retreiveCustomerByCustomerId(customerId);
+                CustomerEntity customer = customerSessionBean.retreiveCustomerByCustomerId(customerId); //think this will need catch exception after method created
                 customer.setPantsMeasurement(newPantsMeasurementEntity);
                 em.persist(newPantsMeasurementEntity);
                 em.flush();
 
-                return newPantsMeasurementEntity;
+                return newPantsMeasurementEntity.getPantsMeasurementId();
                 
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());

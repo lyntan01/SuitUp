@@ -23,7 +23,7 @@ public interface JacketMeasurementSessionBeanLocal {
 
     public List<JacketMeasurementEntity> retrieveAllJacketMeasurements();
 
-    public JacketMeasurementEntity createNewJacketMeasurement(JacketMeasurementEntity newJacketMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewJacketMeasurement(JacketMeasurementEntity newJacketMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException;
 
     public JacketMeasurementEntity retrieveJacketMeasurementByJacketMeasurementId(Long jacketMeasurementId) throws JacketMeasurementNotFoundException;
 

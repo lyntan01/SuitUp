@@ -84,8 +84,15 @@ public class StandardProductSessionBean implements StandardProductSessionBeanLoc
     @Override
     public List<StandardProductEntity> retrieveAllStandardProducts() {
         Query query = em.createQuery("SELECT s FROM StandardProductEntity s");
-
-        return query.getResultList();
+        List<StandardProductEntity> standardProductEntities = query.getResultList();
+        
+        for(StandardProductEntity standardProductEntity: standardProductEntities)
+        {
+            standardProductEntity.getCategory();
+            standardProductEntity.getTags().size();
+        }
+        
+        return standardProductEntities;
     }
 
     @Override
@@ -93,6 +100,8 @@ public class StandardProductSessionBean implements StandardProductSessionBeanLoc
         StandardProductEntity standardProductEntity = em.find(StandardProductEntity.class, standardProductId);
 
         if (standardProductEntity != null) {
+            standardProductEntity.getCategory();
+            standardProductEntity.getTags().size();
             return standardProductEntity;
         } else {
             throw new StandardProductNotFoundException("StandardProduct ID " + standardProductId + " does not exist!");

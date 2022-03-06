@@ -21,7 +21,7 @@ import util.exception.UpdateEntityException;
 @Local
 public interface PantsMeasurementSessionBeanLocal {
 
-    public PantsMeasurementEntity createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException;
 
     public List<PantsMeasurementEntity> retrieveAllPantsMeasurements();
 

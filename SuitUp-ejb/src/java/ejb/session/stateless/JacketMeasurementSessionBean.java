@@ -9,6 +9,7 @@ import entity.CustomerEntity;
 import entity.JacketMeasurementEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +35,9 @@ public class JacketMeasurementSessionBean implements JacketMeasurementSessionBea
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
 
+    @EJB
+    private CustomerSessionBeanLocal customerSessionBean;
+    
    private final ValidatorFactory validatorFactory;
     private final Validator validator;
     
@@ -45,7 +49,7 @@ public class JacketMeasurementSessionBean implements JacketMeasurementSessionBea
     
     
     @Override
-    public JacketMeasurementEntity createNewJacketMeasurement(JacketMeasurementEntity newJacketMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException
+    public Long createNewJacketMeasurement(JacketMeasurementEntity newJacketMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<JacketMeasurementEntity>>constraintViolations = validator.validate(newJacketMeasurementEntity);
         
@@ -53,12 +57,12 @@ public class JacketMeasurementSessionBean implements JacketMeasurementSessionBea
         {
             try
             {
-                CustomerEntity customer = customerSessionBean.retreiveCustomerByCustomerId(customerId);
+                CustomerEntity customer = customerSessionBean.retreiveCustomerByCustomerId(customerId); //think this will need catch exception after method created
                 customer.setJacketMeasurement(newJacketMeasurementEntity);
                 em.persist(newJacketMeasurementEntity);
                 em.flush();
 
-                return newJacketMeasurementEntity;
+                return newJacketMeasurementEntity.getJacketMeasurementId();
                 
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());

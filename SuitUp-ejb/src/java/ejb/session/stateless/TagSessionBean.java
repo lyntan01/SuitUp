@@ -50,7 +50,7 @@ public class TagSessionBean implements TagSessionBeanLocal {
     
     
     @Override
-    public TagEntity createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException
+    public Long createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<TagEntity>>constraintViolations = validator.validate(newTagEntity);
         
@@ -61,7 +61,7 @@ public class TagSessionBean implements TagSessionBeanLocal {
                 em.persist(newTagEntity);
                 em.flush();
 
-                return newTagEntity;
+                return newTagEntity.getTagId();
                 
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());
@@ -94,6 +94,7 @@ public class TagSessionBean implements TagSessionBeanLocal {
         
         if(tagEntity != null)
         {
+            tagEntity.getStandardProducts().size();
             return tagEntity;
         }
         else

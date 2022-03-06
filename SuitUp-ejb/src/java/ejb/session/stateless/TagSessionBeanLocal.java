@@ -23,7 +23,7 @@ public interface TagSessionBeanLocal {
 
     public TagEntity retrieveTagByTagId(Long tagId) throws TagNotFoundException;
 
-    public TagEntity createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException;
 
     public List<TagEntity> retrieveAllTags();
 

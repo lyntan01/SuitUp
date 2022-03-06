@@ -45,7 +45,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     
     //assume that category cannot be created with a bunch of products tagged -> products to be tagged later
     @Override
-    public CategoryEntity createNewCategory(CategoryEntity newCategoryEntity) throws UnknownPersistenceException, InputDataValidationException
+    public Long createNewCategory(CategoryEntity newCategoryEntity) throws UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<CategoryEntity>>constraintViolations = validator.validate(newCategoryEntity);
         
@@ -56,7 +56,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
                 em.persist(newCategoryEntity);
                 em.flush();
 
-                return newCategoryEntity;
+                return newCategoryEntity.getCategoryId();
                 
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());
@@ -89,6 +89,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
         
         if(categoryEntity != null)
         {
+            categoryEntity.getStandardProducts().size();
             return categoryEntity;
         }
         else
