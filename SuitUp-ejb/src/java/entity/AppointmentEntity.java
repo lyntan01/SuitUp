@@ -6,30 +6,66 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import util.enumeration.AppointmentTypeEnum;
 
 /**
  *
- * @author lyntan
+ * @author lyntan, keithcharleschan
  */
 @Entity
 public class AppointmentEntity implements Serializable {
 
+    //-------[Attributes]-------
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long appointmentId;
-    
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    @NotNull
+    private Date appointmentDateTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @NotNull
+    private AppointmentTypeEnum appointmentTypeEnum;
+
+    //-------[Relationship Attributes]-------
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private StoreEntity store;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private CustomerEntity customer;
+
+    @OneToOne
+    private TransactionEntity transaction;
+
+    //---------[Methods]---------
     public AppointmentEntity() {
+
+    }
+
+    public AppointmentEntity(Date appointmentDateTime, AppointmentTypeEnum appointmentTypeEnum, BigDecimal price) {
+        this.appointmentDateTime = appointmentDateTime;
+        this.appointmentTypeEnum = appointmentTypeEnum;
     }
 
     public Long getAppointmentId() {
@@ -40,10 +76,50 @@ public class AppointmentEntity implements Serializable {
         this.appointmentId = appointmentId;
     }
 
+    public Date getAppointmentDateTime() {
+        return appointmentDateTime;
+    }
+
+    public void setAppointmentDateTime(Date appointmentDateTime) {
+        this.appointmentDateTime = appointmentDateTime;
+    }
+
+    public AppointmentTypeEnum getAppointmentTypeEnum() {
+        return appointmentTypeEnum;
+    }
+
+    public void setAppointmentTypeEnum(AppointmentTypeEnum appointmentTypeEnum) {
+        this.appointmentTypeEnum = appointmentTypeEnum;
+    }
+
+    public StoreEntity getStore() {
+        return store;
+    }
+
+    public void setStore(StoreEntity store) {
+        this.store = store;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
+    public TransactionEntity getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(TransactionEntity transaction) {
+        this.transaction = transaction;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (appointmentId != null ? appointmentId.hashCode() : 0);
+        hash += (getAppointmentId() != null ? getAppointmentId().hashCode() : 0);
         return hash;
     }
 
@@ -54,7 +130,7 @@ public class AppointmentEntity implements Serializable {
             return false;
         }
         AppointmentEntity other = (AppointmentEntity) object;
-        if ((this.appointmentId == null && other.appointmentId != null) || (this.appointmentId != null && !this.appointmentId.equals(other.appointmentId))) {
+        if ((this.getAppointmentId() == null && other.getAppointmentId() != null) || (this.getAppointmentId() != null && !this.appointmentId.equals(other.appointmentId))) {
             return false;
         }
         return true;
@@ -62,7 +138,7 @@ public class AppointmentEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.AppointmentEntity[ id=" + appointmentId + " ]";
+        return "AppointmentEntity{" + "appointmentId=" + appointmentId + ", appointmentDateTime=" + appointmentDateTime + ", appointmentTypeEnum=" + appointmentTypeEnum + ", store=" + store + ", customer=" + customer + ", transaction=" + transaction + '}';
     }
-    
+
 }
