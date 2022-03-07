@@ -138,7 +138,8 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 if (customerEntityToUpdate.getEmail().equals(customerEntity.getEmail())) {
                     customerEntityToUpdate.setFirstName(customerEntity.getFirstName());
                     customerEntityToUpdate.setLastName(customerEntity.getLastName());
-
+                    //not sure where the updating of address /credit card / support tickets comes in
+                    //pass in the Id from createAddress in AddressSessionBean and add it to the customer's existing list? (same for credit card)
                 } else {
                     throw new UpdateCustomerException("Email of customer record to be updated does not match the existing record");
                 }
@@ -154,6 +155,10 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     public void deleteCustomer(Long customerId) throws CustomerNotFoundException {
         CustomerEntity customerEntityToRemove = retrieveCustomerByCustomerId(customerId);
 
+        //linked to quite a number of things not sure if its correct
+        
+  
+        
         for (CreditCardEntity creditCard : customerEntityToRemove.getCreditCards()) {
             entityManager.remove(creditCard);
         }
@@ -167,6 +172,8 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         }
 
         for (OrderEntity orderEntity : customerEntityToRemove.getOrders()) {
+            
+//                  if got transaction throw exception
 
             for (OrderLineItemEntity orderLineItem : orderEntity.getOrderLineItems()) {
                 entityManager.remove(orderLineItem);

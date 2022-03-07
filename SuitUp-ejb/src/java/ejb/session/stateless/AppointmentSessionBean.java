@@ -6,10 +6,8 @@
 package ejb.session.stateless;
 
 import entity.AppointmentEntity;
-import static entity.AppointmentEntity_.customer;
 import entity.CustomerEntity;
 import entity.StoreEntity;
-import entity.TransactionEntity;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -28,7 +26,6 @@ import util.exception.AppointmentNotFoundException;
 import util.exception.CreateNewAppointmentException;
 import util.exception.CustomerNotFoundException;
 import util.exception.StoreNotFoundException;
-import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
 
@@ -90,7 +87,7 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
             } catch (StoreNotFoundException ex) {
                 throw new StoreNotFoundException("Store ID " + storeId + " does not exist!");
             } catch (CustomerNotFoundException ex) {
-                 throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist!");
+                throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist!");
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
@@ -128,7 +125,6 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
                 if (appointmentEntityToUpdate.getAppointmentId().equals(appointmentEntity.getAppointmentId())) {
                     appointmentEntityToUpdate.setAppointmentDateTime(appointmentEntity.getAppointmentDateTime());
                     appointmentEntityToUpdate.setAppointmentTypeEnum(appointmentEntity.getAppointmentTypeEnum());
-                    //not sure if need to update the transaction entity
                 } else {
                     throw new UpdateEntityException("Appointment ID of appointment record to be updated does not match the existing record");
                 }
@@ -144,24 +140,16 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
     public void deleteAppointment(Long appointmentId) throws AppointmentNotFoundException, DeleteEntityException {
         AppointmentEntity appointmentEntityToRemove = retrieveAppointmentByAppointmentId(appointmentId);
 
-        appointmentEntityToRemove.getTransaction().setAppointment(null);
-        appointmentEntityToRemove.setTransaction(null);
-
-    }
-
-    @Override
-    public void associateAppointmentWithTransaction(Long appointmentId, Long transactionId) throws AppointmentNotFoundException, TransactionNotFoundException {
-
-        AppointmentEntity appointmentEntity = retrieveAppointmentByAppointmentId(appointmentId);
-        TransactionEntity transactionEntity = transactionSessionBeanLocal.retrieveTransactionByTransactionId(transactionId);
-
-        if (appointmentEntity.getTransaction() == null && transactionEntity.getAppointment() == null) {
-
-            appointmentEntity.setTransaction(transactionEntity);
-            transactionEntity.setAppointment(appointmentEntity);
-
+        if (appointmentEntityToRemove.getTransaction() == null) {
+            appointmentEntityToRemove.getCustomer().getAppointments().remove(appointmentEntityToRemove);
+            appointmentEntityToRemove.getStore().getAppointments().remove(appointmentEntityToRemove);
+            appointmentEntityToRemove.setCustomer(null);
+            appointmentEntityToRemove.setStore(null);
+        } else {
+            throw new DeleteEntityException("You can't delete an appointment that has a transaction associated with it!");
         }
 
+        em.remove(appointmentEntityToRemove);
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<AppointmentEntity>> constraintViolations) {

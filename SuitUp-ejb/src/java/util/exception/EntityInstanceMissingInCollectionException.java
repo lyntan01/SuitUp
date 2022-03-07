@@ -9,12 +9,12 @@ package util.exception;
  *
  * @author keithcharleschan
  */
-public class OrderAlreadyVoidedRefundedException extends Exception {
+public class EntityInstanceMissingInCollectionException extends Exception {
 
-    public OrderAlreadyVoidedRefundedException() {
+    public EntityInstanceMissingInCollectionException() {
     }
 
-    public OrderAlreadyVoidedRefundedException(String msg) {
+    public EntityInstanceMissingInCollectionException(String msg) {
         super(msg);
     }
 }

@@ -26,6 +26,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import util.enumeration.CollectionMethodEnum;
 import util.enumeration.OrderStatusEnum;
+import util.exception.EntityInstanceExistsInCollectionException;
+import util.exception.EntityInstanceMissingInCollectionException;
 
 /**
  *
@@ -75,10 +77,6 @@ public class OrderEntity implements Serializable {
     @ManyToOne(optional = true)
     @JoinColumn(nullable = true)
     private PromotionEntity promotion;
-
-    @ManyToOne(optional = true)
-    @JoinColumn(nullable = true)
-    private StaffEntity staff;
 
     @OneToOne
     private TransactionEntity transaction;
@@ -181,14 +179,6 @@ public class OrderEntity implements Serializable {
         this.promotion = promotion;
     }
 
-    public StaffEntity getStaff() {
-        return staff;
-    }
-
-    public void setStaff(StaffEntity staff) {
-        this.staff = staff;
-    }
-
     public TransactionEntity getTransaction() {
         return transaction;
     }
@@ -196,6 +186,31 @@ public class OrderEntity implements Serializable {
     public void setTransaction(TransactionEntity transaction) {
         this.transaction = transaction;
     }
+    
+    public void addOrderLineItemEntity(OrderLineItemEntity orderLineItemEntity) throws EntityInstanceExistsInCollectionException
+    {
+        if(!this.orderLineItems.contains(orderLineItemEntity))
+        {
+            this.orderLineItems.add(orderLineItemEntity);
+        }
+        else
+        {
+            throw new EntityInstanceExistsInCollectionException("Order Line Item already exist");
+        }
+    }
+    
+    public void removeSaleTransactionLineItemEntity(OrderLineItemEntity orderLineItemEntity) throws EntityInstanceMissingInCollectionException
+    {
+        if(this.orderLineItems.contains(orderLineItemEntity))
+        {
+            this.orderLineItems.remove(orderLineItemEntity);
+        }
+        else
+        {
+            throw new EntityInstanceMissingInCollectionException("Order Line Item already exist");
+        }
+    }
+    
 
     public List<OrderLineItemEntity> getOrderLineItems() {
         return orderLineItems;
@@ -227,7 +242,9 @@ public class OrderEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderEntity{" + "orderId=" + orderId + ", totalLineItem=" + totalLineItem + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", staff=" + staff + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
+        return "OrderEntity{" + "orderId=" + orderId + ", totalLineItem=" + totalLineItem + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
     }
+
+   
 
 }

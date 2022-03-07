@@ -35,6 +35,4 @@ public interface AppointmentSessionBeanLocal {
 
     public void deleteAppointment(Long appointmentId) throws AppointmentNotFoundException, DeleteEntityException;
 
-    public void associateAppointmentWithTransaction(Long appointmentId, Long transactionId) throws AppointmentNotFoundException, TransactionNotFoundException;
-    
 }
