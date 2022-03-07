@@ -30,7 +30,7 @@ import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
-import util.exception.VoidTransactionExcepetion;
+import util.exception.VoidTransactionException;
 
 /**
  *
@@ -118,7 +118,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     //cannot delete transaction, can only void -> note: can unvoid ??
     @Override
-    public void voidTransaction(Long transactionId) throws VoidTransactionExcepetion {
+    public void voidTransaction(Long transactionId) throws VoidTransactionException {
         try {
             TransactionEntity transactionEntity = retrieveTransactionByTransactionId(transactionId);
             if (transactionEntity.getOrder() != null && transactionEntity.getVoidRefund().equals(Boolean.FALSE)) {
@@ -131,10 +131,10 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 transactionEntity.setVoidRefund(Boolean.TRUE);
             }
             else if(transactionEntity.getVoidRefund().equals(Boolean.FALSE)) {
-                throw new VoidTransactionExcepetion("Transaciton was already voided");
+                throw new VoidTransactionException("Transaciton was already voided");
             }
         } catch (TransactionNotFoundException ex) {
-            throw new VoidTransactionExcepetion("Error when voiding transaction: " + ex.getMessage());
+            throw new VoidTransactionException("Error when voiding transaction: " + ex.getMessage());
         }
     }
 

@@ -16,7 +16,7 @@ import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
 import util.exception.UpdateTransactionException;
-import util.exception.VoidTransactionExcepetion;
+import util.exception.VoidTransactionException;
 
 /**
  *
@@ -31,6 +31,6 @@ public interface TransactionSessionBeanLocal {
 
     public TransactionEntity retrieveTransactionByTransactionId(Long transactionId) throws TransactionNotFoundException;
 
-    public void voidTransaction(Long transactionId) throws VoidTransactionExcepetion;
+    public void voidTransaction(Long transactionId) throws VoidTransactionException;
     
 }

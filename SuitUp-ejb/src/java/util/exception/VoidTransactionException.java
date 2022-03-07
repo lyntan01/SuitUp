@@ -9,12 +9,12 @@ package util.exception;
  *
  * @author xianhui
  */
-public class VoidTransactionExcepetion extends Exception{
+public class VoidTransactionException extends Exception{
 
-    public VoidTransactionExcepetion() {
+    public VoidTransactionException() {
     }
 
-    public VoidTransactionExcepetion(String string) {
+    public VoidTransactionException(String string) {
         super(string);
     }
     
