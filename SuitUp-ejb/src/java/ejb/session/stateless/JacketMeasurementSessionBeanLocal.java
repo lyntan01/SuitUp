@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.JacketMeasurementEntity;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.JacketMeasurementNotFoundException;
@@ -23,7 +24,7 @@ public interface JacketMeasurementSessionBeanLocal {
 
     public List<JacketMeasurementEntity> retrieveAllJacketMeasurements();
 
-    public Long createNewJacketMeasurement(JacketMeasurementEntity newJacketMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewJacketMeasurement(JacketMeasurementEntity newJacketMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException, CustomerNotFoundException;
 
     public JacketMeasurementEntity retrieveJacketMeasurementByJacketMeasurementId(Long jacketMeasurementId) throws JacketMeasurementNotFoundException;
 

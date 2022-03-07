@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.PantsMeasurementEntity;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.PantsMeasurementNotFoundException;
@@ -21,7 +22,7 @@ import util.exception.UpdateEntityException;
 @Local
 public interface PantsMeasurementSessionBeanLocal {
 
-    public Long createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException, CustomerNotFoundException;
 
     public List<PantsMeasurementEntity> retrieveAllPantsMeasurements();
 

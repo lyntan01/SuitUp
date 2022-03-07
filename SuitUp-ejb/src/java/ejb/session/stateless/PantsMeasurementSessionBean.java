@@ -19,6 +19,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CustomerNotFoundException;
 import util.exception.PantsMeasurementNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
@@ -33,7 +34,7 @@ import util.exception.UpdateEntityException;
 public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanLocal {
 
     @EJB
-    private CustomerSessionBeanLocal customerSessionBean;
+    private CustomerSessionBean customerSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
@@ -49,7 +50,7 @@ public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanL
     
     
     @Override
-    public Long createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException
+    public Long createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId) throws UnknownPersistenceException, InputDataValidationException, CustomerNotFoundException
     {
         Set<ConstraintViolation<PantsMeasurementEntity>>constraintViolations = validator.validate(newPantsMeasurementEntity);
         
@@ -57,7 +58,7 @@ public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanL
         {
             try
             {
-                CustomerEntity customer = customerSessionBean.retreiveCustomerByCustomerId(customerId); //think this will need catch exception after method created
+                CustomerEntity customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId); //think this will need catch exception after method created
                 customer.setPantsMeasurement(newPantsMeasurementEntity);
                 em.persist(newPantsMeasurementEntity);
                 em.flush();
@@ -66,6 +67,8 @@ public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanL
                 
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());
+            } catch (CustomerNotFoundException ex) {
+                 throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist!");
             }
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
