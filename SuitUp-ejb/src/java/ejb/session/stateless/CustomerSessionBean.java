@@ -184,6 +184,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         entityManager.remove(customerEntityToRemove);
     }
 
+    @Override
     public void customerChangePassword(String email, String oldPassword, String newPassword) throws ChangePasswordException, InvalidLoginCredentialException {
 
         try {

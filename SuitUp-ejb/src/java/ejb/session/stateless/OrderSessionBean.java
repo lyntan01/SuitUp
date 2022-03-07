@@ -28,7 +28,7 @@ import util.exception.StaffNotFoundException;
 public class OrderSessionBean implements OrderSessionBeanLocal {
 
     @EJB
-    private StaffSessionBeanLocal staffSessionBeanLocal;
+    private StaffSessionBean staffSessionBeanLocal;
     
     
 
@@ -98,7 +98,7 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 
             return orderEntity;
         } else {
-            throw new OrderNotFoundException("Sale Transaction ID " + orderId + " does not exist!");
+            throw new OrderNotFoundException("Order ID " + orderId + " does not exist!");
         }
     }
 

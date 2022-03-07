@@ -8,8 +8,10 @@ package ejb.session.stateless;
 import entity.TransactionEntity;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.AppointmentNotFoundException;
 import util.exception.CreateNewTransactionException;
 import util.exception.InputDataValidationException;
+import util.exception.OrderNotFoundException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
@@ -22,7 +24,7 @@ import util.exception.UpdateTransactionException;
 @Local
 public interface TransactionSessionBeanLocal {
 
-    public Long createNewTransaction(TransactionEntity newTransactionEntity, Long appointmentId, Long orderId) throws UnknownPersistenceException, InputDataValidationException, CreateNewTransactionException;
+    public Long createNewTransaction(TransactionEntity newTransactionEntity, Long appointmentId, Long orderId) throws AppointmentNotFoundException, OrderNotFoundException, UnknownPersistenceException, InputDataValidationException, CreateNewTransactionException;
 
     public List<TransactionEntity> retrieveAllTransactions();
 

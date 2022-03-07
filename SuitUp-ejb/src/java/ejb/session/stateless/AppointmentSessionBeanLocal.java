@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.AppointmentNotFoundException;
 import util.exception.CreateNewAppointmentException;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.StoreNotFoundException;
@@ -24,7 +25,7 @@ import util.exception.UpdateEntityException;
 @Local
 public interface AppointmentSessionBeanLocal {
 
-    public Long createNewAppointment(AppointmentEntity newAppointmentEntity, Long storeId, Long customerId) throws CreateNewAppointmentException, StoreNotFoundException, UnknownPersistenceException, InputDataValidationException;
+    public Long createNewAppointment(AppointmentEntity newAppointmentEntity, Long storeId, Long customerId) throws CreateNewAppointmentException, StoreNotFoundException, CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException;
 
     public List<AppointmentEntity> retrieveAllAppointments();
 

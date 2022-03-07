@@ -26,6 +26,7 @@ import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.AppointmentNotFoundException;
 import util.exception.CreateNewAppointmentException;
+import util.exception.CustomerNotFoundException;
 import util.exception.StoreNotFoundException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -59,7 +60,7 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
     }
 
     @Override
-    public Long createNewAppointment(AppointmentEntity newAppointmentEntity, Long storeId, Long customerId) throws CreateNewAppointmentException, StoreNotFoundException, UnknownPersistenceException, InputDataValidationException {
+    public Long createNewAppointment(AppointmentEntity newAppointmentEntity, Long storeId, Long customerId) throws CreateNewAppointmentException, StoreNotFoundException, CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException {
         Set<ConstraintViolation<AppointmentEntity>> constraintViolations = validator.validate(newAppointmentEntity);
 
         if (constraintViolations.isEmpty()) {
@@ -88,6 +89,8 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
                 return newAppointmentEntity.getAppointmentId();
             } catch (StoreNotFoundException ex) {
                 throw new StoreNotFoundException("Store ID " + storeId + " does not exist!");
+            } catch (CustomerNotFoundException ex) {
+                 throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist!");
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
