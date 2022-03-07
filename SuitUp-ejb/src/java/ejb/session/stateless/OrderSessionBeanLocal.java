@@ -5,7 +5,15 @@
  */
 package ejb.session.stateless;
 
+import entity.OrderEntity;
+import entity.OrderLineItemEntity;
+import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateNewOrderException;
+import util.exception.OrderAlreadyVoidedRefundedException;
+import util.exception.OrderNotFoundException;
+import util.exception.StaffNotFoundException;
+import util.exception.TransactionNotFoundException;
 
 /**
  *
@@ -13,5 +21,19 @@ import javax.ejb.Local;
  */
 @Local
 public interface OrderSessionBeanLocal {
-    
+
+    public OrderEntity createNewOrder(Long staffId, OrderEntity newOrderEntity) throws StaffNotFoundException, CreateNewOrderException;
+
+    public List<OrderEntity> retrieveAllOrders();
+
+    public List<OrderLineItemEntity> retrieveOrderLineItemsByProductId(Long productId);
+
+    public OrderEntity retrieveOrderByOrderId(Long orderId) throws OrderNotFoundException;
+
+    public void updateOrder(OrderEntity orderEntity);
+
+    public void voidRefundOrder(Long orderId) throws OrderNotFoundException, OrderAlreadyVoidedRefundedException, TransactionNotFoundException;
+
+    public void deleteOrder(OrderEntity orderEntity);
+
 }

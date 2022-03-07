@@ -9,7 +9,9 @@ import entity.OrderEntity;
 import entity.OrderLineItemEntity;
 import entity.StaffEntity;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,8 +19,11 @@ import javax.persistence.Query;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateNewOrderException;
+import util.exception.OrderAlreadyVoidedRefundedException;
 import util.exception.OrderNotFoundException;
 import util.exception.StaffNotFoundException;
+import util.exception.TransactionNotFoundException;
 
 /**
  *
@@ -26,18 +31,22 @@ import util.exception.StaffNotFoundException;
  */
 @Stateless
 public class OrderSessionBean implements OrderSessionBeanLocal {
-
+    
+    @Resource
+    private EJBContext context;
+    
     @EJB
     private StaffSessionBean staffSessionBeanLocal;
     
+    @EJB
+    private TransactionSessionBean transactionSessionBeanLocal;
     
-
-   @PersistenceContext(unitName = "SuitUp-ejbPU")
+    @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager entityManager;
-
+    
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-
+    
     public OrderSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
@@ -50,33 +59,32 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             try {
                 StaffEntity staffEntity = staffSessionBeanLocal.retrieveStaffByStaffId(staffId);
                 newOrderEntity.setStaff(staffEntity);
-                staffEntity.getOrders().add(newOrderEntity);
-
+                
                 entityManager.persist(newOrderEntity);
-
+                
                 for (OrderLineItemEntity orderLineItemEntity : newOrderEntity.getOrderLineItems()) {
                     productSessionBeanLocal.debitQuantityOnHand(orderLineItemEntity.getProduct().getProductId(), orderLineItemEntity.getQuantity());
                     entityManager.persist(orderLineItemEntity);
                 }
-
+                
                 entityManager.flush();
-
+                
                 return newOrderEntity;
             } catch (ProductNotFoundException | ProductInsufficientQuantityOnHandException ex) {
                 // The line below rolls back all changes made to the database.
-                eJBContext.setRollbackOnly();
-
-                throw new CreateNewOrderException(ex.getMessage());
+                context.setRollbackOnly();
+                
+                throw new CreateNewOrderException("Unable to create new order!");
             }
         } else {
             throw new CreateNewOrderException("Sale transaction information not provided");
         }
     }
-
+    
     @Override
     public List<OrderEntity> retrieveAllOrders() {
         Query query = entityManager.createQuery("SELECT st FROM OrderEntity st");
-
+        
         return query.getResultList();
     }
 
@@ -85,23 +93,23 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     public List<OrderLineItemEntity> retrieveOrderLineItemsByProductId(Long productId) {
         Query query = entityManager.createNamedQuery("selectAllOrderLineItemsByProductId");
         query.setParameter("inProductId", productId);
-
+        
         return query.getResultList();
     }
-
+    
     @Override
     public OrderEntity retrieveOrderByOrderId(Long orderId) throws OrderNotFoundException {
         OrderEntity orderEntity = entityManager.find(OrderEntity.class, orderId);
-
+        
         if (orderEntity != null) {
             orderEntity.getOrderLineItems().size();
-
+            
             return orderEntity;
         } else {
             throw new OrderNotFoundException("Order ID " + orderId + " does not exist!");
         }
     }
-
+    
     @Override
     public void updateOrder(OrderEntity orderEntity) {
         entityManager.merge(orderEntity);
@@ -109,24 +117,20 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 
     // Updated in v4.1
     @Override
-    public void voidRefundOrder(Long orderId) throws OrderNotFoundException, OrderAlreadyVoidedRefundedException {
+    public void voidRefundOrder(Long orderId) throws OrderNotFoundException, OrderAlreadyVoidedRefundedException, TransactionNotFoundException {
         OrderEntity orderEntity = retrieveOrderByOrderId(orderId);
-
-        if (!orderEntity.getVoidRefund()) {
-            for (OrderLineItemEntity orderLineItemEntity : orderEntity.getOrderLineItems()) {
-                try {
-                    productSessionBeanLocal.creditQuantityOnHand(orderLineItemEntity.getProduct().getProductId(), orderLineItemEntity.getQuantity());
-                } catch (ProductNotFoundException ex) {
-                    ex.printStackTrace(); // Ignore exception since this should not happen
-                }
+        
+        if (!orderEntity.getTransaction().getVoidRefund()) {
+            try {
+                transactionSessionBeanLocal.voidTransaction(orderEntity.getTransaction().getTransactionId());
+            } catch (TransactionNotFoundException ex) {
+                throw new TransactionNotFoundException("No transaction is associated with this order");
             }
-
-            orderEntity.setVoidRefund(true);
         } else {
             throw new OrderAlreadyVoidedRefundedException("The sale transaction has aready been voided/refunded");
         }
     }
-
+    
     @Override
     public void deleteOrder(OrderEntity orderEntity) {
         throw new UnsupportedOperationException();
