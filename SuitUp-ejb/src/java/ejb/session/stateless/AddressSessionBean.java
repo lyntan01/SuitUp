@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.AddressEntity;
 import entity.CustomerEntity;
+import entity.OrderEntity;
 import entity.StaffEntity;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
@@ -107,20 +109,16 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
     @Override
     public void deleteAddress(Long addressId) throws AddressNotFoundException, DeleteEntityException {
         AddressEntity addressEntityToRemove = retrieveAddressByAddressId(addressId);
-        boolean isDeliveryAddress = em.createQuery("SELECT o FROM OrderEntity o WHERE o.deliveryAddress.addressId = :inAddressId")
+        List<OrderEntity> orders = em.createQuery("SELECT o FROM OrderEntity o WHERE o.deliveryAddress.addressId = :inAddressId")
                                       .setParameter("inAddressId", addressId)
-                                      .getResultList()
-                                      .size() > 0;
-        boolean isFactoryAddress = em.createQuery("SELECT m FROM ManufacturerEntity m WHERE m.factoryAddress.addressId = :inAddressId")
-                                     .setParameter("inAddressId", addressId)
-                                     .getResultList()
-                                     .size() > 0;
+                                      .getResultList();
+        boolean isDeliveryAddress = orders.size() > 0;
         boolean isStoreAddress = em.createQuery("SELECT s FROM StoreEntity s WHERE s.address.addressId = :inAddressId")
                                     .setParameter("inAddressId", addressId)
                                     .getResultList()
                                     .size() > 0;
 
-        if(!isDeliveryAddress && !isFactoryAddress && !isStoreAddress) // Address is only a customer address not linked to any order yet
+        if(!isDeliveryAddress && !isStoreAddress) // Address is only a customer address not linked to any order yet
         {
             // Disassociation
             CustomerEntity customerEntity = (CustomerEntity) em.createNamedQuery("findCustomerByAddressId")
@@ -129,20 +127,26 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
             customerEntity.getAddresses().remove(addressEntityToRemove);
             em.remove(addressEntityToRemove);
         }
-        else if (isDeliveryAddress)
-        {
-            // Prevent deleting addresss linked to existing order(s)
-            throw new DeleteEntityException("Address ID " + addressId + " is associated with existing order(s) and cannot be deleted!");
-        }
-        else if (isFactoryAddress)
-        {
-            // Prevent deleting addresss linked to existing factory(s)
-            throw new DeleteEntityException("Address ID " + addressId + " is associated with existing manufacturer(s) and cannot be deleted!");
-        }
         else if (isStoreAddress)
         {
             // Prevent deleting addresss linked to existing store(s)
             throw new DeleteEntityException("Address ID " + addressId + " is associated with existing store(s) and cannot be deleted!");
+        }
+        else if (isDeliveryAddress)
+        {
+            // Prevent deleting addresss linked to existing order(s) that have NOT been completed
+            for (OrderEntity order : orders) {
+                if (order.getOrderStatusEnum() != OrderStatusEnum.COMPLETED && 
+                    order.getOrderStatusEnum() != OrderStatusEnum.CANCELLED) {
+                    throw new DeleteEntityException("Address ID " + addressId + " is associated with existing undelivered order(s) and cannot be deleted!");
+                }
+            }
+            
+            // If address is only linked to orders that have been COMPLETED, disassociate from customer but keep in database
+            CustomerEntity customerEntity = (CustomerEntity) em.createNamedQuery("findCustomerByAddressId")
+                                                               .setParameter("inAddressId", addressId)
+                                                               .getSingleResult();
+            customerEntity.getAddresses().remove(addressEntityToRemove);
         }
         
     }

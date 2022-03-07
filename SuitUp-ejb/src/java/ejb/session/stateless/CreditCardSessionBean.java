@@ -9,6 +9,7 @@ import entity.CreditCardEntity;
 import entity.CustomerEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -22,6 +23,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreditCardNotFoundException;
 import util.exception.CreditCardNumberExistException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
@@ -36,6 +38,9 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
     
+    @EJB
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
+    
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
@@ -45,7 +50,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     }
     
     @Override
-    public Long createNewCreditCard(CreditCardEntity newCreditCardEntity) throws CreditCardNumberExistException, UnknownPersistenceException, InputDataValidationException
+    public Long createNewCreditCard(CreditCardEntity newCreditCardEntity, Long customerId) throws CreditCardNumberExistException, CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException
     {
         Set<ConstraintViolation<CreditCardEntity>>constraintViolations = validator.validate(newCreditCardEntity);
         
@@ -53,8 +58,12 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         {
             try
             {
+                CustomerEntity customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+                
                 em.persist(newCreditCardEntity);
                 em.flush();
+                
+                customerEntity.getCreditCards().add(newCreditCardEntity);
 
                 return newCreditCardEntity.getCreditCardId();
             }
