@@ -147,6 +147,5 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         return msg;
     }
-    //HELLO 
 
 }
