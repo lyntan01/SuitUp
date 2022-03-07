@@ -17,7 +17,7 @@ import util.exception.OrderNotFoundException;
 import util.exception.PromotionCodeExpiredException;
 import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
-import util.exception.VoidTransactionExcepetion;
+import util.exception.VoidTransactionException;
 
 /**
  *
@@ -36,7 +36,7 @@ public interface OrderSessionBeanLocal {
 
     public void updateOrder(OrderEntity orderEntity);
 
-    public void voidRefundOrder(Long orderId) throws OrderNotFoundException, VoidTransactionExcepetion;
+    public void voidRefundOrder(Long orderId) throws OrderNotFoundException, VoidTransactionException;
 
     public void deleteOrder(OrderEntity orderEntity);
 

@@ -32,7 +32,7 @@ import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
 import util.exception.StandardProductInsufficientQuantityOnHandException;
 import util.exception.StandardProductNotFoundException;
-import util.exception.VoidTransactionExcepetion;
+import util.exception.VoidTransactionException;
 
 /**
  *
@@ -143,17 +143,17 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 
     // Updated in v4.1
     @Override
-    public void voidRefundOrder(Long orderId) throws OrderNotFoundException, VoidTransactionExcepetion {
+    public void voidRefundOrder(Long orderId) throws OrderNotFoundException, VoidTransactionException {
         OrderEntity orderEntity = retrieveOrderByOrderId(orderId);
 
         if (!orderEntity.getTransaction().getVoidRefund()) {
             try {
                 transactionSessionBeanLocal.voidTransaction(orderEntity.getTransaction().getTransactionId());
-            } catch (VoidTransactionExcepetion ex) {
-                throw new VoidTransactionExcepetion("Error when voiding transaction: " + ex.getMessage());
+            } catch (VoidTransactionException ex) {
+                throw new VoidTransactionException("Error when voiding transaction: " + ex.getMessage());
             }
         } else {
-            throw new VoidTransactionExcepetion("The sale transaction has aready been voided/refunded");
+            throw new VoidTransactionException("The sale transaction has aready been voided/refunded");
         }
     }
 
