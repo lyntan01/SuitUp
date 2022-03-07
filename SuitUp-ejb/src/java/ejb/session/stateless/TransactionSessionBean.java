@@ -12,6 +12,8 @@ import entity.StandardProductEntity;
 import entity.TransactionEntity;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,8 +30,7 @@ import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
-import util.exception.UpdateEntityException;
-import util.exception.UpdateTransactionException;
+import util.exception.VoidTransactionExcepetion;
 
 /**
  *
@@ -115,40 +116,26 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         }
     }
 
-    //cannot update void refund -> go through void transaction 
-    @Override
-    public void updateTransaction(TransactionEntity transactionEntity) throws InputDataValidationException, TransactionNotFoundException, UpdateEntityException, UpdateTransactionException {
-        Set<ConstraintViolation<TransactionEntity>> constraintViolations = validator.validate(transactionEntity);
-
-        if (constraintViolations.isEmpty()) {
-            if (transactionEntity.getTransactionId() != null) {
-                TransactionEntity transactionEntityToUpdate = retrieveTransactionByTransactionId(transactionEntity.getTransactionId());
-                transactionEntityToUpdate.setTotalAmount(transactionEntity.getTotalAmount());
-                transactionEntityToUpdate.setPaymentDate(transactionEntity.getPaymentDate());
-                if (!transactionEntityToUpdate.getAppointment().getAppointmentId().equals(transactionEntity.getAppointment().getAppointmentId()) && !transactionEntityToUpdate.getOrder().getOrderId().equals(transactionEntity.getOrder().getOrderId())) {
-                    throw new UpdateTransactionException("Cannot update the initial Order/Appointment associated with Transaction");
-                }
-            } else {
-                throw new TransactionNotFoundException("Transaction ID not provided for transaction to be updated");
-            }
-        } else {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-        }
-    }
-
     //cannot delete transaction, can only void -> note: can unvoid ??
     @Override
-    public void voidTransaction(Long transactionId) throws TransactionNotFoundException {
-        TransactionEntity transactionEntity = retrieveTransactionByTransactionId(transactionId);
-        if (transactionEntity.getOrder() != null) {
-            for (OrderLineItemEntity orderLineItem : transactionEntity.getOrder().getOrderLineItems()) {
-                if (orderLineItem.getProduct() instanceof StandardProductEntity) {
-                    StandardProductEntity standardProduct = (StandardProductEntity) orderLineItem.getProduct();
-                    standardProduct.setQuantityInStock(standardProduct.getQuantityInStock() + orderLineItem.getQuantity());
+    public void voidTransaction(Long transactionId) throws VoidTransactionExcepetion {
+        try {
+            TransactionEntity transactionEntity = retrieveTransactionByTransactionId(transactionId);
+            if (transactionEntity.getOrder() != null && transactionEntity.getVoidRefund().equals(Boolean.FALSE)) {
+                for (OrderLineItemEntity orderLineItem : transactionEntity.getOrder().getOrderLineItems()) {
+                    if (orderLineItem.getProduct() instanceof StandardProductEntity) {
+                        StandardProductEntity standardProduct = (StandardProductEntity) orderLineItem.getProduct();
+                        standardProduct.setQuantityInStock(standardProduct.getQuantityInStock() + orderLineItem.getQuantity());
+                    }
                 }
+                transactionEntity.setVoidRefund(Boolean.TRUE);
             }
+            else if(transactionEntity.getVoidRefund().equals(Boolean.FALSE)) {
+                throw new VoidTransactionExcepetion("Transaciton was already voided");
+            }
+        } catch (TransactionNotFoundException ex) {
+            throw new VoidTransactionExcepetion("Error when voiding transaction: " + ex.getMessage());
         }
-        transactionEntity.setVoidRefund(Boolean.TRUE);
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<TransactionEntity>> constraintViolations) {
