@@ -24,6 +24,7 @@ import util.exception.CategoryNotFoundException;
 import util.exception.CreateStandardProductException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
+import util.exception.StandardProductInsufficientQuantityOnHandException;
 import util.exception.StandardProductNotFoundException;
 import util.exception.TagNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -93,6 +94,16 @@ public class StandardProductSessionBean implements StandardProductSessionBeanLoc
         }
         
         return standardProductEntities;
+    }
+    
+    @Override
+    public void debitQuantityOnHand(Long productId, int quantity) throws StandardProductInsufficientQuantityOnHandException, StandardProductNotFoundException {
+        StandardProductEntity standardProductEntity = retrieveStandardProductByStandardProductId(productId);
+        if (standardProductEntity.getQuantityInStock() >= quantity) {
+            standardProductEntity.setQuantityInStock(standardProductEntity.getQuantityInStock() - quantity);
+        } else {
+            throw new StandardProductInsufficientQuantityOnHandException("Error: Unable to fulfil order because " + standardProductEntity.getName() + " does not have enough quantity in stock");
+        }
     }
 
     @Override

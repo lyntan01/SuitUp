@@ -12,6 +12,7 @@ import javax.ejb.Local;
 import util.exception.CreateStandardProductException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
+import util.exception.StandardProductInsufficientQuantityOnHandException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
 
@@ -31,5 +32,7 @@ public interface StandardProductSessionBeanLocal {
     public void deleteStandardProduct(Long standardProductId) throws StandardProductNotFoundException, DeleteEntityException;
 
     public void updateStandardProduct(StandardProductEntity standardProductEntity, Long categoryId, List<Long> tagsId) throws StandardProductNotFoundException, UpdateEntityException, InputDataValidationException;
+
+    public void debitQuantityOnHand(Long productId, int quantity) throws StandardProductInsufficientQuantityOnHandException, StandardProductNotFoundException;
     
 }
