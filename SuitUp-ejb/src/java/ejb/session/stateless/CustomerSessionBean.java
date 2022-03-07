@@ -29,6 +29,7 @@ import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerEmailExistException;
+import util.exception.DeleteEntityException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateCustomerException;
 import util.security.CryptographicHelper;
@@ -138,8 +139,6 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 if (customerEntityToUpdate.getEmail().equals(customerEntity.getEmail())) {
                     customerEntityToUpdate.setFirstName(customerEntity.getFirstName());
                     customerEntityToUpdate.setLastName(customerEntity.getLastName());
-                    //not sure where the updating of address /credit card / support tickets comes in
-                    //pass in the Id from createAddress in AddressSessionBean and add it to the customer's existing list? (same for credit card)
                 } else {
                     throw new UpdateCustomerException("Email of customer record to be updated does not match the existing record");
                 }
@@ -152,13 +151,17 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     }
 
     @Override
-    public void deleteCustomer(Long customerId) throws CustomerNotFoundException {
+    public void deleteCustomer(Long customerId) throws CustomerNotFoundException, DeleteEntityException {
         CustomerEntity customerEntityToRemove = retrieveCustomerByCustomerId(customerId);
 
-        //linked to quite a number of things not sure if its correct
-        
-  
-        
+        if (customerEntityToRemove.getOrders().size() > 0 || customerEntityToRemove.getOrders() != null) {
+            throw new DeleteEntityException("Can't delete a customer if he/she has orders!");
+        }
+
+        if (customerEntityToRemove.getAppointments().size() > 0 || customerEntityToRemove.getAppointments() != null) {
+            throw new DeleteEntityException("Can't delete a customer if he/she has appointmnets!");
+        }
+
         for (CreditCardEntity creditCard : customerEntityToRemove.getCreditCards()) {
             entityManager.remove(creditCard);
         }
@@ -167,26 +170,8 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             entityManager.remove(address);
         }
 
-        for (AppointmentEntity appointment : customerEntityToRemove.getAppointments()) {
-            entityManager.remove(appointment);
-        }
-
-        for (OrderEntity orderEntity : customerEntityToRemove.getOrders()) {
-            
-//                  if got transaction throw exception
-
-            for (OrderLineItemEntity orderLineItem : orderEntity.getOrderLineItems()) {
-                entityManager.remove(orderLineItem);
-            }
-
-            orderEntity.getOrderLineItems().clear();
-            entityManager.remove(orderEntity);
-        }
-
         customerEntityToRemove.getCreditCards().clear();
         customerEntityToRemove.getAddresses().clear();
-        customerEntityToRemove.getAppointments().clear();
-        customerEntityToRemove.getOrders().clear();
 
         entityManager.remove(customerEntityToRemove);
     }

@@ -11,6 +11,7 @@ import javax.ejb.Local;
 import util.exception.ChangePasswordException;
 import util.exception.CustomerEmailExistException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
@@ -35,7 +36,7 @@ public interface CustomerSessionBeanLocal {
 
     public void updateCustomer(CustomerEntity customerEntity) throws CustomerNotFoundException, UpdateCustomerException, InputDataValidationException;
 
-    public void deleteCustomer(Long customerId) throws CustomerNotFoundException;
+    public void deleteCustomer(Long customerId) throws CustomerNotFoundException, DeleteEntityException;
 
     public void customerChangePassword(String email, String oldPassword, String newPassword) throws ChangePasswordException, InvalidLoginCredentialException;
     

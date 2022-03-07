@@ -38,7 +38,7 @@ public interface OrderSessionBeanLocal {
 
     public void voidRefundOrder(Long orderId) throws OrderNotFoundException, VoidTransactionException;
 
-    public void deleteOrder(OrderEntity orderEntity);
+    public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException;
 
     public BigDecimal calculateTotalAmount(Long orderId) throws OrderNotFoundException;
 

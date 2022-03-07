@@ -23,6 +23,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.OrderStatusEnum;
 import util.exception.CreateNewOrderException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -137,8 +138,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
 
     @Override
-    public void updateOrder(OrderEntity orderEntity) { //
-        entityManager.merge(orderEntity);
+    public void updateOrder(OrderEntity orderEntity) {
+        entityManager.merge(orderEntity); //have to check if this does all the fetching traversing down all the relationships
     }
 
     // Updated in v4.1
@@ -158,9 +159,11 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
 
     @Override
-    public void deleteOrder(OrderEntity orderEntity) { //update to be cancelled 
-        throw new UnsupportedOperationException();
-        //there isnt a delete order right perse just use updateOrder and update its status to cancelled
+    public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException {
+        OrderEntity orderEntity = retrieveOrderByOrderId(orderId);
+
+        orderEntity.setOrderStatusEnum(OrderStatusEnum.CANCELLED);
+        entityManager.flush();
     }
 
     @Override
@@ -203,4 +206,4 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
 }
 
-//associate the promotion codem ethod
+//associate the promotion code method
