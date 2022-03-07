@@ -123,6 +123,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
     
 
+    //cannot update void refund -> go through void transaction 
     @Override
     public void updateTransaction(TransactionEntity transactionEntity) throws InputDataValidationException, TransactionNotFoundException, UpdateEntityException, UpdateTransactionException
     {
@@ -135,10 +136,6 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 TransactionEntity transactionEntityToUpdate = retrieveTransactionByTransactionId(transactionEntity.getTransactionId());
                 transactionEntityToUpdate.setTotalAmount(transactionEntity.getTotalAmount());
                 transactionEntityToUpdate.setPaymentDate(transactionEntity.getPaymentDate());
-                if(transactionEntityToUpdate.getVoidRefund().equals(false) && transactionEntity.getVoidRefund().equals(true)) {
-                    voidTransaction(transactionEntityToUpdate.getTransactionId());
-                }
-                transactionEntityToUpdate.setVoidRefund(transactionEntity.getVoidRefund());
                 if(!transactionEntityToUpdate.getAppointment().getAppointmentId().equals(transactionEntity.getAppointment().getAppointmentId()) && !transactionEntityToUpdate.getOrder().getOrderId().equals(transactionEntity.getOrder().getOrderId())) {
                     throw new UpdateTransactionException("Cannot update the initial Order/Appointment associated with Transaction");
                 }
@@ -154,7 +151,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         }
     }
     
-    //cannot delete transaction, can only void 
+    //cannot delete transaction, can only void -> note: can unvoid ??
     @Override
     public void voidTransaction(Long transactionId) throws TransactionNotFoundException {
         TransactionEntity transactionEntity = retrieveTransactionByTransactionId(transactionId);

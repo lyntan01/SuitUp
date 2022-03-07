@@ -53,6 +53,14 @@ public class TransactionEntity implements Serializable {
     public TransactionEntity() {
     }
 
+    public TransactionEntity(BigDecimal totalAmount, Date paymentDate, AppointmentEntity appointment, OrderEntity order) {
+        this.voidRefund = false;
+        this.totalAmount = totalAmount;
+        this.paymentDate = paymentDate;
+        this.appointment = appointment;
+        this.order = order;
+    }
+
     public Long getTransactionId() {
         return transactionId;
     }
