@@ -186,31 +186,22 @@ public class OrderEntity implements Serializable {
     public void setTransaction(TransactionEntity transaction) {
         this.transaction = transaction;
     }
-    
-    public void addOrderLineItemEntity(OrderLineItemEntity orderLineItemEntity) throws EntityInstanceExistsInCollectionException
-    {
-        if(!this.orderLineItems.contains(orderLineItemEntity))
-        {
+
+    public void addOrderLineItemEntity(OrderLineItemEntity orderLineItemEntity) throws EntityInstanceExistsInCollectionException {
+        if (!this.orderLineItems.contains(orderLineItemEntity)) {
             this.orderLineItems.add(orderLineItemEntity);
-        }
-        else
-        {
+        } else {
             throw new EntityInstanceExistsInCollectionException("Order Line Item already exist");
         }
     }
-    
-    public void removeSaleTransactionLineItemEntity(OrderLineItemEntity orderLineItemEntity) throws EntityInstanceMissingInCollectionException
-    {
-        if(this.orderLineItems.contains(orderLineItemEntity))
-        {
+
+    public void removeOrderLineItemEntity(OrderLineItemEntity orderLineItemEntity) throws EntityInstanceMissingInCollectionException {
+        if (this.orderLineItems.contains(orderLineItemEntity)) {
             this.orderLineItems.remove(orderLineItemEntity);
-        }
-        else
-        {
-            throw new EntityInstanceMissingInCollectionException("Order Line Item already exist");
+        } else {
+            throw new EntityInstanceMissingInCollectionException("Order Line Item does not exist");
         }
     }
-    
 
     public List<OrderLineItemEntity> getOrderLineItems() {
         return orderLineItems;
@@ -244,7 +235,5 @@ public class OrderEntity implements Serializable {
     public String toString() {
         return "OrderEntity{" + "orderId=" + orderId + ", totalLineItem=" + totalLineItem + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
     }
-
-   
 
 }
