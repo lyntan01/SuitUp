@@ -15,6 +15,7 @@ import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.PromotionCodeExistException;
 import util.exception.PromotionCodeExpiredException;
+import util.exception.PromotionFullyRedeemedException;
 import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -43,8 +44,10 @@ public interface PromotionSessionBeanLocal {
 
     public void deletePromotion(Long promotionId) throws PromotionNotFoundException, DeleteEntityException;
 
-    public Boolean isPromotionCodeValid(String promoCode) throws PromotionNotFoundException;
+    public Boolean isPromotionCodeInvalid(String promoCode) throws PromotionNotFoundException;
+    
+    public Boolean isPromotionCodeRedeemedFully(String promoCode) throws PromotionNotFoundException;
 
-    public BigDecimal getDiscountedAmount(String promotionCode, BigDecimal subtotal) throws PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException;
+    public BigDecimal getDiscountedAmount(String promotionCode, BigDecimal subtotal) throws PromotionNotFoundException, PromotionCodeExpiredException, PromotionFullyRedeemedException, PromotionMinimumAmountNotHitException;
 
 }

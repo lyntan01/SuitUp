@@ -25,6 +25,7 @@ import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.PromotionCodeExistException;
 import util.exception.PromotionCodeExpiredException;
+import util.exception.PromotionFullyRedeemedException;
 import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -167,24 +168,39 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
     }
 
     @Override
-    // Returns true if expiry date has not passed, false otherwise
-    public Boolean isPromotionCodeValid(String promoCode) throws PromotionNotFoundException {
+    // Returns true if expiry date has passed, false otherwise
+    public Boolean isPromotionCodeInvalid(String promoCode) throws PromotionNotFoundException {
 
         PromotionEntity promotion = retrievePromotionByPromotionCode(promoCode);
         Date now = new Date();
-        return now.before(promotion.getExpiryDate());
+        return now.after(promotion.getExpiryDate());
+
+    }
+    
+    @Override
+    // Returns true if promotion code has reached max number of usages, false otherwise
+    public Boolean isPromotionCodeRedeemedFully(String promoCode) throws PromotionNotFoundException {
+
+        PromotionEntity promotion = retrievePromotionByPromotionCode(promoCode);
+        Integer currentNumOfUsages = promotion.getOrders().size();
+        return currentNumOfUsages >= promotion.getMaxNumOfUsages();
 
     }
 
     @Override
-    public BigDecimal getDiscountedAmount(String promotionCode, BigDecimal subtotal) throws PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException {
+    public BigDecimal getDiscountedAmount(String promotionCode, BigDecimal subtotal) throws PromotionNotFoundException, PromotionCodeExpiredException, PromotionFullyRedeemedException, PromotionMinimumAmountNotHitException {
 
         PromotionEntity promotion = retrievePromotionByPromotionCode(promotionCode);
         BigDecimal discountedTotal = BigDecimal.ZERO;
         
         // Expiry date passed
-        if (!isPromotionCodeValid(promotionCode)) {
+        if (isPromotionCodeInvalid(promotionCode)) {
             throw new PromotionCodeExpiredException("Promotion code is no longer valid.");
+        }
+        
+        // Promotion fully redeemed
+        if (isPromotionCodeRedeemedFully(promotionCode)) {
+            throw new PromotionFullyRedeemedException("Promotion code is fully redeemed.");
         }
         
         // Minimum amount not hit

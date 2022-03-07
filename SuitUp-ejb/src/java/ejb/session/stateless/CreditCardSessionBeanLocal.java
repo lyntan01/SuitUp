@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreditCardNotFoundException;
 import util.exception.CreditCardNumberExistException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
@@ -21,7 +22,7 @@ import util.exception.UpdateEntityException;
 @Local
 public interface CreditCardSessionBeanLocal {
 
-    public Long createNewCreditCard(CreditCardEntity newCreditCardEntity) throws CreditCardNumberExistException, UnknownPersistenceException, InputDataValidationException;
+    public Long createNewCreditCard(CreditCardEntity newCreditCardEntity, Long customerId) throws CreditCardNumberExistException, CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException;
 
     public List<CreditCardEntity> retrieveAllCreditCards();
 
@@ -32,5 +33,5 @@ public interface CreditCardSessionBeanLocal {
     public void updateCreditCard(CreditCardEntity creditCardEntity) throws CreditCardNotFoundException, UpdateEntityException, InputDataValidationException;
 
     public void deleteCreditCard(Long creditCardId) throws CreditCardNotFoundException;
-    
+
 }
