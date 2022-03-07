@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./template/defaultTemplate.xhtml">
+
+    <!--<section id="header" class="ui-g">-->
+    <section>
+        <h:form>                
+            <p:menubar>
+                <p:menuitem outcome="/index" styleClass="logo">
+                    <p:graphicImage library="images" name="logo.png" alt="Logo" style="width: 15vw; margin: 1em"/>
+                </p:menuitem>
+
+                <p:menuitem value="Home" outcome="/index" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
+<!--                <p:menuitem value="Staff Management" outcome="/staffManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"/>
+                <p:menuitem value="Product Management" outcome="/productManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"/>
+                <p:menuitem value="Order Management" outcome="/orderManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
+                <p:menuitem value="Customer Management" outcome="/customerManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
+                <p:menuitem value="Promotion Management" outcome="/promotionManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
+                <p:menuitem value="Miscellaneous" outcome="/miscellaneous" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>-->
+                
+                <f:facet name="options">
+                    <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout(event)}" style="margin: 1em;" />
+                </f:facet>
+            </p:menubar>               
+        </h:form>
+
+    </section>
+
+</ui:composition>
