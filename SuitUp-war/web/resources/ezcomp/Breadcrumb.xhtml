@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <cc:attribute name="pageName" required="true" />
+    </cc:interface>
+
+    <cc:implementation>
+        <h:form id="formMain">
+
+            <p:breadCrumb homeDisplay="false">
+
+                <p:menuitem icon="pi pi-home" url="#{application.contextPath}/index.xhtml" style="text-decoration-line: none;" />
+
+<!--                <p:menuitem value="Product Management" url="#{application.contextPath}/productManagement.xhtml" rendered="#{cc.attrs.pageName == 'productManagement'}" />
+
+                <p:menuitem value="Staff Management" url="#{application.contextPath}/staffManagement.xhtml" rendered="#{cc.attrs.pageName == 'staffManagement'}" />
+                
+                <p:menuitem value="Order Management" url="#{application.contextPath}/orderManagement.xhtml" rendered="#{cc.attrs.pageName == 'orderManagement'}" />
+                
+                <p:menuitem value="Customer Management" url="#{application.contextPath}/customerManagement.xhtml" rendered="#{cc.attrs.pageName == 'customerManagement'}" />
+                
+                <p:menuitem value="Promotion Management" url="#{application.contextPath}/promotionManagement.xhtml" rendered="#{cc.attrs.pageName == 'promotionManagement'}" />
+                
+                <p:menuitem value="Miscellaneous" url="#{application.contextPath}/miscellaneous.xhtml" rendered="#{cc.attrs.pageName == 'miscellaneous'}" />
+                
+                <p:menuitem value="View Report" url="#{application.contextPath}/jasperreport/ViewReport.xhtml" rendered="#{cc.attrs.pageName == 'viewReport'}" />
+                -->
+            </p:breadCrumb>
+
+        </h:form>
+    </cc:implementation>
+</html>
