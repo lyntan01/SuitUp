@@ -93,9 +93,9 @@ public class CustomerEntity implements Serializable {
     @OneToOne
     private PantsMeasurementEntity pantsMeasurement;
 
-    @OneToMany(mappedBy = "customer")
-    @JoinColumn(nullable = true)
-    private List<SupportTicketEntity> supportTickets;
+//    @OneToMany(mappedBy = "customer")
+//    @JoinColumn(nullable = true)
+//    private List<SupportTicketEntity> supportTickets;
 
     //---------[Methods]---------
     public CustomerEntity() {
@@ -104,7 +104,7 @@ public class CustomerEntity implements Serializable {
         this.creditCards = new ArrayList<>();
         this.addresses = new ArrayList<>();
         this.orders = new ArrayList<>();
-        this.supportTickets = new ArrayList<>();
+//        this.supportTickets = new ArrayList<>();
     }
 
     public CustomerEntity(String firstName, String lastName, String email, String password, String contactNumber) {
@@ -224,13 +224,13 @@ public class CustomerEntity implements Serializable {
         this.pantsMeasurement = pantsMeasurement;
     }
 
-    public List<SupportTicketEntity> getSupportTickets() {
-        return supportTickets;
-    }
-
-    public void setSupportTickets(List<SupportTicketEntity> supportTickets) {
-        this.supportTickets = supportTickets;
-    }
+//    public List<SupportTicketEntity> getSupportTickets() {
+//        return supportTickets;
+//    }
+//
+//    public void setSupportTickets(List<SupportTicketEntity> supportTickets) {
+//        this.supportTickets = supportTickets;
+//    }
 
     @Override
     public int hashCode() {
@@ -252,9 +252,9 @@ public class CustomerEntity implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "CustomerEntity{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", contactNumber=" + contactNumber + ", appointments=" + appointments + ", creditCards=" + creditCards + ", addresses=" + addresses + ", orders=" + orders + ", jacketMeasurement=" + jacketMeasurement + ", pantsMeasurement=" + pantsMeasurement + ", supportTickets=" + supportTickets + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "CustomerEntity{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", contactNumber=" + contactNumber + ", appointments=" + appointments + ", creditCards=" + creditCards + ", addresses=" + addresses + ", orders=" + orders + ", jacketMeasurement=" + jacketMeasurement + ", pantsMeasurement=" + pantsMeasurement + ", supportTickets=" + supportTickets + '}';
+//    }
 
 }

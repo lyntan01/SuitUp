@@ -43,9 +43,9 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     private EntityManager em;
 
     @EJB
-    private AppointmentSessionBean appointmentSessionBeanLocal;
+    private AppointmentSessionBeanLocal appointmentSessionBeanLocal;
     @EJB
-    private OrderSessionBean orderSessionBeanLocal;
+    private OrderSessionBeanLocal orderSessionBeanLocal;
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;

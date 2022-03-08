@@ -15,6 +15,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
 import util.exception.PromotionCodeExpiredException;
+import util.exception.PromotionFullyRedeemedException;
 import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
 import util.exception.VoidTransactionException;
@@ -42,6 +43,6 @@ public interface OrderSessionBeanLocal {
 
     public BigDecimal calculateTotalAmount(Long orderId) throws OrderNotFoundException;
 
-    public BigDecimal calculateTotalAmountAfterPromotionToOrder(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException;
+    public BigDecimal calculateTotalAmountAfterPromotionToOrder(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException, PromotionFullyRedeemedException;
 
 }

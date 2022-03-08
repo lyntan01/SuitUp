@@ -29,6 +29,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
 import util.exception.PromotionCodeExpiredException;
+import util.exception.PromotionFullyRedeemedException;
 import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
 import util.exception.StandardProductInsufficientQuantityOnHandException;
@@ -46,16 +47,16 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     private EJBContext context;
 
     @EJB
-    private CustomerSessionBean customerSessionBeanLocal;
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
-    private TransactionSessionBean transactionSessionBeanLocal;
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
-    private PromotionSessionBean promotionSessionBeanLocal;
+    private PromotionSessionBeanLocal promotionSessionBeanLocal;
 
     @EJB
-    private StandardProductSessionBean standardProductSessionBeanLocal;
+    private StandardProductSessionBeanLocal standardProductSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager entityManager;
@@ -186,7 +187,7 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
 
     @Override
-    public BigDecimal calculateTotalAmountAfterPromotionToOrder(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException {
+    public BigDecimal calculateTotalAmountAfterPromotionToOrder(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException, PromotionFullyRedeemedException {
 
         BigDecimal originalTotalAmount = calculateTotalAmount(orderId);
         BigDecimal amountAfterPromotionApplied = promotionSessionBeanLocal.getDiscountedAmount(promotionCode, originalTotalAmount);

@@ -5,7 +5,9 @@
  */
 package ejb.session.singleton;
 
+import ejb.session.stateless.EmailSessionBeanLocal;
 import ejb.session.stateless.StaffSessionBeanLocal;
+import entity.OrderEntity;
 import entity.StaffEntity;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,42 +32,41 @@ import util.exception.UnknownPersistenceException;
 public class DataInitSessionBean {
 
     @EJB
+    private EmailSessionBeanLocal emailSessionBeanLocal;
+
+    @EJB
     private StaffSessionBeanLocal staffSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
-    
-    
 
     public DataInitSessionBean() {
     }
 
     @PostConstruct
     public void postConstruct() {
-        try
-        {
+        try {
             staffSessionBeanLocal.retrieveStaffByUsername("manager");
-        }
-        catch(StaffNotFoundException ex)
-        {
+//            emailSessionBeanLocal.emailCheckoutNotificationSync(new OrderEntity(), "LynRani16@gmail.com");
+//            emailSessionBeanLocal.emailCheckoutNotificationSync(new OrderEntity(), "MeganYee1404@gmail.com");
+//            emailSessionBeanLocal.emailCheckoutNotificationSync(new OrderEntity(), "keexianhui@gmail.com");
+//            emailSessionBeanLocal.emailCheckoutNotificationSync(new OrderEntity(), "keithcharleschan@gmail.com");
+        } catch (StaffNotFoundException ex) {
             initializeData();
         }
     }
-    
-    private void initializeData()
-    {
-        try
-        {
+
+    private void initializeData() {
+        try {
+
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Manager", AccessRightEnum.MANAGER, "manager", "password"));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier One", AccessRightEnum.CASHIER, "cashier1", "password"));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier Two", AccessRightEnum.CASHIER, "cashier2", "password"));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor One", AccessRightEnum.TAILOR, "tailor1", "password"));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor Two", AccessRightEnum.TAILOR, "tailor2", "password"));
-        }
-        catch(StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException ex)
-        {
+        } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException ex) {
             ex.printStackTrace();
         }
     }
-    
+
 }

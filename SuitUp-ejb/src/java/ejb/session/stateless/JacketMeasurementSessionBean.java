@@ -37,7 +37,7 @@ public class JacketMeasurementSessionBean implements JacketMeasurementSessionBea
     private EntityManager em;
 
     @EJB
-    private CustomerSessionBean customerSessionBeanLocal;
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;

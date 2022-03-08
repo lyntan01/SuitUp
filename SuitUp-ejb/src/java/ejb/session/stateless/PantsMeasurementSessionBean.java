@@ -34,7 +34,7 @@ import util.exception.UpdateEntityException;
 public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanLocal {
 
     @EJB
-    private CustomerSessionBean customerSessionBeanLocal;
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;

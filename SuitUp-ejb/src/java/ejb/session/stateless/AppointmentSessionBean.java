@@ -40,10 +40,10 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
     private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
-    private StoreSessionBean storeSessionBeanLocal;
+    private StoreSessionBeanLocal storeSessionBeanLocal;
 
     @EJB
-    private TransactionSessionBean transactionSessionBeanLocal;
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
