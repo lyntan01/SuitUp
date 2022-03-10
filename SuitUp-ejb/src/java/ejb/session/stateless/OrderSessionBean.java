@@ -137,6 +137,14 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             throw new OrderNotFoundException("Order ID " + orderId + " does not exist!");
         }
     }
+    
+    @Override
+    public List<OrderEntity> retrieveOrderbyCustomerId(Long customerId) {
+        Query query = entityManager.createQuery("SELECT o FROM OrderEntity o WHERE o.customer.customerId = :customerId");
+        query.setParameter("customerId", customerId);
+        
+        return query.getResultList();
+    }
 
     @Override
     public void updateOrder(OrderEntity orderEntity) {

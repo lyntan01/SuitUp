@@ -34,6 +34,8 @@ public interface OrderSessionBeanLocal {
     public List<OrderLineItemEntity> retrieveOrderLineItemsByProductId(Long productId);
 
     public OrderEntity retrieveOrderByOrderId(Long orderId) throws OrderNotFoundException;
+    
+    public List<OrderEntity> retrieveOrderbyCustomerId(Long customerId);
 
     public void updateOrder(OrderEntity orderEntity);
 
