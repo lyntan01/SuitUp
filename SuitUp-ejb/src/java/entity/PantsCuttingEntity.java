@@ -7,57 +7,29 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author meganyee
  */
 @Entity
-public class PantsCuttingEntity implements Serializable {
+public class PantsCuttingEntity extends CustomizationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pantsCuttingId;
-    @Column(nullable = false, unique = true, length = 32)
-    @NotNull
-    @Size(max = 32)
-    private String name;
-    @NotNull
-    @Digits(integer = 9, fraction = 2)
-    @DecimalMin("0.00")
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal additionalPrice;
-    @Column(nullable = false, length = 128)
-    @NotNull
-    @Size(min = 2, max = 128)
-    private String description;
-    @Column(nullable = false, length = 128)
-    @NotNull
-    @Size(min = 2, max = 128)
-    private String image;
-
-    public Long getPantsCuttingId() {
-        return pantsCuttingId;
+    
+    public PantsCuttingEntity() {
+        super();
     }
-
-    public void setPantsCuttingId(Long pantsCuttingId) {
-        this.pantsCuttingId = pantsCuttingId;
+    
+    public PantsCuttingEntity(String name, BigDecimal additionalPrice, String description, String image, Boolean isDisabled) {
+        super(name, additionalPrice, description, image, isDisabled);
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (pantsCuttingId != null ? pantsCuttingId.hashCode() : 0);
+        hash += (this.getCustomizationId() != null ? this.getCustomizationId().hashCode() : 0);
         return hash;
     }
 
@@ -68,7 +40,7 @@ public class PantsCuttingEntity implements Serializable {
             return false;
         }
         PantsCuttingEntity other = (PantsCuttingEntity) object;
-        if ((this.pantsCuttingId == null && other.pantsCuttingId != null) || (this.pantsCuttingId != null && !this.pantsCuttingId.equals(other.pantsCuttingId))) {
+        if ((this.getCustomizationId() == null && other.getCustomizationId() != null) || (this.getCustomizationId() != null && !this.getCustomizationId().equals(other.getCustomizationId()))) {
             return false;
         }
         return true;
@@ -76,39 +48,7 @@ public class PantsCuttingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.PantsCuttingEntity[ id=" + pantsCuttingId + " ]";
+        return "entity.PantsCuttingEntity[ id=" + this.getCustomizationId() + " ]";
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getAdditionalPrice() {
-        return additionalPrice;
-    }
-
-    public void setAdditionalPrice(BigDecimal additionalPrice) {
-        this.additionalPrice = additionalPrice;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-    
 }

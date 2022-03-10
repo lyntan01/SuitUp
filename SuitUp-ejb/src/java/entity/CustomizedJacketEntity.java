@@ -7,14 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -22,22 +16,9 @@ import javax.validation.constraints.NotNull;
  * @author meganyee
  */
 @Entity
-public class CustomizedJacketEntity implements Serializable {
+public class CustomizedJacketEntity extends CustomizedProductEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customizedJacketId;
-    @NotNull
-    @Digits(integer = 9, fraction = 2)
-    @DecimalMin("0.00")
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal basePrice;
-    @NotNull
-    @Digits(integer = 9, fraction = 2)
-    @DecimalMin("0.00")
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal totalPrice;
     
     @NotNull
     @ManyToOne(optional = false)
@@ -55,19 +36,21 @@ public class CustomizedJacketEntity implements Serializable {
     @ManyToOne(optional = false)
     private FabricEntity outerFabric;
     
-
-    public Long getCustomizedJacketId() {
-        return customizedJacketId;
+    @NotNull
+    @ManyToOne(optional = false)
+    private JacketMeasurementEntity jacketMeasurement;
+    
+    public CustomizedJacketEntity() {
     }
-
-    public void setCustomizedJacketId(Long customizedJacketId) {
-        this.customizedJacketId = customizedJacketId;
+    
+    public CustomizedJacketEntity(String name, String description, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
+        super(name, description, basePrice, totalPrice, gender); 
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (customizedJacketId != null ? customizedJacketId.hashCode() : 0);
+        hash += (this.getProductId() != null ? this.getProductId().hashCode() : 0);
         return hash;
     }
 
@@ -78,7 +61,7 @@ public class CustomizedJacketEntity implements Serializable {
             return false;
         }
         CustomizedJacketEntity other = (CustomizedJacketEntity) object;
-        if ((this.customizedJacketId == null && other.customizedJacketId != null) || (this.customizedJacketId != null && !this.customizedJacketId.equals(other.customizedJacketId))) {
+        if ((this.getProductId() == null && other.getProductId() != null) || (this.getProductId() != null && !this.getProductId().equals(other.getProductId()))) {
             return false;
         }
         return true;
@@ -86,23 +69,7 @@ public class CustomizedJacketEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CustomizedJacketEntity[ id=" + customizedJacketId + " ]";
-    }
-
-    public BigDecimal getBasePrice() {
-        return basePrice;
-    }
-
-    public void setBasePrice(BigDecimal basePrice) {
-        this.basePrice = basePrice;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+        return "entity.CustomizedJacketEntity[ id=" + this.getProductId() + " ]";
     }
 
     public PocketStyleEntity getPocketStyle() {
@@ -135,6 +102,14 @@ public class CustomizedJacketEntity implements Serializable {
 
     public void setOuterFabric(FabricEntity outerFabric) {
         this.outerFabric = outerFabric;
+    }
+
+    public JacketMeasurementEntity getJacketMeasurement() {
+        return jacketMeasurement;
+    }
+
+    public void setJacketMeasurement(JacketMeasurementEntity jacketMeasurement) {
+        this.jacketMeasurement = jacketMeasurement;
     }
     
 }

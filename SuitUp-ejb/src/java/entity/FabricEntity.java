@@ -7,61 +7,34 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 /**
  *
  * @author meganyee
  */
 @Entity
-public class FabricEntity implements Serializable {
+public class FabricEntity extends CustomizationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fabricId;
-    @Column(nullable = false, unique = true, length = 32)
-    @NotNull
-    @Size(max = 32)
-    private String name;
-    @NotNull
-    @Digits(integer = 9, fraction = 2)
-    @DecimalMin("0.00")
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal additionalPrice;
-    @Column(nullable = false, length = 128)
-    @NotNull
-    @Size(min = 2, max = 128)
-    private String description;
-    @Column(nullable = false, length = 128)
-    @NotNull
-    @Size(min = 2, max = 128)
-    private String image;
-    @Column(nullable = false, length = 32)
-    @NotNull
-    @Size(max = 32)
-    private String colour;
-
-    public Long getFabricId() {
-        return fabricId;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private ColourEntity colour;
+    
+    public FabricEntity() {
+        super();
     }
-
-    public void setFabricId(Long fabricId) {
-        this.fabricId = fabricId;
+    
+    public FabricEntity(String name, BigDecimal additionalPrice, String description, String image, Boolean isDisabled) {
+        super(name, additionalPrice, description, image, isDisabled);
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (fabricId != null ? fabricId.hashCode() : 0);
+        hash += (this.getCustomizationId() != null ? this.getCustomizationId().hashCode() : 0);
         return hash;
     }
 
@@ -72,7 +45,7 @@ public class FabricEntity implements Serializable {
             return false;
         }
         FabricEntity other = (FabricEntity) object;
-        if ((this.fabricId == null && other.fabricId != null) || (this.fabricId != null && !this.fabricId.equals(other.fabricId))) {
+        if ((this.getCustomizationId() == null && other.getCustomizationId() != null) || (this.getCustomizationId() != null && !this.getCustomizationId().equals(other.getCustomizationId()))) {
             return false;
         }
         return true;
@@ -80,46 +53,14 @@ public class FabricEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.FabricEntity[ id=" + fabricId + " ]";
-    }
-    
-    public String getName() {
-        return name;
+        return "entity.FabricEntity[ id=" + this.getCustomizationId() + " ]";
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getAdditionalPrice() {
-        return additionalPrice;
-    }
-
-    public void setAdditionalPrice(BigDecimal additionalPrice) {
-        this.additionalPrice = additionalPrice;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getColour() {
+    public ColourEntity getColour() {
         return colour;
     }
 
-    public void setColour(String colour) {
+    public void setColour(ColourEntity colour) {
         this.colour = colour;
     }
   

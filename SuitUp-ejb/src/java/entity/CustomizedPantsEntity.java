@@ -7,14 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -22,22 +16,9 @@ import javax.validation.constraints.NotNull;
  * @author meganyee
  */
 @Entity
-public class CustomizedPantsEntity implements Serializable {
+public class CustomizedPantsEntity extends CustomizedProductEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customizedPantsId;
-    @NotNull
-    @Digits(integer = 9, fraction = 2)
-    @DecimalMin("0.00")
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal basePrice;
-    @NotNull
-    @Digits(integer = 9, fraction = 2)
-    @DecimalMin("0.00")
-    @Column(nullable = false, precision = 11, scale = 2)
-    private BigDecimal totalPrice;
     
     @NotNull
     @ManyToOne(optional = false)
@@ -46,19 +27,23 @@ public class CustomizedPantsEntity implements Serializable {
     @NotNull
     @ManyToOne(optional = false)
     private PantsCuttingEntity pantsCutting;
-
-    public Long getCustomizedPantsId() {
-        return customizedPantsId;
+    
+    @NotNull
+    @ManyToOne(optional = false)
+    private PantsMeasurementEntity pantsMeasurement;
+    
+    public CustomizedPantsEntity() {
+    }
+    
+    public CustomizedPantsEntity(String name, String description, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
+        super(name, description, basePrice, totalPrice, gender); 
     }
 
-    public void setCustomizedPantsId(Long customizedPantsId) {
-        this.customizedPantsId = customizedPantsId;
-    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (customizedPantsId != null ? customizedPantsId.hashCode() : 0);
+        hash += (this.getProductId() != null ? this.getProductId().hashCode() : 0);
         return hash;
     }
 
@@ -69,7 +54,7 @@ public class CustomizedPantsEntity implements Serializable {
             return false;
         }
         CustomizedPantsEntity other = (CustomizedPantsEntity) object;
-        if ((this.customizedPantsId == null && other.customizedPantsId != null) || (this.customizedPantsId != null && !this.customizedPantsId.equals(other.customizedPantsId))) {
+        if ((this.getProductId() == null && other.getProductId() != null) || (this.getProductId() != null && !this.getProductId().equals(other.getProductId()))) {
             return false;
         }
         return true;
@@ -77,7 +62,31 @@ public class CustomizedPantsEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CustomizedPantsEntity[ id=" + customizedPantsId + " ]";
+        return "entity.CustomizedPantsEntity[ id=" + this.getProductId() + " ]";
+    }
+
+    public FabricEntity getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(FabricEntity fabric) {
+        this.fabric = fabric;
+    }
+
+    public PantsCuttingEntity getPantsCutting() {
+        return pantsCutting;
+    }
+
+    public void setPantsCutting(PantsCuttingEntity pantsCutting) {
+        this.pantsCutting = pantsCutting;
+    }
+
+    public PantsMeasurementEntity getPantsMeasurement() {
+        return pantsMeasurement;
+    }
+
+    public void setPantsMeasurement(PantsMeasurementEntity pantsMeasurement) {
+        this.pantsMeasurement = pantsMeasurement;
     }
     
 }

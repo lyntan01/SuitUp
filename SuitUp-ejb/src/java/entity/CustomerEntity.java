@@ -86,6 +86,10 @@ public class CustomerEntity implements Serializable {
     @OneToMany(mappedBy = "customer")
     @JoinColumn(nullable = true)
     private List<OrderEntity> orders;
+    
+    @OneToMany(mappedBy = "customer")
+    @JoinColumn(nullable = true)
+    private List<SupportTicketEntity> supportTickets;
 
     @OneToOne
     private JacketMeasurementEntity jacketMeasurement;
@@ -104,7 +108,7 @@ public class CustomerEntity implements Serializable {
         this.creditCards = new ArrayList<>();
         this.addresses = new ArrayList<>();
         this.orders = new ArrayList<>();
-//        this.supportTickets = new ArrayList<>();
+        this.supportTickets = new ArrayList<>();
     }
 
     public CustomerEntity(String firstName, String lastName, String email, String password, String contactNumber) {
@@ -224,13 +228,13 @@ public class CustomerEntity implements Serializable {
         this.pantsMeasurement = pantsMeasurement;
     }
 
-//    public List<SupportTicketEntity> getSupportTickets() {
-//        return supportTickets;
-//    }
-//
-//    public void setSupportTickets(List<SupportTicketEntity> supportTickets) {
-//        this.supportTickets = supportTickets;
-//    }
+    public List<SupportTicketEntity> getSupportTickets() {
+        return supportTickets;
+    }
+
+    public void setSupportTickets(List<SupportTicketEntity> supportTickets) {
+        this.supportTickets = supportTickets;
+    }
 
     @Override
     public int hashCode() {
