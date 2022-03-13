@@ -97,9 +97,6 @@ public class CustomerEntity implements Serializable {
     @OneToOne
     private PantsMeasurementEntity pantsMeasurement;
 
-//    @OneToMany(mappedBy = "customer")
-//    @JoinColumn(nullable = true)
-//    private List<SupportTicketEntity> supportTickets;
 
     //---------[Methods]---------
     public CustomerEntity() {
@@ -256,9 +253,9 @@ public class CustomerEntity implements Serializable {
         return true;
     }
 
-//    @Override
-//    public String toString() {
-//        return "CustomerEntity{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", contactNumber=" + contactNumber + ", appointments=" + appointments + ", creditCards=" + creditCards + ", addresses=" + addresses + ", orders=" + orders + ", jacketMeasurement=" + jacketMeasurement + ", pantsMeasurement=" + pantsMeasurement + ", supportTickets=" + supportTickets + '}';
-//    }
+    @Override
+    public String toString() {
+        return "CustomerEntity{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", contactNumber=" + contactNumber + ", appointments=" + appointments + ", creditCards=" + creditCards + ", addresses=" + addresses + ", orders=" + orders + ", jacketMeasurement=" + jacketMeasurement + ", pantsMeasurement=" + pantsMeasurement + ", supportTickets=" + supportTickets + '}';
+    }
 
 }
