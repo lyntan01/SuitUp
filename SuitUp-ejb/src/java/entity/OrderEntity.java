@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import util.enumeration.CollectionMethodEnum;
@@ -45,6 +48,17 @@ public class OrderEntity implements Serializable {
     @NotNull
     @Min(1)
     private Integer totalLineItem;
+
+    @Column(nullable = false)
+    @NotNull
+    @Min(1)
+    private Integer totalQuantity;
+    @Column(nullable = false, precision = 11, scale = 2)
+
+    @NotNull
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+    private BigDecimal totalAmount;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -89,17 +103,21 @@ public class OrderEntity implements Serializable {
         this.orderLineItems = new ArrayList<>();
     }
 
-    public OrderEntity(Integer totalLineItem, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum) {
+    public OrderEntity(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum) {
         this();
         this.totalLineItem = totalLineItem;
+        this.totalQuantity = totalQuantity;
+        this.totalAmount = totalAmount;
         this.orderDateTime = orderDateTime;
         this.expressOrder = expressOrder;
         this.orderStatusEnum = orderStatusEnum;
         this.collectionMethodEnum = collectionMethodEnum;
     }
 
-    public OrderEntity(Integer totalLineItem, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum, List<OrderLineItemEntity> orderLineItems) {
+    public OrderEntity(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum, List<OrderLineItemEntity> orderLineItems) {
         this.totalLineItem = totalLineItem;
+        this.totalQuantity = totalQuantity;
+        this.totalAmount = totalAmount;
         this.orderDateTime = orderDateTime;
         this.expressOrder = expressOrder;
         this.orderStatusEnum = orderStatusEnum;
@@ -121,6 +139,22 @@ public class OrderEntity implements Serializable {
 
     public void setTotalLineItem(Integer totalLineItem) {
         this.totalLineItem = totalLineItem;
+    }
+
+    public Integer getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public Date getOrderDateTime() {
@@ -233,7 +267,7 @@ public class OrderEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderEntity{" + "orderId=" + orderId + ", totalLineItem=" + totalLineItem + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
+        return "OrderEntity{" + "orderId=" + orderId + ", totalLineItem=" + totalLineItem + ", totalQuantity=" + totalQuantity + ", totalAmount=" + totalAmount + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
     }
 
 }
