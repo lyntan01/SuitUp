@@ -49,6 +49,7 @@ public class SupportTicketSessionBean implements SupportTicketSessionBeanLocal {
         validator = validatorFactory.getValidator();
     }
     
+    @Override
     public Long createNewSupportTicket(SupportTicketEntity newSupportTicketEntity, Long customerId) throws SupportTicketIdExistException, UnsuccessfulTicketException, UnknownPersistenceException, InputDataValidationException {
         Set<ConstraintViolation<SupportTicketEntity>> constraintViolations = validator.validate(newSupportTicketEntity);
         
@@ -82,11 +83,13 @@ public class SupportTicketSessionBean implements SupportTicketSessionBeanLocal {
         }
     }
     
+    @Override
     public List<SupportTicketEntity> retrieveAllTickets() {
         Query query = em.createQuery("SELECT t FROM SupportTicketEntity t");
         return query.getResultList();
     }
     
+    @Override
     public SupportTicketEntity retrieveSupportTicketByTicketId(Long ticketId) throws SupportTicketNotFoundException {
         Query query = em.createQuery("SELECT t FROM SupportTicketEntity t WHERE t.ticketId = :ticketId");
         query.setParameter("ticketId", ticketId);
@@ -99,17 +102,20 @@ public class SupportTicketSessionBean implements SupportTicketSessionBeanLocal {
         }
     }
     
+    @Override
     public List<SupportTicketEntity> retrieveSupportTicketsByCustomerId(Long customerId) {
         Query query = em.createQuery("SELECT t FROM SupportTicketEntity t WHERE t.customer.customerId = :customerId");
         query.setParameter("customerId", customerId);
         return query.getResultList();
     }
     
+    @Override
     public void updateSupportTicketDescription(Long ticketId, String newDescription) throws SupportTicketNotFoundException {
         SupportTicketEntity ticket = retrieveSupportTicketByTicketId(ticketId);
         ticket.setDescription(newDescription);
     }
     
+    @Override
     public void addTicketReply(Long ticketId, String staffReply) throws SupportTicketNotFoundException, UpdateEntityException {
         SupportTicketEntity ticket = retrieveSupportTicketByTicketId(ticketId);
         
@@ -121,6 +127,7 @@ public class SupportTicketSessionBean implements SupportTicketSessionBeanLocal {
         }
     }
     
+    @Override
     public void deleteSupportTicket(Long ticketId) throws SupportTicketNotFoundException, DeleteEntityException {
         SupportTicketEntity ticketToRemove = retrieveSupportTicketByTicketId(ticketId);
         
