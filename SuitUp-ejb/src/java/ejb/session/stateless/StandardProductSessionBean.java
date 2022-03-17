@@ -131,6 +131,7 @@ public class StandardProductSessionBean implements StandardProductSessionBeanLoc
                 if (standardProductEntityToUpdate.getProductId().equals(standardProductEntity.getProductId())) {
                     standardProductEntityToUpdate.setName(standardProductEntity.getName());
                     standardProductEntityToUpdate.setDescription(standardProductEntity.getDescription());
+                    standardProductEntityToUpdate.setImage(standardProductEntity.getImage());
                     standardProductEntityToUpdate.setSkuCode(standardProductEntity.getSkuCode());
                     standardProductEntityToUpdate.setUnitPrice(standardProductEntity.getUnitPrice());
                     standardProductEntityToUpdate.setQuantityInStock(standardProductEntity.getQuantityInStock());

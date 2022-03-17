@@ -58,11 +58,11 @@ public class StandardProductEntity extends ProductEntity implements Serializable
 
     public StandardProductEntity() {
         super();
-        tags = new ArrayList<TagEntity>();
+        this.tags = new ArrayList<>();
     }
 
-    public StandardProductEntity(String name, String description, String skuCode, BigDecimal unitPrice, Integer quantityInStock, Integer reorderQuantity, CategoryEntity category, List<TagEntity> tags) {
-        super(name, description);
+    public StandardProductEntity(String name, String description, String image, String skuCode, BigDecimal unitPrice, Integer quantityInStock, Integer reorderQuantity, CategoryEntity category, List<TagEntity> tags) {
+        super(name, description, image);
         this.skuCode = skuCode;
         this.unitPrice = unitPrice;
         this.quantityInStock = quantityInStock;

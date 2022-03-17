@@ -44,8 +44,8 @@ public class CustomizedProductEntity extends ProductEntity implements Serializab
         super();
     }
     
-    public CustomizedProductEntity(String name, String description, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
-        super(name, description);
+    public CustomizedProductEntity(String name, String description, String image, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
+        super(name, description, image);
         this.basePrice = basePrice;
         this.totalPrice = totalPrice;
         this.gender = gender;

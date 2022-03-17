@@ -43,7 +43,7 @@ public class CategoryEntity implements Serializable {
     private List<StandardProductEntity> standardProducts;
     
     public CategoryEntity() {
-        standardProducts = new ArrayList<StandardProductEntity>();
+        this.standardProducts = new ArrayList<>();
     }
 
     public CategoryEntity(String name, String description, List<StandardProductEntity> products) {

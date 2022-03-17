@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,7 +62,11 @@ public class StoreEntity implements Serializable {
     private List<AppointmentEntity> appointments;
 
     public StoreEntity() {
+        this.appointments = new ArrayList<>();
+        this.staff = new ArrayList<>();
     }
+    
+    // add another constructor! for general items
 
     public Long getStoreId() {
         return storeId;

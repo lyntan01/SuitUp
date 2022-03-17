@@ -44,8 +44,8 @@ public class CustomizedJacketEntity extends CustomizedProductEntity implements S
         super();
     }
     
-    public CustomizedJacketEntity(String name, String description, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
-        super(name, description, basePrice, totalPrice, gender); 
+    public CustomizedJacketEntity(String name, String description, String image, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
+        super(name, description, image, basePrice, totalPrice, gender); 
     }
 
     @Override
