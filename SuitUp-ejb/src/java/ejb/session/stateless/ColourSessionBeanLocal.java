@@ -13,7 +13,6 @@ import util.exception.ColourNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
-import util.exception.UnsuccessfulColourCreationException;
 import util.exception.UpdateEntityException;
 
 /**
@@ -22,7 +21,7 @@ import util.exception.UpdateEntityException;
  */
 @Local
 public interface ColourSessionBeanLocal {
-    public Long createNewColour(ColourEntity newColourEntity) throws ColourIdExistException, UnsuccessfulColourCreationException, UnknownPersistenceException, InputDataValidationException;
+    public Long createNewColour(ColourEntity newColourEntity) throws ColourIdExistException, UnknownPersistenceException, InputDataValidationException;
         
     public List<ColourEntity> retrieveAllColours();
     

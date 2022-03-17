@@ -5,7 +5,7 @@
  */
 package ejb.session.stateless;
 
-import entity.ColourEntity;
+import entity.JacketStyleEntity;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -19,9 +19,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.ColourIdExistException;
-import util.exception.ColourNotFoundException;
-import util.exception.DeleteEntityException;
+import util.exception.CustomizationIdExistException;
+import util.exception.CustomizationNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
@@ -31,33 +30,33 @@ import util.exception.UpdateEntityException;
  * @author meganyee
  */
 @Stateless
-public class ColourSessionBean implements ColourSessionBeanLocal {
+public class JacketStyleSessionBean implements JacketStyleSessionBeanLocal {
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
-    
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
     
-    public ColourSessionBean() {
+    public JacketStyleSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
     
     @Override
-    public Long createNewColour(ColourEntity newColourEntity) throws ColourIdExistException, UnknownPersistenceException, InputDataValidationException {
-        Set<ConstraintViolation<ColourEntity>> constraintViolations = validator.validate(newColourEntity);
+    public Long createNewJacketStyle(JacketStyleEntity newJacketStyleEntity) throws CustomizationIdExistException, UnknownPersistenceException, InputDataValidationException {
+        Set<ConstraintViolation<JacketStyleEntity>> constraintViolations = validator.validate(newJacketStyleEntity);
         
         if (constraintViolations.isEmpty()) {
             try {
-                em.persist(newColourEntity);
+                em.persist(newJacketStyleEntity);
                 em.flush();
                 
-                return newColourEntity.getColourId();
+                return newJacketStyleEntity.getCustomizationId();
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
-                        throw new ColourIdExistException();
+                        throw new CustomizationIdExistException();
                     } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }
@@ -71,39 +70,35 @@ public class ColourSessionBean implements ColourSessionBeanLocal {
     }
     
     @Override
-    public List<ColourEntity> retrieveAllColours() {
-        Query query = em.createQuery("SELECT c FROM ColourEntity c");
-        List<ColourEntity> colours = query.getResultList();
-        
-        for (ColourEntity colour: colours) {
-            colour.getFabrics().size();
-        }
-        
-        return colours;
+    public List<JacketStyleEntity> retrieveAllJacketStyles() {
+        Query query = em.createQuery("SELECT c FROM JacketStyleEntity c");
+        return query.getResultList();
     }
     
     @Override
-    public ColourEntity retrieveColourByColourId(Long colourId) throws ColourNotFoundException {
-        Query query = em.createQuery("SELECT c FROM ColourEntity c where c.colourId = :colourId");
-        query.setParameter("colourId", colourId);
+    public JacketStyleEntity retrieveJacketStyleById(Long customizationId) throws CustomizationNotFoundException {
+        Query query = em.createQuery("SELECT c FROM JacketStyleEntity c where c.customizationId = :customizationId");
+        query.setParameter("customizationId", customizationId);
         try {
-            return (ColourEntity) query.getSingleResult();
+            return (JacketStyleEntity) query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new ColourNotFoundException("Colour ID " + colourId + " does not exist!");
+            throw new CustomizationNotFoundException("Jacket Style ID " + customizationId + " does not exists!");
         }
     }
     
     @Override
-    public void updateColour(ColourEntity updatedColourEntity) throws ColourNotFoundException, UpdateEntityException, InputDataValidationException {
-        if (updatedColourEntity != null && updatedColourEntity.getColourId() != null) {
-            Set<ConstraintViolation<ColourEntity>> constraintViolations = validator.validate(updatedColourEntity);
+    public void updateJacketStyle(JacketStyleEntity updatedJacketStyle) throws CustomizationNotFoundException, UpdateEntityException, InputDataValidationException {
+        if (updatedJacketStyle != null && updatedJacketStyle.getCustomizationId() != null) {
+            Set<ConstraintViolation<JacketStyleEntity>> constraintViolations = validator.validate(updatedJacketStyle);
             
             if (constraintViolations.isEmpty()) {
-                ColourEntity colourToUpdate = retrieveColourByColourId(updatedColourEntity.getColourId());
+                JacketStyleEntity jacketStyleToUpdate = retrieveJacketStyleById(updatedJacketStyle.getCustomizationId());
                 
-                if (colourToUpdate.getColourId().equals(updatedColourEntity.getColourId())) {
-                    colourToUpdate.setName(updatedColourEntity.getName());
-                    colourToUpdate.setHexCode(updatedColourEntity.getHexCode());
+                if (jacketStyleToUpdate.getCustomizationId().equals(updatedJacketStyle.getCustomizationId())) {
+                    jacketStyleToUpdate.setName(updatedJacketStyle.getName());
+                    jacketStyleToUpdate.setDescription(updatedJacketStyle.getDescription());
+                    jacketStyleToUpdate.setImage(updatedJacketStyle.getImage());
+                    jacketStyleToUpdate.setAdditionalPrice(updatedJacketStyle.getAdditionalPrice());
                 } else {
                     throw new UpdateEntityException("Id does not match!");
                 }
@@ -111,22 +106,17 @@ public class ColourSessionBean implements ColourSessionBeanLocal {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
             }
         } else {
-            throw new ColourNotFoundException("Colour Id cannot be found");
+            throw new CustomizationNotFoundException("Jacket Style Id cannot be found");
         }
     }
     
     @Override
-    public void deleteColour(Long colourId) throws ColourNotFoundException, DeleteEntityException {
-        ColourEntity colourEntityToRemove = retrieveColourByColourId(colourId);
-        
-        if (colourEntityToRemove.getFabrics().size() > 0) {
-            throw new DeleteEntityException("Colour cannot be removed as it is used by a fabric");
-        }
-        
-        em.remove(colourEntityToRemove);
+    public void deleteJacketStyle(Long jacketStyleId) throws CustomizationNotFoundException {
+        JacketStyleEntity jacketStyleToRemove = retrieveJacketStyleById(jacketStyleId);
+        jacketStyleToRemove.setIsDisabled(Boolean.TRUE);
     }
-
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ColourEntity>> constraintViolations) {
+    
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<JacketStyleEntity>> constraintViolations) {
         String msg = "Input data validation error!:";
 
         for (ConstraintViolation constraintViolation : constraintViolations) {
