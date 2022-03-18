@@ -65,9 +65,15 @@ public class StoreEntity implements Serializable {
         this.appointments = new ArrayList<>();
         this.staff = new ArrayList<>();
     }
-    
-    // add another constructor! for general items
 
+    public StoreEntity(String storeName, String storeDescription, String openingHour, String closingHour, String contactNumber) {
+        this.storeName = storeName;
+        this.storeDescription = storeDescription;
+        this.openingHour = openingHour;
+        this.closingHour = closingHour;
+        this.contactNumber = contactNumber;
+    }
+    
     public Long getStoreId() {
         return storeId;
     }
