@@ -10,7 +10,19 @@ package util.enumeration;
  * @author lyntan
  */
 public enum AccessRightEnum {
-    TAILOR,
-    CASHIER,
-    MANAGER
+    TAILOR("Tailor"),
+    CASHIER("Cashier"),
+    MANAGER("Manager");
+    
+    private final String name;
+
+    AccessRightEnum(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    
+    
 }
