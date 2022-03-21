@@ -64,7 +64,7 @@ public class CustomizedJacketSessionBean implements CustomizedJacketSessionBeanL
     }
     
     @Override
-    public Long createNewFabric(CustomizedJacketEntity newCustomizedJacket, Long pocketStyleId, Long jacketStyleId, Long innerFabricId, Long outerFabricId, Long jacketMeasurementId) throws CustomizedProductIdExistsException, JacketMeasurementNotFoundException, CustomizationNotFoundException, UnknownPersistenceException, InputDataValidationException {
+    public Long createNewCustomizedJacket(CustomizedJacketEntity newCustomizedJacket, Long pocketStyleId, Long jacketStyleId, Long innerFabricId, Long outerFabricId, Long jacketMeasurementId) throws CustomizedProductIdExistsException, JacketMeasurementNotFoundException, CustomizationNotFoundException, UnknownPersistenceException, InputDataValidationException {
         Set<ConstraintViolation<CustomizedJacketEntity>> constraintViolations = validator.validate(newCustomizedJacket);
         
         if (constraintViolations.isEmpty()) {
