@@ -38,7 +38,7 @@
                     </p:row>
 
                     <p:row>
-                        <p:column><p:outputLabel style="font-weight: bold;" style="font-weight: bold;" for="quantityInStock" value="Quantity In Stock: "/></p:column>
+                        <p:column><p:outputLabel style="font-weight: bold;" for="quantityInStock" value="Quantity In Stock: "/></p:column>
                         <p:column><p:inputText id="quantityInStock" value="#{standardProductManagedBean.newStandardProductEntity.description}" placeholder="100" required="true" requiredMessage="Quantity In Stock is required" /></p:column>
                     </p:row>
 
@@ -57,34 +57,37 @@
                     </p:row>
 
                     <p:row>
-                        <p:column><p:outputLabel style="font-weight: bold;" for="category" value="Category: " style="font-weight: bold;" /></p:column>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold;" for="category" value="Category: " />
+                        </p:column>
                         <p:column>
                             <p:selectOneMenu style="width: 16em;" id="category" value="#{productManagementManagedBean.newCategoryId}" required="true" requiredMessage="Category is required">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select Category]" noSelectionOption="true" itemDisabled="true" />
                                 <f:selectItems value="#{productManagementManagedBean.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category.categoryId}" />
                             </p:selectOneMenu>
                         </p:column>
+                    </p:row>
 
-                        <br/>
-                        <p:separator/>
-                        <br/>
+                    <br/>
+                    <p:separator/>
+                    <br/>
 
-                        <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="image" value="Product Image: " rendered="#{productManagementManagedBean.newProductEntity.image == null}" />
-                        <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{productManagementManagedBean.handleFileUpload}" rendered="#{productManagementManagedBean.newProductEntity.image == null}" />
-                        <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{productManagementManagedBean.newProductEntity.imageLink != null}" />
+                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="image" value="Product Image: " rendered="#{productManagementManagedBean.newProductEntity.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{productManagementManagedBean.handleFileUpload}" rendered="#{productManagementManagedBean.newProductEntity.image == null}" />
+                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{productManagementManagedBean.newProductEntity.imageLink != null}" />
 
-                        <br/>
-                        <p:separator/>
-                        <br/>
+                    <br/>
+                    <p:separator/>
+                    <br/>
 
-                        <p:row>
-                            <p:column colspan="2" style="text-align: center;">
-                                <p:commandButton type="reset" value="Clear">
-                                    <p:ajax event="click" update="@form" resetValues="true" oncomplete="PF('dialogCreateNewStandardProduct').show()" />
-                                </p:commandButton>&nbsp;
-                                <p:commandButton value="Create New StandardProduct" update="@form viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts" oncomplete="PF('dialogCreateNewStandardProduct').show()" actionListener="#{standardProductManagementManagedBean.createNewStandardProduct}" />
-                            </p:column>
-                        </p:row>
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center;">
+                            <p:commandButton type="reset" value="Clear">
+                                <p:ajax event="click" update="@form" resetValues="true" oncomplete="PF('dialogCreateNewStandardProduct').show()" />
+                            </p:commandButton>&nbsp;
+                            <p:commandButton value="Create New StandardProduct" update="@form viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts" oncomplete="PF('dialogCreateNewStandardProduct').show()" actionListener="#{standardProductManagementManagedBean.createNewStandardProduct}" />
+                        </p:column>
+                    </p:row>
 
                 </p:panelGrid>
 

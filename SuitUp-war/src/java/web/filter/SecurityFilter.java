@@ -71,7 +71,7 @@ public class SecurityFilter implements Filter {
     {   
         if(accessRight.equals(AccessRightEnum.TAILOR))
         {            
-            if(path.equals("/cashierOperation/checkout.xhtml") ||
+            if(path.equals("/staffProfile.xhtml") ||
                 path.equals("/cashierOperation/voidRefund.xhtml") ||
                 path.equals("/cashierOperation/viewMySaleTransactions.xhtml"))
             {
@@ -82,7 +82,7 @@ public class SecurityFilter implements Filter {
                 return false;
             }
         } else if (accessRight.equals(AccessRightEnum.CASHIER)) {
-            if (path.equals("/cashierOperation/checkout.xhtml")
+            if (path.equals("/staffProfile.xhtml")
                     || path.equals("/cashierOperation/voidRefund.xhtml")
                     || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")) {
                 return true;
@@ -90,9 +90,9 @@ public class SecurityFilter implements Filter {
                 return false;
             }
         } else if (accessRight.equals(AccessRightEnum.MANAGER)) {
-            if (path.equals("/cashierOperation/checkout.xhtml")
-                    || path.equals("/cashierOperation/voidRefund.xhtml")
-                    || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")
+            if (path.equals("/staffProfile.xhtml")
+                    || path.equals("/products/standardProductManagement.xhtml")
+                    || path.equals("/products/customisationManagement.xhtml")
                     || path.equals("/systemAdministration/createNewStaff.xhtml")
                     || path.equals("/systemAdministration/viewStaffDetails.xhtml")
                     || path.equals("/systemAdministration/viewAllStaffs.xhtml")
