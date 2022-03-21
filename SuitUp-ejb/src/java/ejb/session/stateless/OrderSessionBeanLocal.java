@@ -10,6 +10,7 @@ import entity.OrderLineItemEntity;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.AddressNotFoundException;
 import util.exception.CreateNewOrderException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -27,7 +28,7 @@ import util.exception.VoidTransactionException;
 @Local
 public interface OrderSessionBeanLocal {
 
-    public OrderEntity createNewOrder(Long customerId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException;
+    public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException;
 
     public List<OrderEntity> retrieveAllOrders();
 
@@ -45,6 +46,6 @@ public interface OrderSessionBeanLocal {
 
     public BigDecimal calculateTotalAmount(Long orderId) throws OrderNotFoundException;
 
-    public BigDecimal calculateTotalAmountAfterPromotionToOrder(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException, PromotionFullyRedeemedException;
+    public BigDecimal applyPromotionCode(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException, PromotionFullyRedeemedException;
 
 }

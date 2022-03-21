@@ -5,9 +5,11 @@
  */
 package ejb.session.stateless;
 
+import entity.AddressEntity;
 import entity.CustomerEntity;
 import entity.OrderEntity;
 import entity.OrderLineItemEntity;
+import entity.PromotionEntity;
 import entity.StandardProductEntity;
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,6 +26,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.OrderStatusEnum;
+import util.exception.AddressNotFoundException;
 import util.exception.CreateNewOrderException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -58,6 +61,9 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     @EJB
     private StandardProductSessionBeanLocal standardProductSessionBeanLocal;
 
+    @EJB
+    private AddressSessionBeanLocal addressSessionBeanLocal;
+
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager entityManager;
 
@@ -71,15 +77,20 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 
     // Updated in v4.1
     @Override
-    public OrderEntity createNewOrder(Long customerId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException {
+    public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException {
         Set<ConstraintViolation<OrderEntity>> constraintViolations = validator.validate(newOrderEntity);
 
         if (constraintViolations.isEmpty()) {
 
             if (newOrderEntity != null) {
                 try {
+                    AddressEntity addressEntity = addressSessionBeanLocal.retrieveAddressByAddressId(addressId);
+                    newOrderEntity.setDeliveryAddress(addressEntity);
+
                     CustomerEntity customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                     newOrderEntity.setCustomer(customerEntity);
+                    customerEntity.getOrders().add(newOrderEntity);
+                    
 
                     entityManager.persist(newOrderEntity);
 
@@ -109,6 +120,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         }
     }
 
+    
+
     @Override
     public List<OrderEntity> retrieveAllOrders() {
         Query query = entityManager.createQuery("SELECT st FROM OrderEntity st");
@@ -137,12 +150,12 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             throw new OrderNotFoundException("Order ID " + orderId + " does not exist!");
         }
     }
-    
+
     @Override
     public List<OrderEntity> retrieveOrderbyCustomerId(Long customerId) {
         Query query = entityManager.createQuery("SELECT o FROM OrderEntity o WHERE o.customer.customerId = :customerId");
         query.setParameter("customerId", customerId);
-        
+
         return query.getResultList();
     }
 
@@ -195,10 +208,15 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
 
     @Override
-    public BigDecimal calculateTotalAmountAfterPromotionToOrder(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException, PromotionFullyRedeemedException {
+    public BigDecimal applyPromotionCode(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException, PromotionFullyRedeemedException {
 
-        BigDecimal originalTotalAmount = calculateTotalAmount(orderId);
+        OrderEntity currentOrder = retrieveOrderByOrderId(orderId);
+        BigDecimal originalTotalAmount = currentOrder.getTotalAmount();
         BigDecimal amountAfterPromotionApplied = promotionSessionBeanLocal.getDiscountedAmount(promotionCode, originalTotalAmount);
+        PromotionEntity promotion = promotionSessionBeanLocal.retrievePromotionByPromotionCode(promotionCode);
+        currentOrder.setTotalAmount(amountAfterPromotionApplied);
+        currentOrder.setPromotion(promotion);
+        promotion.getOrders().add(currentOrder);
 
         return amountAfterPromotionApplied;
 
@@ -215,4 +233,3 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
 }
 
-//associate the promotion code method
