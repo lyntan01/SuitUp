@@ -27,6 +27,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import util.enumeration.CollectionMethodEnum;
 import util.enumeration.OrderStatusEnum;
 import util.exception.EntityInstanceExistsInCollectionException;
@@ -44,6 +45,11 @@ public class OrderEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+
+    @Column(nullable = false, unique = true, length = 4)
+    @NotNull
+    @Size(min = 4, max = 4)
+    private String serialNumber;
 
     @NotNull
     @Min(1)
@@ -103,8 +109,9 @@ public class OrderEntity implements Serializable {
         this.orderLineItems = new ArrayList<>();
     }
 
-    public OrderEntity(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum) {
+    public OrderEntity(String serialNumber, Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum) {
         this();
+        this.serialNumber = serialNumber;
         this.totalLineItem = totalLineItem;
         this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;
@@ -114,7 +121,8 @@ public class OrderEntity implements Serializable {
         this.collectionMethodEnum = collectionMethodEnum;
     }
 
-    public OrderEntity(Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum, List<OrderLineItemEntity> orderLineItems) {
+    public OrderEntity(String serialNumber, Integer totalLineItem, Integer totalQuantity, BigDecimal totalAmount, Date orderDateTime, Boolean expressOrder, OrderStatusEnum orderStatusEnum, CollectionMethodEnum collectionMethodEnum, List<OrderLineItemEntity> orderLineItems) {
+        this.serialNumber = serialNumber;
         this.totalLineItem = totalLineItem;
         this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;
@@ -131,6 +139,14 @@ public class OrderEntity implements Serializable {
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public Integer getTotalLineItem() {
@@ -267,7 +283,7 @@ public class OrderEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderEntity{" + "orderId=" + orderId + ", totalLineItem=" + totalLineItem + ", totalQuantity=" + totalQuantity + ", totalAmount=" + totalAmount + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
+        return "OrderEntity{" + "orderId=" + orderId + ", serialNumber=" + serialNumber + ", totalLineItem=" + totalLineItem + ", totalQuantity=" + totalQuantity + ", totalAmount=" + totalAmount + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
     }
 
 }

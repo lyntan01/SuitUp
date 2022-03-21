@@ -35,11 +35,6 @@ public class OrderLineItemEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     @Min(1)
-    private Integer serialNumber;
-
-    @Column(nullable = false)
-    @NotNull
-    @Min(1)
     private Integer quantity;
 
     @Column(nullable = false, precision = 11, scale = 2)
@@ -58,8 +53,7 @@ public class OrderLineItemEntity implements Serializable {
 
     }
 
-    public OrderLineItemEntity(Integer serialNumber, Integer quantity, BigDecimal subTotal, ProductEntity product) {
-        this.serialNumber = serialNumber;
+    public OrderLineItemEntity(Integer quantity, BigDecimal subTotal, ProductEntity product) {
         this.quantity = quantity;
         this.subTotal = subTotal;
         this.product = product;
@@ -71,14 +65,6 @@ public class OrderLineItemEntity implements Serializable {
 
     public void setOrderLineItemId(Long orderLineItemId) {
         this.orderLineItemId = orderLineItemId;
-    }
-
-    public Integer getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(Integer serialNumber) {
-        this.serialNumber = serialNumber;
     }
 
     public Integer getQuantity() {
@@ -127,7 +113,7 @@ public class OrderLineItemEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderLineItemEntity{" + "orderLineItemId=" + orderLineItemId + ", serialNumber=" + serialNumber + ", quantity=" + quantity + ", subTotal=" + subTotal + ", product=" + product + '}';
+        return "OrderLineItemEntity{" + "orderLineItemId=" + orderLineItemId + ", quantity=" + quantity + ", subTotal=" + subTotal + ", product=" + product + '}';
     }
 
 }

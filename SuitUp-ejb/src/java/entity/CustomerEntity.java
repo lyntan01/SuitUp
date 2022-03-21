@@ -55,7 +55,6 @@ public class CustomerEntity implements Serializable {
     @Column(nullable = false, length = 256, unique = true)
     @NotNull
     @Size(max = 256)
-    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$")
     private String email;
 
     @Column(columnDefinition = "CHAR(32) NOT NULL")
