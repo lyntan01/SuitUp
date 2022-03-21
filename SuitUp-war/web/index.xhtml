@@ -40,7 +40,7 @@
                 <p:row>
                     <p:column colspan="3" style="text-align: center;">
                         <p:commandButton value="Clear" type="reset" />&nbsp;
-                        <p:commandButton value="Login" type="submit" process="@form" update="@form" action="#{loginManagedBean.login(event)}" />
+                        <p:commandButton value="Login" type="submit" process="@form" update="@form" actionListener="#{loginManagedBean.login}" />
                     </p:column>
                 </p:row>
 
@@ -48,7 +48,7 @@
             
         </h:form>
         
-        <h:outputText value="Placeholder for index page. Logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." rendered="${sessionScope.isLogin = true}" />
+        <h:outputText value="Placeholder for index page. Logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." rendered="${sessionScope.isLogin == true}" />
     </ui:define>
 
 </ui:composition>

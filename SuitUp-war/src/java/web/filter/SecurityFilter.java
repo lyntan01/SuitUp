@@ -25,143 +25,97 @@ import util.enumeration.AccessRightEnum;
  */
 @WebFilter(filterName = "SecurityFilter", urlPatterns = {"/*"})
 public class SecurityFilter implements Filter {
-    
-    FilterConfig filterConfig;
-    
-    private static final String CONTEXT_ROOT = "/SuitUp-war";
-    
-   
 
-    public void init(FilterConfig filterConfig) throws ServletException
-    {
+    FilterConfig filterConfig;
+
+    private static final String CONTEXT_ROOT = "/SuitUp-war";
+
+    public void init(FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
     }
 
-
-
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
-    {
-        HttpServletRequest httpServletRequest = (HttpServletRequest)request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse)response;
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpSession httpSession = httpServletRequest.getSession(true);
-        String requestServletPath = httpServletRequest.getServletPath();        
-        
-        
+        String requestServletPath = httpServletRequest.getServletPath();
 
-        if(httpSession.getAttribute("isLogin") == null)
-        {
+        if (httpSession.getAttribute("isLogin") == null) {
             httpSession.setAttribute("isLogin", false);
         }
 
-        Boolean isLogin = (Boolean)httpSession.getAttribute("isLogin");
-        
-        
-        
-        if(!excludeLoginCheck(requestServletPath))
-        {
-            if(isLogin == true)
-            {
-                StaffEntity currentStaffEntity = (StaffEntity)httpSession.getAttribute("currentStaffEntity");
-                
-                if(checkAccessRight(requestServletPath, currentStaffEntity.getAccessRightEnum()))
-                {
+        Boolean isLogin = (Boolean) httpSession.getAttribute("isLogin");
+
+        if (!excludeLoginCheck(requestServletPath)) {
+            if (isLogin == true) {
+                StaffEntity currentStaffEntity = (StaffEntity) httpSession.getAttribute("currentStaffEntity");
+                if (checkAccessRight(requestServletPath, currentStaffEntity.getAccessRightEnum())) {
                     chain.doFilter(request, response);
-                }
-                else
-                {
+                } else {
                     httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
                 }
-            }
-            else
-            {
+            } else {
                 httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
             }
-        }
-        else
-        {
+        } else {
             chain.doFilter(request, response);
         }
     }
 
-
-
-    public void destroy()
-    {
+    public void destroy() {
 
     }
-    
-    
-    
-    private Boolean checkAccessRight(String path, AccessRightEnum accessRight)
-    {   
-        if(accessRight.equals(AccessRightEnum.TAILOR))
-        {            
-            if(path.equals("/cashierOperation/checkout.xhtml") ||
-                path.equals("/cashierOperation/voidRefund.xhtml") ||
-                path.equals("/cashierOperation/viewMySaleTransactions.xhtml"))
-            {
+
+    private Boolean checkAccessRight(String path, AccessRightEnum accessRight) {
+        if (accessRight.equals(AccessRightEnum.TAILOR)) {
+            if (path.equals("/cashierOperation/checkout.xhtml")
+                    || path.equals("/cashierOperation/voidRefund.xhtml")
+                    || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")) {
                 return true;
+            } else {
+                return false;
             }
-            else
-            {
+        } else if (accessRight.equals(AccessRightEnum.CASHIER)) {
+            if (path.equals("/cashierOperation/checkout.xhtml")
+                    || path.equals("/cashierOperation/voidRefund.xhtml")
+                    || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (accessRight.equals(AccessRightEnum.MANAGER)) {
+            if (path.equals("/cashierOperation/checkout.xhtml")
+                    || path.equals("/cashierOperation/voidRefund.xhtml")
+                    || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")
+                    || path.equals("/systemAdministration/createNewStaff.xhtml")
+                    || path.equals("/systemAdministration/viewStaffDetails.xhtml")
+                    || path.equals("/systemAdministration/viewAllStaffs.xhtml")
+                    || path.equals("/systemAdministration/createNewProduct.xhtml")
+                    || path.equals("/systemAdministration/viewProductDetails.xhtml")
+                    || path.equals("/systemAdministration/updateProduct.xhtml")
+                    || path.equals("/systemAdministration/deleteProduct.xhtml")
+                    || path.equals("/systemAdministration/viewAllProducts.xhtml")
+                    || path.equals("/systemAdministration/searchProductsByName.xhtml")
+                    || path.equals("/systemAdministration/filterProductsByCategory.xhtml")
+                    || path.equals("/systemAdministration/filterProductsByTags.xhtml")
+                    || path.equals("/orderManagement.xhtml")) {
+                return true;
+            } else {
                 return false;
             }
         }
-        else if(accessRight.equals(AccessRightEnum.CASHIER))
-        {            
-            if(path.equals("/cashierOperation/checkout.xhtml") ||
-                path.equals("/cashierOperation/voidRefund.xhtml") ||
-                path.equals("/cashierOperation/viewMySaleTransactions.xhtml"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if(accessRight.equals(AccessRightEnum.MANAGER))
-        {
-            if(path.equals("/cashierOperation/checkout.xhtml") ||
-                path.equals("/cashierOperation/voidRefund.xhtml") ||
-                path.equals("/cashierOperation/viewMySaleTransactions.xhtml") ||
-                path.equals("/systemAdministration/createNewStaff.xhtml") ||
-                path.equals("/systemAdministration/viewStaffDetails.xhtml") ||
-                path.equals("/systemAdministration/viewAllStaffs.xhtml") ||
-                path.equals("/systemAdministration/createNewProduct.xhtml") ||
-                path.equals("/systemAdministration/viewProductDetails.xhtml") ||
-                path.equals("/systemAdministration/updateProduct.xhtml") ||
-                path.equals("/systemAdministration/deleteProduct.xhtml") ||
-                path.equals("/systemAdministration/viewAllProducts.xhtml") ||
-                path.equals("/systemAdministration/searchProductsByName.xhtml") ||
-                path.equals("/systemAdministration/filterProductsByCategory.xhtml") ||
-                path.equals("/systemAdministration/filterProductsByTags.xhtml"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        
+
         return false;
     }
 
-
-
-    private Boolean excludeLoginCheck(String path)
-    {
-        if(path.equals("/index.xhtml") ||
-            path.equals("/accessRightError.xhtml") ||
-            path.startsWith("/javax.faces.resource"))
-        {
+    private Boolean excludeLoginCheck(String path) {
+        if (path.equals("/index.xhtml")
+                || path.equals("/accessRightError.xhtml")
+                || path.startsWith("/javax.faces.resource")) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
+
 }

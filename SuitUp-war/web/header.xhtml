@@ -6,7 +6,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
 
-    <header>
+    <header style="text-align: right;">
         <h:form>                
             <p:menubar class="ui-g">
                 <p:menuitem outcome="/index" styleClass="logo">
@@ -17,15 +17,17 @@
                 <p:menuitem value="Cashier Operations" outcome="/index"></p:menuitem>
                 <p:menuitem value="Staff Management" outcome="/index"></p:menuitem>
                 <p:menuitem value="Customer Management" outcome="/index"></p:menuitem>
-                <p:menuitem value="Order Management" outcome="/index"></p:menuitem>
+                <p:menuitem value="Order Management" outcome="/orderManagement"></p:menuitem>
                 <p:menuitem value="Product Management" outcome="/index"></p:menuitem>
                 <p:menuitem value="Store Management" outcome="/index"></p:menuitem>
-                
+
                 <f:facet name="options">
-                    <p:button value="My Profile" outcome="/staffProfile" icon="pi pi-user" style="margin: 1em;" />
-                    <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout(event)}" style="margin: 1em;" />
+                    <p:button value="My Profile" outcome="/staffProfile" icon="pi pi-user" style="margin: 1em;" rendered="${sessionScope.isLogin == true}"/>
+                    <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout}" style="margin: 1em;" rendered="${sessionScope.isLogin == true}"/>
                 </f:facet>
-            </p:menubar>               
+
+            </p:menubar> 
+
         </h:form>
 
     </header>
