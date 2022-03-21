@@ -102,7 +102,7 @@ public class CustomizedPantsSessionBean implements CustomizedPantsSessionBeanLoc
     
     @Override
     public CustomizedPantsEntity retrieveCustomizedPantsById(Long productId) throws CustomizedProductNotFoundException {
-        Query query = em.createQuery("SELECT c FROM CustomizedPantsEntity c where c.productId = :productId");
+        Query query = em.createQuery("SELECT c FROM CustomizedPantsEntity c WHERE c.productId = :productId");
         query.setParameter("productId", productId);
         try {
             return (CustomizedPantsEntity) query.getSingleResult();

@@ -78,7 +78,7 @@ public class PocketStyleSessionBean implements PocketStyleSessionBeanLocal {
     
     @Override
     public PocketStyleEntity retrievePocketStyleById(Long customizationId) throws CustomizationNotFoundException {
-        Query query = em.createQuery("SELECT c FROM PocketStyleEntity c where c.customizationId = :customizationId");
+        Query query = em.createQuery("SELECT c FROM PocketStyleEntity c WHERE c.customizationId = :customizationId");
         query.setParameter("customizationId", customizationId);
         try {
             return (PocketStyleEntity) query.getSingleResult();
@@ -114,7 +114,15 @@ public class PocketStyleSessionBean implements PocketStyleSessionBeanLocal {
     @Override
     public void deletePocketStyle(Long pocketStyleId) throws CustomizationNotFoundException {
         PocketStyleEntity pocketStyleToRemove = retrievePocketStyleById(pocketStyleId);
-        pocketStyleToRemove.setIsDisabled(Boolean.TRUE);
+        
+        Query query = em.createQuery("SELECT c FROM CustomizedJacketEntity c WHERE c.pocketStyle.customizationId = :pocketStyleId");
+        query.setParameter("pocketStyleId", pocketStyleId);
+        
+        if (query.getResultList().isEmpty()) {
+            em.remove(pocketStyleToRemove);
+        } else {
+            pocketStyleToRemove.setIsDisabled(Boolean.TRUE);
+        } 
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PocketStyleEntity>> constraintViolations) {

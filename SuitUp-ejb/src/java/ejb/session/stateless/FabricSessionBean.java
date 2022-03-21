@@ -88,7 +88,7 @@ public class FabricSessionBean implements FabricSessionBeanLocal {
     
     @Override
     public FabricEntity retrieveFabricById(Long customizationId) throws CustomizationNotFoundException {
-        Query query = em.createQuery("SELECT c FROM FabricEntity c where c.customizationId = :customizationId");
+        Query query = em.createQuery("SELECT c FROM FabricEntity c WHERE c.customizationId = :customizationId");
         query.setParameter("customizationId", customizationId);
         try {
             return (FabricEntity) query.getSingleResult();
@@ -124,7 +124,24 @@ public class FabricSessionBean implements FabricSessionBeanLocal {
     @Override
     public void deleteFabric(Long fabricId) throws CustomizationNotFoundException {
         FabricEntity fabricToRemove = retrieveFabricById(fabricId);
-        fabricToRemove.setIsDisabled(Boolean.TRUE);
+        
+        Query query_one = em.createQuery("SELECT c FROM CustomizedPantsEntity c WHERE c.fabric.customizationId = :fabricId");
+        query_one.setParameter("fabricId", fabricId);
+        
+        Query query_two = em.createQuery("SELECT c FROM CustomizedJacketEntity c WHERE c.innerFabric.customizationId = :fabricId");
+        query_two.setParameter("fabricId", fabricId);
+        
+        Query query_three = em.createQuery("SELECT c FROM CustomizedJacketEntity c WHERE c.outerFabric.customizationId = :fabricId");
+        query_three.setParameter("fabricId", fabricId);
+        
+        if (query_one.getResultList().isEmpty() && query_two.getResultList().isEmpty() && query_three.getResultList().isEmpty()) {
+            fabricToRemove.getColour().getFabrics().remove(fabricToRemove);
+            fabricToRemove.setColour(null);
+            
+            em.remove(fabricToRemove);
+        } else {
+            fabricToRemove.setIsDisabled(Boolean.TRUE);
+        }
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<FabricEntity>> constraintViolations) {

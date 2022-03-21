@@ -109,7 +109,7 @@ public class CustomizedJacketSessionBean implements CustomizedJacketSessionBeanL
     
     @Override
     public CustomizedJacketEntity retrieveCustomizedJacketById(Long productId) throws CustomizedProductNotFoundException {
-        Query query = em.createQuery("SELECT c FROM CustomizedJacketEntity c where c.productId = :productId");
+        Query query = em.createQuery("SELECT c FROM CustomizedJacketEntity c WHERE c.productId = :productId");
         query.setParameter("productId", productId);
         try {
             return (CustomizedJacketEntity) query.getSingleResult();

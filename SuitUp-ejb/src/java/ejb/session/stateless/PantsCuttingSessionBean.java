@@ -77,7 +77,7 @@ public class PantsCuttingSessionBean implements PantsCuttingSessionBeanLocal {
     
     @Override
     public PantsCuttingEntity retrievePantsCuttingById(Long customizationId) throws CustomizationNotFoundException {
-        Query query = em.createQuery("SELECT c FROM PantsCuttingEntity c where c.customizationId = :customizationId");
+        Query query = em.createQuery("SELECT c FROM PantsCuttingEntity c WHERE c.customizationId = :customizationId");
         query.setParameter("customizationId", customizationId);
         try {
             return (PantsCuttingEntity) query.getSingleResult();
@@ -113,7 +113,15 @@ public class PantsCuttingSessionBean implements PantsCuttingSessionBeanLocal {
     @Override
     public void deletePantsCutting(Long pantsCuttingId) throws CustomizationNotFoundException {
         PantsCuttingEntity pantsCuttingToRemove = retrievePantsCuttingById(pantsCuttingId);
-        pantsCuttingToRemove.setIsDisabled(Boolean.TRUE);
+        
+        Query query = em.createQuery("SELECT c FROM CustomizedPantsEntity c WHERE c.pantsCutting.customizationId = :pantsCuttingId");
+        query.setParameter("pantsCuttingId", pantsCuttingId);
+        
+        if (query.getResultList().isEmpty()) {
+            em.remove(pantsCuttingToRemove);
+        } else {
+            pantsCuttingToRemove.setIsDisabled(Boolean.TRUE);
+        }
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<PantsCuttingEntity>> constraintViolations) {

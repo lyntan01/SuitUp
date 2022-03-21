@@ -77,7 +77,7 @@ public class JacketStyleSessionBean implements JacketStyleSessionBeanLocal {
     
     @Override
     public JacketStyleEntity retrieveJacketStyleById(Long customizationId) throws CustomizationNotFoundException {
-        Query query = em.createQuery("SELECT c FROM JacketStyleEntity c where c.customizationId = :customizationId");
+        Query query = em.createQuery("SELECT c FROM JacketStyleEntity c WHERE c.customizationId = :customizationId");
         query.setParameter("customizationId", customizationId);
         try {
             return (JacketStyleEntity) query.getSingleResult();
@@ -113,7 +113,15 @@ public class JacketStyleSessionBean implements JacketStyleSessionBeanLocal {
     @Override
     public void deleteJacketStyle(Long jacketStyleId) throws CustomizationNotFoundException {
         JacketStyleEntity jacketStyleToRemove = retrieveJacketStyleById(jacketStyleId);
-        jacketStyleToRemove.setIsDisabled(Boolean.TRUE);
+        
+        Query query = em.createQuery("SELECT c FROM CustomizedJacketEntity c WHERE c.jacketStyle.customizationId = :jacketStyleId");
+        query.setParameter("jacketStyleId", jacketStyleId);
+        
+        if (query.getResultList().isEmpty()) {
+            em.remove(jacketStyleToRemove);
+        } else {
+            jacketStyleToRemove.setIsDisabled(Boolean.TRUE);
+        }   
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<JacketStyleEntity>> constraintViolations) {
