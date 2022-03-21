@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:dialog id="dialogCreateNewCategory" widgetVar="dialogCreateNewCategory" header="Create New Category" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formCreateNewCategory">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:panelGrid id="createNewCategoryGrid" style="width: 30em;" styleClass="noBorder">
+
+                    <p:row>
+                        <p:column style="width: 30%;"><p:outputLabel style="font-weight: bold;" for="name" value="Name: "/></p:column>
+                        <p:column style="width:70%;"><p:inputText id="name" value="#{standardProductManagedBean.newCategoryEntity.name}" placeholder="Category" required="true" requiredMessage="Name is required" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel style="font-weight: bold;" for="description" value="Description: "/></p:column>
+                        <p:column><p:inputText id="description" value="#{standardProductManagedBean.newCategoryEntity.description}" placeholder="Category" required="true" requiredMessage="Description is required" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center;">
+                            <p:commandButton type="reset" value="Clear">
+                                <p:ajax event="click" update="@form" resetValues="true" oncomplete="PF('dialogCreateNewCategory').show()" />
+                            </p:commandButton>&nbsp;
+                            <p:commandButton value="Create New Category" update="@form viewStandardProductsTabView:ViewAllCategories:formAllCategories:dataTableAllCategories" oncomplete="PF('dialogCreateNewCategory').show()" actionListener="#{standardProductManagementManagedBean.createNewCategory}" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+    </cc:implementation>
+</html>

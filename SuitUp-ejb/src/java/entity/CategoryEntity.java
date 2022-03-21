@@ -47,6 +47,7 @@ public class CategoryEntity implements Serializable {
     }
 
     public CategoryEntity(String name, String description, List<StandardProductEntity> products) {
+        super();
         this.name = name;
         this.description = description;
         this.standardProducts = products;
@@ -108,5 +109,6 @@ public class CategoryEntity implements Serializable {
     public String toString() {
         return "entity.CategoryEntity[ id=" + categoryId + " ]";
     }
+
     
 }

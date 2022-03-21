@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      template="/template/defaultTemplate.xhtml"
+      xmlns:p="http://primefaces.org/ui">>
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formAllStandardProducts">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllStandardProducts" widgetVar="dataTableAllStandardProducts" value="#{standardProductManagementManagedBean.standardProducts}" var="standardProduct" rowKey="#{standardProduct.productId}" rowIndexVar="row"
+                             filteredValue="#{productManagementManagedBean.filteredProductEntities}"
+                             rows="10" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllProducts').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Product ID" sortBy="#{standardProduct.productId}" filterBy="#{standardProduct.productId}" filterMatchMode="contains">
+                        <h:outputText value="#{standardProduct.productId}" />
+                    </p:column>
+                    
+                    <p:column headerText="SKU Code" sortBy="#{standardProduct.skuCode}" filterBy="#{standardProduct.skuCode}" filterMatchMode="contains">
+                        <h:outputText value="#{standardProduct.skuCode}" />
+                    </p:column>
+
+                    <p:column headerText="Name" sortBy="#{standardProduct.name}" filterBy="#{standardProduct.name}" filterMatchMode="contains">
+                        <h:outputText value="#{standardProduct.name}" />
+                    </p:column>
+                    
+                    <p:column headerText="Description" sortBy="#{standardProduct.description}" filterBy="#{standardProduct.description}" filterMatchMode="contains">
+                        <h:outputText value="#{standardProduct.description}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity in Stock" sortBy="#{standardProduct.quantityInStock}" filterBy="#{standardProduct.quantityInStock}" filterMatchMode="contains">
+                        <h:outputText value="#{standardProduct.quantityInStock}" />
+                    </p:column>
+                    
+                    <p:column headerText="Reorder Quantity" sortBy="#{standardProduct.reorderQuantity}" filterBy="#{standardProduct.reorderQuantity}" filterMatchMode="contains">
+                        <h:outputText value="#{standardProduct.reorderQuantity}" />
+                    </p:column>
+
+                    <p:column headerText="Unit Price" sortBy="#{standardProduct.unitPrice}" filterBy="#{standardProduct.unitPrice}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{standardProduct.unitPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Category" sortBy="#{standardProduct.category.name}" filterBy="#{standardProduct.category.name}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="selCategory" onchange="PF('dataTableAllStandardProducts').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{standardProductManagementManagedBean.categories}" var="category" itemValue="#{category.name}" itemLabel="#{category.name}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{standardProduct.category.name}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="ViewProduct:formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{standardProduct}" target="#{standardProductManagementManagedBean.viewProductManagedBean.standardProductToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{standardProductManagementManagedBean.doUpdateStandardProduct}" update="formUpdateProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="" value="#{selectedStandardProductEntityToUpdate}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteProduct}" update="formAllStandardProducts:dataTableAllStandardProducts formAllStandardProducts:messages">
+                            <f:attribute name="standardProductToDelete" value="#{standardProductToDelete}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{standardProductToDelete.name} (SKU Code: #{standardProductToDelete.skuCode})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+    </cc:implementation>
+</html>
