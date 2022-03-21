@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"                
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formAllCategories">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <p:dataTable id="dataTableAllCategories"
+                         widgetVar="dataTableAllCategories" 
+                         value="#{standardProductManagementManagedBean.categories}" 
+                         var="category" 
+                         rowKey="#{category.categoryId}" 
+                         rowIndexVar="row"                      
+                         filteredValue="#{standardProductManagementManagedBean.filteredCategories}"
+                         rows="5"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,20,50,{ShowAll|'All'}">
+
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: right;">
+                        <h:outputText value="Search all fields: " />
+                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllCategories').filter()" style="width:20em" placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="ID" sortBy="#{category.categoryId}" filterBy="#{category.categoryId}" filterMatchMode="exact">
+                    <h:outputText value="#{category.categoryId}" />
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{category.name}" filterBy="#{category.name}" filterMatchMode="contains">
+                    <h:outputText value="#{category.name}" />
+                </p:column>
+                
+                <p:column headerText="Description" sortBy="#{category.description}" filterBy="#{category.description}" filterMatchMode="contains">
+                    <h:outputText value="#{category.description}" />
+                </p:column>
+
+                <p:column headerText="Code" sortBy="#{category.code}" filterBy="#{category.code}" filterMatchMode="contains">
+                    <h:outputText value="#{category.code}" />
+                </p:column>                                   
+
+                <p:column headerText="Action" style="text-align: center;">
+                    <p:commandButton icon="pi pi-pencil" actionListener="#{standardProductManagementManagedBean.doUpdateCategory}" update="UpdateCategory:dialogUpdateCategory" oncomplete="PF('dialogUpdateCategory').show()">
+                        <f:attribute name="selectedCategoryToUpdate" value="#{category}" />
+                    </p:commandButton>
+                    <p:commandButton icon="pi pi-trash" actionListener="#{standardProductManagementManagedBean.deleteCategory}" update="@form:dataTableAllCategories @form:messages">
+                        <f:attribute name="categoryToDelete" value="#{category}" />
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete #{category.name} (ID: #{category.categoryId})?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+
+        </h:form>
+    </cc:implementation>
+</html>

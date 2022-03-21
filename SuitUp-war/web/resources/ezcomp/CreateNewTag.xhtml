@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"                
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:dialog id="dialogCreateNewTag" widgetVar="dialogCreateNewTag" header="Create New Tag" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formCreateNewTag">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:panelGrid id="createNewTagGrid" style="width: 30em;" styleClass="noBorder">
+
+                    <p:row>
+                        <p:column style="width: 30%;"><p:outputLabel style="font-weight: bold;" for="name" value="Name: "/></p:column>
+                        <p:column style="width:70%;"><p:inputText id="name" value="#{standardProductManagedBean.newTagEntity.name}" placeholder="Tag" required="true" requiredMessage="Name is required" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center;">
+                            <p:commandButton type="reset" value="Clear">
+                                <p:ajax event="click" update="@form" resetValues="true" oncomplete="PF('dialogCreateNewTag').show()" />
+                            </p:commandButton>&nbsp;
+                            <p:commandButton value="Create New Tag" update="@form viewStandardProductsTabView:ViewAllTabs:formAllTabs:dataTableAllTabs" oncomplete="PF('dialogCreateNewTag').show()" actionListener="#{standardProductManagementManagedBean.createNewTag}" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+    </cc:implementation>
+</html>

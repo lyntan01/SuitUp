@@ -71,6 +71,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     public List<CategoryEntity> retrieveAllCategories()
     {
         Query query = em.createQuery("SELECT c FROM CategoryEntity c ORDER BY c.name ASC");
+        query.setParameter("notDisabled", false);
         List<CategoryEntity> categoryEntities = query.getResultList();
         
         for(CategoryEntity categoryEntity:categoryEntities)
@@ -143,7 +144,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
         
         if(!categoryEntityToRemove.getStandardProducts().isEmpty())
         {
-            throw new DeleteEntityException("Category ID " + categoryId + " is associated with existing products and cannot be deleted!");
+            throw new DeleteEntityException("Error: Unable to delete category because there are products under it");
         }
         else
         {            

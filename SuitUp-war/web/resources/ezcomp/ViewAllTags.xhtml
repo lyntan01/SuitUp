@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"                
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formAllTags">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <p:dataTable id="dataTableAllTags"
+                         widgetVar="dataTableAllTags" 
+                         value="#{standardProductManagementManagedBean.tags}" 
+                         var="tag" 
+                         rowKey="#{tag.tagId}" 
+                         rowIndexVar="row"                      
+                         filteredValue="#{standardProductManagementManagedBean.filteredTags}"
+                         rows="5"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,20,50,{ShowAll|'All'}">
+
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: right;">
+                        <h:outputText value="Search all fields: " />
+                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllTags').filter()" style="width:20em" placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="ID" sortBy="#{tag.tagId}" filterBy="#{tag.tagId}" filterMatchMode="exact">
+                    <h:outputText value="#{tag.tagId}" />
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{tag.name}" filterBy="#{tag.name}" filterMatchMode="contains">
+                    <h:outputText value="#{tag.name}" />
+                </p:column>                               
+
+                <p:column headerText="Action" style="text-align: center;">
+                    <p:commandButton icon="pi pi-pencil" actionListener="#{standardProductManagementManagedBean.doUpdateTag}" update="UpdateTag:dialogUpdateTag" oncomplete="PF('dialogUpdateTag').show()">
+                        <f:attribute name="selectedTagToUpdate" value="#{tag}" />
+                    </p:commandButton>
+                    <p:commandButton icon="pi pi-trash" actionListener="#{standardProductManagementManagedBean.deleteTag}" update="@form:dataTableAllTags @form:messages">
+                        <f:attribute name="tagToDelete" value="#{tag}" />
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete #{tag.name} (ID: #{tag.tagId})?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+
+        </h:form>
+    </cc:implementation>
+</html>
