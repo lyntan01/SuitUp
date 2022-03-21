@@ -6,14 +6,13 @@
                 template="/template/defaultTemplate.xhtml">
 
     <ui:define name="content">
-<!--        <div class="center middle">
-            <h:outputText id="errorHeadMessage" value="Oops!" />
-            <br/>
-            <h:outputText id="errorDetailMessage" value="Are You Lost?&lt;br /&gt;You don't seem to belong here!" escape="false" />
+        <div>
+            <h:outputText value="Access Right Error" /> <!-- id="errorHeadMessage"  -->
             <br/><br/>
+            <h:outputText value="Please login to view this page." rendered="#{sessionScope.isLogin == true}" /> <!-- id="errorAccessMessage" -->
             <h:link outcome="index.html" value="Back to login page" rendered="#{sessionScope.isLogin == false}" />
-            <h:outputText id="errorAccessMessage" value="As a #{sessionScope.currentStaffEntity.accessRightEnum.printName}, you do not have access to this page" rendered="#{sessionScope.isLogin == true}" />
-        </div>-->
+            <h:outputText value="You are logged in as a #{sessionScope.currentStaffEntity.accessRightEnum.name}. It looks like you do not have access rights to view this page." rendered="#{sessionScope.isLogin == true}" /> <!-- id="errorAccessMessage" -->
+        </div>
     </ui:define>
 
 </ui:composition>

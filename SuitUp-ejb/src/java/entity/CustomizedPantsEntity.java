@@ -35,8 +35,8 @@ public class CustomizedPantsEntity extends CustomizedProductEntity implements Se
     public CustomizedPantsEntity() {
     }
     
-    public CustomizedPantsEntity(String name, String description, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
-        super(name, description, basePrice, totalPrice, gender); 
+    public CustomizedPantsEntity(String name, String description, String image, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
+        super(name, description, image, basePrice, totalPrice, gender); 
     }
 
 

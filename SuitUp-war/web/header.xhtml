@@ -4,31 +4,30 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="./template/defaultTemplate.xhtml">
+                xmlns:p="http://primefaces.org/ui">
 
-    <!--<section id="header" class="ui-g">-->
-    <section>
+    <header>
         <h:form>                
-            <p:menubar>
+            <p:menubar class="ui-g">
                 <p:menuitem outcome="/index" styleClass="logo">
                     <p:graphicImage library="images" name="logo.png" alt="Logo" style="width: 15vw; margin: 1em"/>
                 </p:menuitem>
 
-                <p:menuitem value="Home" outcome="/index" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
-<!--                <p:menuitem value="Staff Management" outcome="/staffManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"/>
-                <p:menuitem value="Product Management" outcome="/productManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"/>
-                <p:menuitem value="Order Management" outcome="/orderManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
-                <p:menuitem value="Customer Management" outcome="/customerManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
-                <p:menuitem value="Promotion Management" outcome="/promotionManagement" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>
-                <p:menuitem value="Miscellaneous" outcome="/miscellaneous" rendered="#{!request.requestURI.contains('index.xhtml')}"></p:menuitem>-->
+                <p:menuitem value="Home" outcome="/index"></p:menuitem>
+                <p:menuitem value="Cashier Operations" outcome="/index"></p:menuitem>
+                <p:menuitem value="Staff Management" outcome="/index"></p:menuitem>
+                <p:menuitem value="Customer Management" outcome="/index"></p:menuitem>
+                <p:menuitem value="Order Management" outcome="/index"></p:menuitem>
+                <p:menuitem value="Product Management" outcome="/index"></p:menuitem>
+                <p:menuitem value="Store Management" outcome="/index"></p:menuitem>
                 
                 <f:facet name="options">
+                    <p:button value="My Profile" outcome="/staffProfile" icon="pi pi-user" style="margin: 1em;" />
                     <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout(event)}" style="margin: 1em;" />
                 </f:facet>
             </p:menubar>               
         </h:form>
 
-    </section>
+    </header>
 
 </ui:composition>

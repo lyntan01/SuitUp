@@ -38,7 +38,7 @@ public class ColourEntity implements Serializable {
     @Size(max = 32)
     private String hexCode;
     
-    @OneToMany(mappedBy = "fabrics")
+    @OneToMany(mappedBy = "colour")
     @JoinColumn(nullable = true)
     private List<FabricEntity> fabrics;
     

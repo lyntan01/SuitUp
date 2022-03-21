@@ -93,8 +93,21 @@ public class SecurityFilter implements Filter {
     
     
     private Boolean checkAccessRight(String path, AccessRightEnum accessRight)
-    {        
-        if(accessRight.equals(AccessRightEnum.CASHIER))
+    {   
+        if(accessRight.equals(AccessRightEnum.TAILOR))
+        {            
+            if(path.equals("/cashierOperation/checkout.xhtml") ||
+                path.equals("/cashierOperation/voidRefund.xhtml") ||
+                path.equals("/cashierOperation/viewMySaleTransactions.xhtml"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else if(accessRight.equals(AccessRightEnum.CASHIER))
         {            
             if(path.equals("/cashierOperation/checkout.xhtml") ||
                 path.equals("/cashierOperation/voidRefund.xhtml") ||
