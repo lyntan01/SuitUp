@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formAllOrders">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <p:dataTable id="dataTableAllOrders" widgetVar="dataTableAllOrders" value="#{orderManagementManagedBean.orderEntities}"
+                         var="orderEntity" rowKey="#{orderEntity.orderId}"
+                         rowIndexVar="row" selection="#{orderManagementManagedBean.viewOrderManagedBean.orderEntityToView}" selectionMode="single"
+                         filteredValue="#{orderManagementManagedBean.filteredOrderEntities}" rows="5"
+                         paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
+
+                <!--<p:ajax event="rowDblselect" update="ccViewOrder:dialogViewOrder" global="false" oncomplete="PF('dialogViewOrder').show()"/>-->
+
+                <f:facet name="header">
+                    <div style="text-align: right;">
+                        <h:outputText value="Search all fields: " />
+                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllOrders').filter()" style="width: 20em" placeholder="Enter keyword"/>
+                    </div>
+                </f:facet>
+
+                <p:column style="width: 5em;" headerText="ID" sortBy="#{orderEntity.orderId}" filterBy="#{orderEntity.orderId}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.orderId}" />
+                </p:column>
+
+                <p:column style="width: 10em;" headerText="Serial Number" sortBy="#{orderEntity.serialNumber}" filterBy="#{orderEntity.serialNumber}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.serialNumber}" />
+                </p:column>
+
+                <p:column headerText="Total Order Item" sortBy="#{orderEntity.totalOrderItem}" filterBy="#{orderEntity.totalOrderItem}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.totalOrderItem}" />
+                </p:column>
+
+                <p:column headerText="Total Quantity" sortBy="#{orderEntity.totalQuantity}" filterBy="#{orderEntity.totalQuantity}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.totalQuantity}" />
+                </p:column>
+
+                <p:column headerText="Total Amount" sortBy="#{orderEntity.totalAmount}" filterBy="#{orderEntity.totalAmount}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.totalAmount}">
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Transaction Date Time" sortBy="#{orderEntity.transactionDateTime}" filterBy="#{orderEntity.transactionDateTime}" filterMatchMode="contains">
+                    <h:outputText id="transactionDateTime" value="#{orderEntity.transactionDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="dd MMM yyyy, HH:mm:ss" />
+                    </h:outputText>
+                    <p:tooltip for="transactionDateTime" value="#{orderEntity.transactionDateTime}">
+                        <f:convertDateTime type="localDateTime" pattern="EEEE" />
+                    </p:tooltip>
+                </p:column>
+
+                <p:column headerText="Collection Method" sortBy="#{orderEntity.collectionMethodEnum}" filterBy="#{orderEntity.collectionMethodEnum}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.collectionMethodEnum}" />
+                </p:column>
+
+                <p:column headerText="Order Status" sortBy="#{orderEntity.orderStatusEnum}" filterBy="#{orderEntity.orderStatusEnum}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.orderStatusEnum}" />
+                </p:column>
+
+
+
+
+
+                <!--                <p:column style="width: 5em; text-align: center;" headerText="Action">
+                                    <p:commandButton actionListener="#{orderManagementManagedBean.doUpdateOrder}" update="@composite:@next:@next:dialogUpdateOrder1 @composite:@next:@next:dialogUpdateOrder2" oncomplete="PF('dialogUpdateOrder1').show()" icon="pi pi-pencil" title="Update">
+                                        <f:attribute name="orderEntityToUpdate" value="#{orderEntity}" />
+                                    </p:commandButton>
+                                </p:column>
+                -->
+                <p:columnGroup type="footer">   
+                    <p:row>
+                        <p:column colspan="8" footerText="#{orderManagementManagedBean.orderEntities.size()} orders" />
+                    </p:row>
+                </p:columnGroup>
+
+            </p:dataTable>
+        </h:form>
+    </cc:implementation>
+</html>
