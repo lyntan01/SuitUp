@@ -70,7 +70,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     @Override
     public List<CategoryEntity> retrieveAllCategories()
     {
-        Query query = em.createQuery("SELECT c FROM CategoryEntity c WHERE c.isDisabled =:notDisabled ORDER BY c.name ASC");
+        Query query = em.createQuery("SELECT c FROM CategoryEntity c ORDER BY c.name ASC");
         query.setParameter("notDisabled", false);
         List<CategoryEntity> categoryEntities = query.getResultList();
         
@@ -88,7 +88,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     {
         CategoryEntity categoryEntity = em.find(CategoryEntity.class, categoryId);
         
-        if(categoryEntity != null && categoryEntity.getIsDisabled().equals(false))
+        if(categoryEntity != null)
         {
             categoryEntity.getStandardProducts().size();
             return categoryEntity;
@@ -138,13 +138,13 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     
     
     @Override
-    public void deleteCategory(Long categoryId) throws CategoryNotFoundException
+    public void deleteCategory(Long categoryId) throws CategoryNotFoundException, DeleteEntityException
     {
         CategoryEntity categoryEntityToRemove = retrieveCategoryByCategoryId(categoryId);
         
         if(!categoryEntityToRemove.getStandardProducts().isEmpty())
         {
-            categoryEntityToRemove.setIsDisabled(Boolean.TRUE);
+            throw new DeleteEntityException("Error: Unable to delete category because there are products under it");
         }
         else
         {            

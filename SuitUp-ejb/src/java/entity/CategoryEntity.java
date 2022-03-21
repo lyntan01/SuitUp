@@ -109,6 +109,5 @@ public class CategoryEntity implements Serializable {
     public String toString() {
         return "entity.CategoryEntity[ id=" + categoryId + " ]";
     }
-
     
 }

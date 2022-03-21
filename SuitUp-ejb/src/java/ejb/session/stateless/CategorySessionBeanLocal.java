@@ -27,7 +27,7 @@ public interface CategorySessionBeanLocal {
 
     public Long createNewCategory(CategoryEntity newCategoryEntity) throws UnknownPersistenceException, InputDataValidationException;
 
-    public void deleteCategory(Long categoryId) throws CategoryNotFoundException;
+    public void deleteCategory(Long categoryId) throws CategoryNotFoundException, DeleteEntityException;
 
     public void updateCategory(CategoryEntity categoryEntity) throws InputDataValidationException, CategoryNotFoundException, UpdateEntityException;
     

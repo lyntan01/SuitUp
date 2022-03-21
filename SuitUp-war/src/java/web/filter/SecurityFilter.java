@@ -82,7 +82,7 @@ public class SecurityFilter implements Filter {
                 return false;
             }
         } else if (accessRight.equals(AccessRightEnum.CASHIER)) {
-            if (path.equals("/staffProfile.xhtml")
+            if (path.equals("/cashierOperation/checkout.xhtml")
                     || path.equals("/cashierOperation/voidRefund.xhtml")
                     || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")) {
                 return true;
@@ -90,7 +90,7 @@ public class SecurityFilter implements Filter {
                 return false;
             }
         } else if (accessRight.equals(AccessRightEnum.MANAGER)) {
-            if (path.equals("/staffProfile.xhtml")
+            if (path.equals("/cashierOperation/checkout.xhtml")
                     || path.equals("/cashierOperation/voidRefund.xhtml")
                     || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")
                     || path.equals("/systemAdministration/createNewStaff.xhtml")

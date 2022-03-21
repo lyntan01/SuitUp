@@ -11,6 +11,7 @@ import ejb.session.stateless.TagSessionBeanLocal;
 import entity.CategoryEntity;
 import entity.StandardProductEntity;
 import entity.TagEntity;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import util.exception.CategoryNotFoundException;
 import util.exception.CreateStandardProductException;
 import util.exception.DeleteEntityException;
@@ -46,6 +48,9 @@ public class StandardProductManagementManagedBean implements Serializable {
 
     @EJB
     private CategorySessionBeanLocal categorySessionBean;
+    
+    @Inject
+    private ViewStandardProductManagedBean viewStandardProductManagedBean;
 
     private List<TagEntity> tags;
     private List<StandardProductEntity> standardProducts;
@@ -98,14 +103,14 @@ public class StandardProductManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new Standard Product: " + ex.getMessage(), null));
         }
     }
-    
-    public void createNewCategory (ActionEvent event) {
+
+    public void createNewCategory(ActionEvent event) {
         try {
             Long categoryId = categorySessionBean.createNewCategory(newCategoryEntity);
             if (filteredCategories != null) {
                 filteredCategories.add(newCategoryEntity);
             }
-            newCategoryEntity= new CategoryEntity();
+            newCategoryEntity = new CategoryEntity();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New category created successfully (Category ID: " + categoryId + ")", null));
         } catch (UnknownPersistenceException | InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new Category: " + ex.getMessage(), null));
@@ -431,6 +436,14 @@ public class StandardProductManagementManagedBean implements Serializable {
 
     public void setTagIdsUpdate(List<Long> tagIdsUpdate) {
         this.tagIdsUpdate = tagIdsUpdate;
+    }
+
+    public ViewStandardProductManagedBean getViewStandardProductManagedBean() {
+        return viewStandardProductManagedBean;
+    }
+
+    public void setViewStandardProductManagedBean(ViewStandardProductManagedBean viewStandardProductManagedBean) {
+        this.viewStandardProductManagedBean = viewStandardProductManagedBean;
     }
 
 }

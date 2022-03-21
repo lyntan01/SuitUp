@@ -37,21 +37,13 @@
                     <p:column headerText="SKU Code" sortBy="#{standardProduct.skuCode}" filterBy="#{standardProduct.skuCode}" filterMatchMode="contains">
                         <h:outputText value="#{standardProduct.skuCode}" />
                     </p:column>
-
+                    
                     <p:column headerText="Name" sortBy="#{standardProduct.name}" filterBy="#{standardProduct.name}" filterMatchMode="contains">
                         <h:outputText value="#{standardProduct.name}" />
-                    </p:column>
-                    
-                    <p:column headerText="Description" sortBy="#{standardProduct.description}" filterBy="#{standardProduct.description}" filterMatchMode="contains">
-                        <h:outputText value="#{standardProduct.description}" />
                     </p:column>
 
                     <p:column headerText="Quantity in Stock" sortBy="#{standardProduct.quantityInStock}" filterBy="#{standardProduct.quantityInStock}" filterMatchMode="contains">
                         <h:outputText value="#{standardProduct.quantityInStock}" />
-                    </p:column>
-                    
-                    <p:column headerText="Reorder Quantity" sortBy="#{standardProduct.reorderQuantity}" filterBy="#{standardProduct.reorderQuantity}" filterMatchMode="contains">
-                        <h:outputText value="#{standardProduct.reorderQuantity}" />
                     </p:column>
 
                     <p:column headerText="Unit Price" sortBy="#{standardProduct.unitPrice}" filterBy="#{standardProduct.unitPrice}" filterMatchMode="contains" style="text-align: right;">
@@ -72,12 +64,12 @@
 
                     <p:column headerText="Action" >
                         <p:commandButton update="ViewProduct:formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
-                            <f:setPropertyActionListener value="#{standardProduct}" target="#{standardProductManagementManagedBean.viewProductManagedBean.standardProductToView}" />
+                            <f:setPropertyActionListener value="#{standardProduct}" target="#{standardProductManagementManagedBean.viewStandardProductManagedBean.standardProductToView}" />
                         </p:commandButton>
                         <p:commandButton actionListener="#{standardProductManagementManagedBean.doUpdateStandardProduct}" update="formUpdateProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="" value="#{selectedStandardProductEntityToUpdate}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteProduct}" update="formAllStandardProducts:dataTableAllStandardProducts formAllStandardProducts:messages">
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteStandardProduct}" update="formAllStandardProducts:dataTableAllStandardProducts formAllStandardProducts:messages">
                             <f:attribute name="standardProductToDelete" value="#{standardProductToDelete}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{standardProductToDelete.name} (SKU Code: #{standardProductToDelete.skuCode})?" icon="ui-icon-alert" />
                         </p:commandButton>
