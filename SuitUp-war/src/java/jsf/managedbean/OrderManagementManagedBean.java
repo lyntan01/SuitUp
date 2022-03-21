@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 
 /**
@@ -44,6 +45,12 @@ public class OrderManagementManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct() {
         orderEntities = orderSessionBeanLocal.retrieveAllOrders();
+    }
+    
+    public void doUpdateOrder(ActionEvent event)
+    {
+        selectedOrderEntityToUpdate = (OrderEntity) event.getComponent().getAttributes().get("orderEntityToUpdate");
+        filteredOrderLineItemEntities = new ArrayList<>(selectedOrderEntityToUpdate.getOrderLineItems());
     }
 
     public ViewOrderManagedBean getViewOrderManagedBean() {

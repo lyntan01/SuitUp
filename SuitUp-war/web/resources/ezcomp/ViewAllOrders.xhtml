@@ -22,7 +22,7 @@
                          filteredValue="#{orderManagementManagedBean.filteredOrderEntities}" rows="5"
                          paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
 
-                <!--<p:ajax event="rowDblselect" update="ccViewOrder:dialogViewOrder" global="false" oncomplete="PF('dialogViewOrder').show()"/>-->
+                <p:ajax event="rowDblselect" update="ccViewOrder:dialogViewOrder" global="false" oncomplete="PF('dialogViewOrder').show()"/>
 
                 <f:facet name="header">
                     <div style="text-align: right;">
@@ -39,8 +39,8 @@
                     <h:outputText value="#{orderEntity.serialNumber}" />
                 </p:column>
 
-                <p:column headerText="Total Order Item" sortBy="#{orderEntity.totalOrderItem}" filterBy="#{orderEntity.totalOrderItem}" filterMatchMode="contains">
-                    <h:outputText value="#{orderEntity.totalOrderItem}" />
+                <p:column headerText="Total Order Line Item" sortBy="#{orderEntity.totalLineItem}" filterBy="#{orderEntity.totalLineItem}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.totalLineItem}" />
                 </p:column>
 
                 <p:column headerText="Total Quantity" sortBy="#{orderEntity.totalQuantity}" filterBy="#{orderEntity.totalQuantity}" filterMatchMode="contains">
@@ -53,12 +53,11 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="Transaction Date Time" sortBy="#{orderEntity.transactionDateTime}" filterBy="#{orderEntity.transactionDateTime}" filterMatchMode="contains">
-                    <h:outputText id="transactionDateTime" value="#{orderEntity.transactionDateTime}">
-                        <f:convertDateTime type="localDateTime" pattern="dd MMM yyyy, HH:mm:ss" />
+                <p:column headerText="Order Date Time" sortBy="#{orderEntity.orderDateTime}" filterBy="#{orderEntity.orderDateTime}" filterMatchMode="contains">
+                    <h:outputText id="orderDateTime" value="#{orderEntity.orderDateTime}">
                     </h:outputText>
-                    <p:tooltip for="transactionDateTime" value="#{orderEntity.transactionDateTime}">
-                        <f:convertDateTime type="localDateTime" pattern="EEEE" />
+                    <p:tooltip for="orderDateTime" value="#{orderEntity.orderDateTime}">
+
                     </p:tooltip>
                 </p:column>
 
@@ -74,15 +73,15 @@
 
 
 
-                <!--                <p:column style="width: 5em; text-align: center;" headerText="Action">
-                                    <p:commandButton actionListener="#{orderManagementManagedBean.doUpdateOrder}" update="@composite:@next:@next:dialogUpdateOrder1 @composite:@next:@next:dialogUpdateOrder2" oncomplete="PF('dialogUpdateOrder1').show()" icon="pi pi-pencil" title="Update">
-                                        <f:attribute name="orderEntityToUpdate" value="#{orderEntity}" />
-                                    </p:commandButton>
-                                </p:column>
-                -->
+                <p:column style="width: 5em; text-align: center;" headerText="Action">
+                    <p:commandButton actionListener="#{orderManagementManagedBean.doUpdateOrder}" update="@composite:@next:@next:dialogUpdateOrder1 @composite:@next:@next:dialogUpdateOrder2" oncomplete="PF('dialogUpdateOrder1').show()" icon="pi pi-pencil" title="Update">
+                        <f:attribute name="orderEntityToUpdate" value="#{orderEntity}" />
+                    </p:commandButton>
+                </p:column>
+
                 <p:columnGroup type="footer">   
                     <p:row>
-                        <p:column colspan="8" footerText="#{orderManagementManagedBean.orderEntities.size()} orders" />
+                        <p:column colspan="9" footerText="#{orderManagementManagedBean.orderEntities.size()} orders" />
                     </p:row>
                 </p:columnGroup>
 

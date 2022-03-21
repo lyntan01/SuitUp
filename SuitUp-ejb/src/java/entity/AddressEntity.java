@@ -86,7 +86,7 @@ public class AddressEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.AddressEntity[ id=" + addressId + " ]";
+        return this.addressLineOne + ", " + addressLineTwo + ", " + postalCode;
     }
 
     public String getName() {

@@ -7,10 +7,19 @@
 
     <ui:define name="content">
         <h3>Order Management</h3>
-        
+
         <ezcomp:Breadcrumb pageName="orderManagement"/>
-        
-        
+
+        <div>
+
+            <ezcomp:ViewAllOrders id="ccViewAllOrders" />
+
+            <ezcomp:ViewOrder id="ccViewOrder" />
+
+            <ezcomp:UpdateOrder id="ccUpdateOrder" />
+
+        </div>
+
     </ui:define>
 
 </ui:composition>

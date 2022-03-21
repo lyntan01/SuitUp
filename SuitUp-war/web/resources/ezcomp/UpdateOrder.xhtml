@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <p:dialog id="dialogUpdateOrder1" widgetVar="dialogUpdateOrder1" header="Update Order" width="100em;" height="40em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formUpdateOrder1">
+
+                <p:messages id="messages" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 10em;" for="orderId" value="ID"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="orderId" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.orderId}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="serialNumber" value="Serial Number"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="serialNumber" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.serialNumber}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="totalOrderLineItem" value="Total Order Line Item"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="totalOrderLineItem" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.totalLineItem}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="totalQuantity" value="Total Quantity"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="totalQuantity" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.totalQuantity}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="totalAmount" value="Total Amount"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="totalAmount" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.totalAmount}" disabled="true">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="orderDateTime" value="Password"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="orderDateTime" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.orderDateTime}" disabled="true">
+                            </p:inputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="deliveryAddress" value="Delivery Address"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="deliveryAddress" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.deliveryAddress}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="collectionMethod" value="Collection Method"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="collectionMethod" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.collectionMethodEnum}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="orderStatus" value="Order Status"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="orderStatus" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.orderStatusEnum}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="customer"  value="Customer Email"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="customer" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.customer.email}" disabled="true" />
+                        </p:column>
+                    </p:row>
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column colspan="3" style="text-align: center;">
+                                <p:commandButton value="Next" oncomplete="PF('dialogUpdateOrder2').show(); PF('dialogUpdateOrder1').hide()" />                                
+                            </p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog id="dialogUpdateOrder2" widgetVar="dialogUpdateOrder2" header="Update Order" width="100em" height="40em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formUpdateOrder2">
+
+                <p:dataTable id="dataTableUpdateOrder"
+                             value="#{orderManagementManagedBean.filteredOrderLineItemEntities}"
+                             var="orderLineItemEntity"
+                             rowKey="#{orderLineItemEntity.orderLineItemId}"
+                             rowIndexVar="row">
+
+                    <p:column style="width: 5em;" headerText="Product Name" sortBy="#{orderLineItemEntity.product.name}" filterBy="#{orderLineItemEntity.product.name}" filterMatchMode="contains">
+                        <h:outputText value="#{orderLineItemEntity.product.name}" />
+                    </p:column>  
+
+                    <p:column style="width: 5em;" headerText="Description" sortBy="#{orderLineItemEntity.product.description}" filterBy="#{orderLineItemEntity.product.description}" filterMatchMode="contains">
+                        <h:outputText value="#{orderLineItemEntity.product.description}" />
+                    </p:column>  
+
+                    <p:column style="width: 5em;" headerText="Quantity" sortBy="#{orderLineItemEntity.quantity}" filterBy="#{orderLineItemEntity.quantity}" filterMatchMode="contains">
+                        <h:outputText value="#{orderLineItemEntity.quantity}" />
+                    </p:column>  
+
+                    <p:column style="width: 5em;" headerText="Subtotal" sortBy="#{orderLineItemEntity.subTotal}" filterBy="#{orderLineItemEntity.subTotal}" filterMatchMode="contains">
+                        <h:outputText value="#{orderLineItemEntity.subTotal}" >
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>  
+
+<!--                    <p:column style="text-align: center; width: 8em;" headerText="Order Item Status" filterBy="#{orderLineItemEntity.orderItemStatusEnum}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="filterItemStatus">
+                                <f:selectItem itemValue="#{null}" itemLabel="[All]" noSelectionOption="true" />
+                                <f:selectItems value="#{orderManagementManagedBean.orderItemStatusEnums}" var="orderItemStatusEnum" itemValue="#{orderItemStatusEnum}" itemLabel="#{orderItemStatusEnum.printName}" />
+                                <p:ajax event="itemSelect" update="dataTableUpdateOrder" listener="#{orderManagementManagedBean.filterOrderItemStatusChange}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <p:selectOneMenu id="selItemStatus" value="#{orderLineItemEntity.orderItemStatusEnum}" required="true" requiredMessage="Order item status required">
+                            <f:selectItems value="#{orderManagementManagedBean.orderItemStatusEnums}" var="orderItemStatusEnum" itemValue="#{orderItemStatusEnum}" itemLabel="#{orderItemStatusEnum.printName}" />
+                            <f:attribute name="orderLineItemEntityToUpdate" value="#{orderLineItemEntity}" />
+                            <p:ajax event="itemSelect" update="dataTableUpdateOrder" listener="#{orderManagementManagedBean.updateOrderItemStatusChange}" />
+                        </p:selectOneMenu>
+                    </p:column>  -->
+
+                    <f:facet name="footer">
+                        <p:column>
+                            <p:commandButton value="Back" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide()" />
+                        </p:column>
+                        <p:column>
+                            <!--<p:commandButton value="Update Order" update="@composite:dialogUpdateOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" process="@this" actionListener="#{orderManagementManagedBean.updateOrder}" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide();" />-->
+                            <p:commandButton value="Update Order" update="@composite:dialogUpdateOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" process="@this" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide();" />
+                        </p:column>
+                    </f:facet>
+
+                </p:dataTable>
+
+            </h:form>
+
+        </p:dialog>       
+
+    </cc:implementation>
+</html>
