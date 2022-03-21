@@ -9,6 +9,7 @@ import entity.AddressEntity;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.AddressNotFoundException;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
@@ -21,7 +22,7 @@ import util.exception.UpdateEntityException;
 @Local
 public interface AddressSessionBeanLocal {
 
-    public Long createNewAddress(AddressEntity newAddressEntity) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewAddress(AddressEntity newAddressEntity, Long customerId) throws CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException;
 
     public List<AddressEntity> retrieveAllAddresss();
 

@@ -11,6 +11,7 @@ import entity.OrderEntity;
 import entity.StaffEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +23,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
@@ -37,6 +39,9 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
 
+    @EJB
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
@@ -46,13 +51,15 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
     }
 
     @Override
-    public Long createNewAddress(AddressEntity newAddressEntity) throws UnknownPersistenceException, InputDataValidationException {
+    public Long createNewAddress(AddressEntity newAddressEntity, Long customerId) throws CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException {
         Set<ConstraintViolation<AddressEntity>> constraintViolations = validator.validate(newAddressEntity);
 
         if (constraintViolations.isEmpty()) {
             try {
+                CustomerEntity customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                 em.persist(newAddressEntity);
                 em.flush();
+                customerEntity.getAddresses().add(newAddressEntity);
 
                 return newAddressEntity.getAddressId();
             } catch (PersistenceException ex) {
@@ -110,45 +117,41 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
     public void deleteAddress(Long addressId) throws AddressNotFoundException, DeleteEntityException {
         AddressEntity addressEntityToRemove = retrieveAddressByAddressId(addressId);
         List<OrderEntity> orders = em.createQuery("SELECT o FROM OrderEntity o WHERE o.deliveryAddress.addressId = :inAddressId")
-                                      .setParameter("inAddressId", addressId)
-                                      .getResultList();
+                .setParameter("inAddressId", addressId)
+                .getResultList();
         boolean isDeliveryAddress = orders.size() > 0;
         boolean isStoreAddress = em.createQuery("SELECT s FROM StoreEntity s WHERE s.address.addressId = :inAddressId")
-                                    .setParameter("inAddressId", addressId)
-                                    .getResultList()
-                                    .size() > 0;
+                .setParameter("inAddressId", addressId)
+                .getResultList()
+                .size() > 0;
 
-        if(!isDeliveryAddress && !isStoreAddress) // Address is only a customer address not linked to any order yet
+        if (!isDeliveryAddress && !isStoreAddress) // Address is only a customer address not linked to any order yet
         {
             // Disassociation
             CustomerEntity customerEntity = (CustomerEntity) em.createNamedQuery("findCustomerByAddressId")
-                                                               .setParameter("inAddressId", addressId)
-                                                               .getSingleResult();
+                    .setParameter("inAddressId", addressId)
+                    .getSingleResult();
             customerEntity.getAddresses().remove(addressEntityToRemove);
             em.remove(addressEntityToRemove);
-        }
-        else if (isStoreAddress)
-        {
+        } else if (isStoreAddress) {
             // Prevent deleting addresss linked to existing store(s)
             throw new DeleteEntityException("Address ID " + addressId + " is associated with existing store(s) and cannot be deleted!");
-        }
-        else if (isDeliveryAddress)
-        {
+        } else if (isDeliveryAddress) {
             // Prevent deleting addresss linked to existing order(s) that have NOT been completed
             for (OrderEntity order : orders) {
-                if (order.getOrderStatusEnum() != OrderStatusEnum.COMPLETED && 
-                    order.getOrderStatusEnum() != OrderStatusEnum.CANCELLED) {
+                if (order.getOrderStatusEnum() != OrderStatusEnum.COMPLETED
+                        && order.getOrderStatusEnum() != OrderStatusEnum.CANCELLED) {
                     throw new DeleteEntityException("Address ID " + addressId + " is associated with existing undelivered order(s) and cannot be deleted!");
                 }
             }
-            
+
             // If address is only linked to orders that have been COMPLETED, disassociate from customer but keep in database
             CustomerEntity customerEntity = (CustomerEntity) em.createNamedQuery("findCustomerByAddressId")
-                                                               .setParameter("inAddressId", addressId)
-                                                               .getSingleResult();
+                    .setParameter("inAddressId", addressId)
+                    .getSingleResult();
             customerEntity.getAddresses().remove(addressEntityToRemove);
         }
-        
+
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<AddressEntity>> constraintViolations) {

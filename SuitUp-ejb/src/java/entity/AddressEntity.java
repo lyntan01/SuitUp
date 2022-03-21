@@ -47,8 +47,14 @@ public class AddressEntity implements Serializable {
 
     public AddressEntity() {
     }
-    
-    
+
+    public AddressEntity(String name, String phoneNumber, String addressLineOne, String addressLineTwo, String postalCode) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.addressLineOne = addressLineOne;
+        this.addressLineTwo = addressLineTwo;
+        this.postalCode = postalCode;
+    }
 
     public Long getAddressId() {
         return addressId;
@@ -122,5 +128,5 @@ public class AddressEntity implements Serializable {
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
-    
+
 }
