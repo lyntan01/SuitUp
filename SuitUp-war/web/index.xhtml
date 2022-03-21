@@ -12,6 +12,7 @@
         <h:form>
             <p:messages globalOnly="true" redisplay="false" closable="true"/>
             <br/>
+
             <p:panelGrid rendered="#{sessionScope.isLogin == false}" style="display: block; margin: auto">
 
                 <p:row>
@@ -49,7 +50,7 @@
 
         </h:form>
 
-        <h:outputText value="Placeholder for index page. Logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." rendered="${sessionScope.isLogin == true}" />
+        <h:outputText value="Placeholder for index page. Logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." rendered="${sessionScope.isLogin = true}" />
     </ui:define>
 
 </ui:composition>
