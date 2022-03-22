@@ -58,7 +58,7 @@
                         
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Category" update="@form formAllCategories:dataTableAllCategories" actionListener="#{standardProductManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
+                                <p:commandButton value="Update Category" update="@form viewStandardProductsTabView:ViewAllCategories:formAllCategories:dataTableAllCategories" actionListener="#{standardProductManagementManagedBean.updateCategory}" oncomplete="PF('dialogUpdateCategory').show();" />
                             </p:column>
                         </p:row>
 

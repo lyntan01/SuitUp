@@ -77,7 +77,7 @@
                                 <p:spinner id="quantityInStock" value="#{standardProductManagementManagedBean.selectedStandardProductToUpdate.quantityInStock}" placeholder="100" min="0" required="true" requiredMessage="Quantity On Hand is required" />
                             </p:column>
                             <p:column>
-                                <p:message for="quantityOnHand" />
+                                <p:message for="quantityInStock" />
                             </p:column>
                         </p:row>
 
@@ -136,7 +136,7 @@
 
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Standard Product" update="@form formAllStandardProducts:dataTableAllStandardProducts" actionListener="#{standardProductManagementManagedBean.updateStandardProduct}" oncomplete="PF('dialogUpdateStandardProduct').show();" />
+                                <p:commandButton value="Update Standard Product" update="@form viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts" actionListener="#{standardProductManagementManagedBean.updateStandardProduct}" oncomplete="PF('dialogUpdateStandardProduct').show();" />
                             </p:column>
                         </p:row>
 

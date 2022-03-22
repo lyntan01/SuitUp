@@ -46,7 +46,7 @@
                         
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Tag" update="@form formAllTags:dataTableAllTags" actionListener="#{standardProductManagementManagedBean.updateTag}" oncomplete="PF('dialogUpdateTag').show();" />
+                                <p:commandButton value="Update Tag" update="@form viewStandardProductsTabView:ViewAllTags:formAllTags:dataTableAllTags" actionListener="#{standardProductManagementManagedBean.updateTag}" oncomplete="PF('dialogUpdateTag').show();" />
                             </p:column>
                         </p:row>
 

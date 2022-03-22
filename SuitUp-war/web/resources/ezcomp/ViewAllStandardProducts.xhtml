@@ -63,13 +63,13 @@
                     </p:column>
 
                     <p:column headerText="Action" >
-                        <p:commandButton update="ViewProduct:formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
+                        <p:commandButton update="ViewStandardProduct:formViewStandardProduct" oncomplete="PF('dialogViewStandardProduct').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{standardProduct}" target="#{standardProductManagementManagedBean.viewStandardProductManagedBean.standardProductToView}" />
                         </p:commandButton>
-                        <p:commandButton actionListener="#{standardProductManagementManagedBean.doUpdateStandardProduct}" update="formUpdateProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
+                        <p:commandButton actionListener="#{standardProductManagementManagedBean.doUpdateStandardProduct}" update="UpdateStandardProduct:formUpdateStandardProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="" value="#{selectedStandardProductEntityToUpdate}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteStandardProduct}" update="formAllStandardProducts:dataTableAllStandardProducts formAllStandardProducts:messages">
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteStandardProduct}" update="viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts">
                             <f:attribute name="standardProductToDelete" value="#{standardProductToDelete}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{standardProductToDelete.name} (SKU Code: #{standardProductToDelete.skuCode})?" icon="ui-icon-alert" />
                         </p:commandButton>

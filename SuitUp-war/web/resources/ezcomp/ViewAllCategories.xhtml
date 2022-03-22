@@ -46,14 +46,10 @@
                 
                 <p:column headerText="Description" sortBy="#{category.description}" filterBy="#{category.description}" filterMatchMode="contains">
                     <h:outputText value="#{category.description}" />
-                </p:column>
-
-                <p:column headerText="Code" sortBy="#{category.code}" filterBy="#{category.code}" filterMatchMode="contains">
-                    <h:outputText value="#{category.code}" />
-                </p:column>                                   
+                </p:column>                                 
 
                 <p:column headerText="Action" style="text-align: center;">
-                    <p:commandButton icon="pi pi-pencil" actionListener="#{standardProductManagementManagedBean.doUpdateCategory}" update="UpdateCategory:dialogUpdateCategory" oncomplete="PF('dialogUpdateCategory').show()">
+                    <p:commandButton icon="pi pi-pencil" actionListener="#{standardProductManagementManagedBean.doUpdateCategory}" update="UpdateCategory:formUpdateCategory" oncomplete="PF('dialogUpdateCategory').show()">
                         <f:attribute name="selectedCategoryToUpdate" value="#{category}" />
                     </p:commandButton>
                     <p:commandButton icon="pi pi-trash" actionListener="#{standardProductManagementManagedBean.deleteCategory}" update="@form:dataTableAllCategories @form:messages">

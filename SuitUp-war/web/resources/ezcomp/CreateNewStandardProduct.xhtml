@@ -24,34 +24,34 @@
 
                     <p:row>
                         <p:column style="width: 30%;"><p:outputLabel style="font-weight: bold;" for="name" value="Name: "/></p:column>
-                        <p:column style="width: 70%;"><p:inputText id="name" value="#{standardProductManagedBean.newStandardProductEntity.name}" placeholder="StandardProduct" required="true" requiredMessage="Name is required" /></p:column>
+                        <p:column style="width: 70%;"><p:inputText id="name" value="#{standardProductManagementManagedBean.newStandardProductEntity.name}" placeholder="StandardProduct" required="true" requiredMessage="Name is required" /></p:column>
                     </p:row>
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="description" value="Description: "/></p:column>
-                        <p:column><p:inputText id="description" value="#{standardProductManagedBean.newStandardProductEntity.description}" placeholder="StandardProduct" required="true" requiredMessage="Description is required" /></p:column>
+                        <p:column><p:inputText id="description" value="#{standardProductManagementManagedBean.newStandardProductEntity.description}" placeholder="StandardProduct" required="true" requiredMessage="Description is required" /></p:column>
                     </p:row>
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="skuCode" value="SKU Code: "/></p:column>
-                        <p:column><p:inputText id="skuCode" value="#{standardProductManagedBean.newStandardProductEntity.description}" placeholder="SKU001" required="true" requiredMessage="SKU Code is required" /></p:column>
+                        <p:column><p:inputText id="skuCode" value="#{standardProductManagementManagedBean.newStandardProductEntity.description}" placeholder="SKU001" required="true" requiredMessage="SKU Code is required" /></p:column>
                     </p:row>
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="quantityInStock" value="Quantity In Stock: "/></p:column>
-                        <p:column><p:inputText id="quantityInStock" value="#{standardProductManagedBean.newStandardProductEntity.description}" placeholder="100" required="true" requiredMessage="Quantity In Stock is required" /></p:column>
+                        <p:column><p:inputText id="quantityInStock" value="#{standardProductManagementManagedBean.newStandardProductEntity.description}" placeholder="100" required="true" requiredMessage="Quantity In Stock is required" /></p:column>
                     </p:row>
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="reorderQuantity" value="Reorder Quantity: "/></p:column>
-                        <p:column><p:inputText id="reorderQuantity" value="#{standardProductManagedBean.newStandardProductEntity.description}" placeholder="100" required="true" requiredMessage="Reorder Quantity is required" /></p:column>
+                        <p:column><p:inputText id="reorderQuantity" value="#{standardProductManagementManagedBean.newStandardProductEntity.reorderQuantity}" placeholder="100" required="true" requiredMessage="Reorder Quantity is required" /></p:column>
                     </p:row>
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="tags" value="Tag(s): "/></p:column>
                         <p:column>
-                            <p:selectManyCheckbox id="tags" value="#{productManagementManagedBean.newTagIds}" layout="grid" columns="3" styleClass="grid-checkbox">
-                                <f:selectItems value="#{productManagementManagedBean.tags}" var="tag" itemValue="#{tag.tagId}" itemLabel="#{tag.name}"  />
+                            <p:selectManyCheckbox id="tags" value="#{standardProductManagementManagedBean.newTagIds}" layout="grid" columns="3" styleClass="grid-checkbox">
+                                <f:selectItems value="#{standardProductManagementManagedBean.tags}" var="tag" itemValue="#{tag.tagId}" itemLabel="#{tag.name}"  />
                             </p:selectManyCheckbox>
                         </p:column>
                     </p:row>
@@ -61,9 +61,9 @@
                             <p:outputLabel style="font-weight: bold;" for="category" value="Category: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu style="width: 16em;" id="category" value="#{productManagementManagedBean.newCategoryId}" required="true" requiredMessage="Category is required">
+                            <p:selectOneMenu style="width: 16em;" id="category" value="#{standardProductManagementManagedBean.newCategoryId}" required="true" requiredMessage="Category is required">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select Category]" noSelectionOption="true" itemDisabled="true" />
-                                <f:selectItems value="#{productManagementManagedBean.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category.categoryId}" />
+                                <f:selectItems value="#{standardProductManagementManagedBean.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category.categoryId}" />
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -72,9 +72,9 @@
                     <p:separator/>
                     <br/>
 
-                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="image" value="Product Image: " rendered="#{productManagementManagedBean.newProductEntity.image == null}" />
-                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{productManagementManagedBean.handleFileUpload}" rendered="#{productManagementManagedBean.newProductEntity.image == null}" />
-                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{productManagementManagedBean.newProductEntity.imageLink != null}" />
+                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.fileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image != null}" />
 
                     <br/>
                     <p:separator/>

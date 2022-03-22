@@ -31,7 +31,7 @@
                             <p:commandButton type="reset" value="Clear">
                                 <p:ajax event="click" update="@form" resetValues="true" oncomplete="PF('dialogCreateNewTag').show()" />
                             </p:commandButton>&nbsp;
-                            <p:commandButton value="Create New Tag" update="@form viewStandardProductsTabView:ViewAllTabs:formAllTabs:dataTableAllTabs" oncomplete="PF('dialogCreateNewTag').show()" actionListener="#{standardProductManagementManagedBean.createNewTag}" />
+                            <p:commandButton value="Create New Tag" update="@form viewStandardProductsTabView:ViewAllTags:formAllTags:dataTableAllTags" oncomplete="PF('dialogCreateNewTag').show()" actionListener="#{standardProductManagementManagedBean.createNewTag}" />
                         </p:column>
                     </p:row>
 
