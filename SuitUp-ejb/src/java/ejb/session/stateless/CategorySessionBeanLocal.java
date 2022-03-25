@@ -9,6 +9,7 @@ import entity.CategoryEntity;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.CategoryNotFoundException;
+import util.exception.CreateNewCategoryException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
@@ -25,7 +26,7 @@ public interface CategorySessionBeanLocal {
 
     public CategoryEntity retrieveCategoryByCategoryId(Long categoryId) throws CategoryNotFoundException;
 
-    public Long createNewCategory(CategoryEntity newCategoryEntity) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewCategory(CategoryEntity newCategoryEntity) throws UnknownPersistenceException, InputDataValidationException, CreateNewCategoryException;
 
     public void deleteCategory(Long categoryId) throws CategoryNotFoundException, DeleteEntityException;
 

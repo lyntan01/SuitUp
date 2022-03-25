@@ -18,7 +18,7 @@
                 <p:messages id="messages" redisplay="false" closable="true" />
 
                 <p:dataTable id="dataTableAllStandardProducts" widgetVar="dataTableAllStandardProducts" value="#{standardProductManagementManagedBean.standardProducts}" var="standardProduct" rowKey="#{standardProduct.productId}" rowIndexVar="row"
-                             filteredValue="#{productManagementManagedBean.filteredProductEntities}"
+                             filteredValue="#{standardProductManagementManagedBean.filteredStandardProducts}"
                              rows="10" paginator="true" 
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                              rowsPerPageTemplate="10,20,50">
@@ -66,8 +66,8 @@
                         <p:commandButton update="ViewStandardProduct:formViewStandardProduct" oncomplete="PF('dialogViewStandardProduct').show()" icon="ui-icon-document" title="View">
                             <f:setPropertyActionListener value="#{standardProduct}" target="#{standardProductManagementManagedBean.viewStandardProductManagedBean.standardProductToView}" />
                         </p:commandButton>
-                        <p:commandButton actionListener="#{standardProductManagementManagedBean.doUpdateStandardProduct}" update="UpdateStandardProduct:formUpdateStandardProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
-                            <f:attribute name="" value="#{selectedStandardProductEntityToUpdate}" />
+                        <p:commandButton actionListener="#{standardProductManagementManagedBean.doUpdateStandardProduct}" update="UpdateStandardProduct:formUpdateStandardProduct" oncomplete="PF('dialogUpdateStandardProduct').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="selectedStandardProductToUpdate" value="#{standardProduct}" />
                         </p:commandButton>
                         <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteStandardProduct}" update="viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts">
                             <f:attribute name="standardProductToDelete" value="#{standardProductToDelete}" />

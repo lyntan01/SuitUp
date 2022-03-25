@@ -12,6 +12,7 @@ import ejb.session.stateless.EmailSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.StaffSessionBeanLocal;
 import ejb.session.stateless.StandardProductSessionBeanLocal;
+import ejb.session.stateless.TagSessionBeanLocal;
 import entity.AddressEntity;
 import entity.CategoryEntity;
 import entity.CustomerEntity;
@@ -20,6 +21,7 @@ import entity.OrderLineItemEntity;
 import entity.ProductEntity;
 import entity.StaffEntity;
 import entity.StandardProductEntity;
+import entity.TagEntity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +38,9 @@ import util.enumeration.CollectionMethodEnum;
 import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
 import util.exception.CategoryNotFoundException;
+import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewOrderException;
+import util.exception.CreateNewTagException;
 import util.exception.CreateStandardProductException;
 import util.exception.CustomerEmailExistException;
 import util.exception.CustomerNotFoundException;
@@ -54,6 +58,9 @@ import util.exception.UnknownPersistenceException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private TagSessionBeanLocal tagSessionBeanLocal;
 
     @EJB
     private EmailSessionBeanLocal emailSessionBeanLocal;
@@ -75,6 +82,7 @@ public class DataInitSessionBean {
 
     @EJB
     private StandardProductSessionBeanLocal standardProductSessionBeanLocal;
+    
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
@@ -139,7 +147,19 @@ public class DataInitSessionBean {
             categorySessionBeanLocal.createNewCategory(new CategoryEntity("Category 1", "Cat 1 Desc", new ArrayList<>())); // 1L
             categorySessionBeanLocal.createNewCategory(new CategoryEntity("Category 2", "Cat 2 Desc", new ArrayList<>())); // 2L
             categorySessionBeanLocal.createNewCategory(new CategoryEntity("Category 3", "Cat 3 Desc", new ArrayList<>())); // 3L
-        } catch (InputDataValidationException | UnknownPersistenceException ex) {
+        } catch (InputDataValidationException | UnknownPersistenceException | CreateNewCategoryException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+    
+    private void initialiseTags() {
+
+        try {
+            tagSessionBeanLocal.createNewTag(new TagEntity("Tag 1", new ArrayList<>())); // 1L
+            tagSessionBeanLocal.createNewTag(new TagEntity("Tag 2", new ArrayList<>())); // 1L
+            tagSessionBeanLocal.createNewTag(new TagEntity("Tag 3", new ArrayList<>())); // 1L
+        } catch (InputDataValidationException | UnknownPersistenceException | CreateNewTagException ex) {
             ex.printStackTrace();
         }
 

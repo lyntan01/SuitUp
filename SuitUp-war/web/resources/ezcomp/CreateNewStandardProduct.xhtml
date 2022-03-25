@@ -34,17 +34,22 @@
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="skuCode" value="SKU Code: "/></p:column>
-                        <p:column><p:inputText id="skuCode" value="#{standardProductManagementManagedBean.newStandardProductEntity.description}" placeholder="SKU001" required="true" requiredMessage="SKU Code is required" /></p:column>
+                        <p:column><p:inputText id="skuCode" value="#{standardProductManagementManagedBean.newStandardProductEntity.skuCode}" placeholder="SKU001" required="true" requiredMessage="SKU Code is required" /></p:column>
                     </p:row>
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="quantityInStock" value="Quantity In Stock: "/></p:column>
-                        <p:column><p:inputText id="quantityInStock" value="#{standardProductManagementManagedBean.newStandardProductEntity.description}" placeholder="100" required="true" requiredMessage="Quantity In Stock is required" /></p:column>
+                        <p:column><p:inputText id="quantityInStock" value="#{standardProductManagementManagedBean.newStandardProductEntity.quantityInStock}" placeholder="100" required="true" requiredMessage="Quantity In Stock is required" /></p:column>
                     </p:row>
 
                     <p:row>
                         <p:column><p:outputLabel style="font-weight: bold;" for="reorderQuantity" value="Reorder Quantity: "/></p:column>
                         <p:column><p:inputText id="reorderQuantity" value="#{standardProductManagementManagedBean.newStandardProductEntity.reorderQuantity}" placeholder="100" required="true" requiredMessage="Reorder Quantity is required" /></p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column><p:outputLabel style="font-weight: bold;" for="unitPrice" value="Unit Price: "/></p:column>
+                        <p:column><p:inputText id="unitPrice" value="#{standardProductManagementManagedBean.newStandardProductEntity.unitPrice}" placeholder="100" required="true" requiredMessage="Reorder Quantity is required" /></p:column>
                     </p:row>
 
                     <p:row>
@@ -73,7 +78,7 @@
                     <br/>
 
                     <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
-                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.fileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.handleFileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
                     <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image != null}" />
 
                     <br/>
@@ -83,12 +88,12 @@
                     <p:row>
                         <p:column colspan="2" style="text-align: center;">
                             <p:commandButton type="reset" value="Clear">
-                                <p:ajax event="click" update="@form" resetValues="true" oncomplete="PF('dialogCreateNewStandardProduct').show()" />
+                                
                             </p:commandButton>&nbsp;
-                            <p:commandButton value="Create New StandardProduct" update="@form viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts" oncomplete="PF('dialogCreateNewStandardProduct').show()" actionListener="#{standardProductManagementManagedBean.createNewStandardProduct}" />
+                            <p:commandButton value="Create New Standard Product" update="@form viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts" oncomplete="PF('dialogCreateNewStandardProduct').show()" actionListener="#{standardProductManagementManagedBean.createNewStandardProduct}" />
                         </p:column>
                     </p:row>
-
+                    
                 </p:panelGrid>
 
             </h:form>

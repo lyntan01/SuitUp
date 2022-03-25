@@ -45,7 +45,7 @@
                 </p:column>                               
 
                 <p:column headerText="Action" style="text-align: center;">
-                    <p:commandButton icon="pi pi-pencil" actionListener="#{standardProductManagementManagedBean.doUpdateTag}" update="UpdateTag:dialogUpdateTag" oncomplete="PF('dialogUpdateTag').show()">
+                    <p:commandButton icon="pi pi-pencil" actionListener="#{standardProductManagementManagedBean.doUpdateTag}" update="UpdateTag:formUpdateTag" oncomplete="PF('dialogUpdateTag').show()">
                         <f:attribute name="selectedTagToUpdate" value="#{tag}" />
                     </p:commandButton>
                     <p:commandButton icon="pi pi-trash" actionListener="#{standardProductManagementManagedBean.deleteTag}" update="@form:dataTableAllTags @form:messages">
