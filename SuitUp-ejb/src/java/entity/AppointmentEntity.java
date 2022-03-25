@@ -6,7 +6,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,6 +45,10 @@ public class AppointmentEntity implements Serializable {
     @NotNull
     private AppointmentTypeEnum appointmentTypeEnum;
 
+    @Column(nullable = false)
+    @NotNull
+    private Boolean isFree;
+
     //-------[Relationship Attributes]-------
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -66,6 +69,12 @@ public class AppointmentEntity implements Serializable {
     public AppointmentEntity(Date appointmentDateTime, AppointmentTypeEnum appointmentTypeEnum) {
         this.appointmentDateTime = appointmentDateTime;
         this.appointmentTypeEnum = appointmentTypeEnum;
+    }
+
+    public AppointmentEntity(Date appointmentDateTime, AppointmentTypeEnum appointmentTypeEnum, boolean isFree) {
+        this.appointmentDateTime = appointmentDateTime;
+        this.appointmentTypeEnum = appointmentTypeEnum;
+        this.isFree = isFree;
     }
 
     public Long getAppointmentId() {
@@ -90,6 +99,14 @@ public class AppointmentEntity implements Serializable {
 
     public void setAppointmentTypeEnum(AppointmentTypeEnum appointmentTypeEnum) {
         this.appointmentTypeEnum = appointmentTypeEnum;
+    }
+
+    public Boolean getIsFree() {
+        return isFree;
+    }
+
+    public void setIsFree(Boolean isFree) {
+        this.isFree = isFree;
     }
 
     public StoreEntity getStore() {
@@ -138,7 +155,7 @@ public class AppointmentEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "AppointmentEntity{" + "appointmentId=" + appointmentId + ", appointmentDateTime=" + appointmentDateTime + ", appointmentTypeEnum=" + appointmentTypeEnum + ", store=" + store + ", customer=" + customer + ", transaction=" + transaction + '}';
+        return "AppointmentEntity{" + "appointmentId=" + appointmentId + ", appointmentDateTime=" + appointmentDateTime + ", appointmentTypeEnum=" + appointmentTypeEnum + ", isFree=" + isFree + ", store=" + store + ", customer=" + customer + ", transaction=" + transaction + '}';
     }
 
 }
