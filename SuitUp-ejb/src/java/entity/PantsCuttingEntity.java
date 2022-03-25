@@ -22,8 +22,8 @@ public class PantsCuttingEntity extends CustomizationEntity implements Serializa
         super();
     }
     
-    public PantsCuttingEntity(String name, BigDecimal additionalPrice, String description, String image, Boolean isDisabled) {
-        super(name, additionalPrice, description, image, isDisabled);
+    public PantsCuttingEntity(String name, BigDecimal additionalPrice, String description, String image) {
+        super(name, additionalPrice, description, image);
     }
 
     @Override

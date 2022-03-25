@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"                
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                template="/template/defaultTemplate.xhtml">
+
+    <ui:define name="content">
+
+        <ez:Breadcrumb pageName="customisationManagement" />
+
+        <div>
+
+            <h:form>
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:menubar>
+                            <p:submenu label="Create Menu" icon="pi pi-fw pi-file">
+                                <p:menuitem value="Create New Pocket Style" onclick="PF('dialogCreateNewPocketStyle').show()" icon="pi pi-plus" />
+                                <p:menuitem value="Create New Jacket Style" onclick="PF('dialogCreateNewJacketStyle').show()" icon="pi pi-plus" />
+                                <p:menuitem value="Create New Fabric" onclick="PF('dialogCreateNewFabric').show()" icon="pi pi-plus" />
+                                <p:menuitem value="Create New Pants Cutting" onclick="PF('dialogCreateNewPantsCutting').show()" icon="pi pi-plus" />
+                                <p:menuitem value="Create New Colour" onclick="PF('dialogCreateNewColour').show()" icon="pi pi-plus" />
+                            </p:submenu>
+                        </p:menubar>     
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+
+            <ez:CreateNewPocketStyle id="CreateNewPocketStyle" />
+            <ez:CreateNewJacketStyle id="CreateNewJacketStyle" />
+            <ez:CreateNewFabric id="CreateNewFabric" />
+            <ez:CreateNewPantsCutting id="CreateNewPantsCutting" />
+            <ez:CreateNewColour id="CreateNewColour" />
+
+            <br/>
+
+            <p:tabView id="customizationEntitiesTabView">  
+                <p:tab title="Pocket Style">                    
+                    <ez:ViewAllPocketStyles id="ViewAllPocketStyles" /> 
+                </p:tab>
+                <p:tab title="Jacket Style">                    
+                    <ez:ViewAllJacketStyles id="ViewAllJacketStyles" /> 
+                </p:tab>
+                <p:tab title="Fabric">                    
+                    <ez:ViewAllFabrics id="ViewAllFabrics" /> 
+                </p:tab>
+                <p:tab title="Pants Cutting">                    
+                    <ez:ViewAllPantsCuttings id="ViewAllPantsCuttings" /> 
+                </p:tab>
+                <p:tab title="Colour">                    
+                    <ez:ViewAllColours id="ViewAllColours" /> 
+                </p:tab>
+            </p:tabView>
+
+            <ez:ViewPocketStyle id="ViewPocketStyle" />
+            <ez:ViewJacketStyle id="ViewJacketStyle" />
+            <ez:ViewFabric id="ViewFabric" />
+            <ez:ViewPantsCutting id="ViewPantsCutting" />
+
+            <ez:UpdatePocketStyle id="UpdatePocketStyle" />
+            <ez:UpdateJacketStyle id="UpdateJacketStyle" />
+            <ez:UpdateFabric id="UpdateFabric" />
+            <ez:UpdatePantsCutting id="UpdatePantsCutting" />
+            <ez:UpdateColour id="UpdateColour" />
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>

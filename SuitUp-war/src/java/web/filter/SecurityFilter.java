@@ -92,7 +92,7 @@ public class SecurityFilter implements Filter {
         } else if (accessRight.equals(AccessRightEnum.MANAGER)) {
             if (path.equals("/staffProfile.xhtml")
                     || path.equals("/products/standardProductManagement.xhtml")
-                    || path.equals("/products/customisationManagement.xhtml")
+                    || path.equals("/products/customizationManagement.xhtml")
                     || path.equals("/systemAdministration/createNewStaff.xhtml")
                     || path.equals("/systemAdministration/viewStaffDetails.xhtml")
                     || path.equals("/systemAdministration/viewAllStaffs.xhtml")

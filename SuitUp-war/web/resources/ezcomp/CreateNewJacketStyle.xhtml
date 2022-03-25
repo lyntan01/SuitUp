@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:dialog id="dialogCreateNewJacketStyle" widgetVar="dialogCreateNewJacketStyle" header="Create New JacketStyle" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formCreateNewJacketStyle">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:panelGrid id="createNewJacketStyleGrid" style="width: 30em;" styleClass="noBorder">
+
+                    <p:row>
+                        <p:column style="width: 30%;"><p:outputLabel style="font-weight: bold;" for="name" value="Name: "/></p:column>
+                        <p:column style="width:70%;"><p:inputText id="name" value="#{customizationManagementManagedBean.newJacketStyle.name}" placeholder="Pocket Style 1" required="true" requiredMessage="Name is required" /></p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column><p:outputLabel style="font-weight: bold;" for="additionalPrice" value="Additional Price: "/></p:column>
+                        <p:column><p:inputText id="additionalPrice" value="#{customizationManagementManagedBean.newJacketStyle.additionalPrice}" placeholder="100" required="true" requiredMessage="Additional Price is required" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel style="font-weight: bold;" for="description" value="Description: "/></p:column>
+                        <p:column><p:inputText id="description" value="#{customizationManagementManagedBean.newJacketStyle.description}" placeholder="Pocket Style 1" required="true" requiredMessage="Description is required" /></p:column>
+                    </p:row>
+
+                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.handleFileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image != null}" />
+
+
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center;">
+                            <p:commandButton type="reset" value="Clear">
+                                <p:ajax event="click" update="@form" resetValues="true" oncomplete="PF('dialogCreateNewJacketStyle').show()" />
+                            </p:commandButton>&nbsp;
+                            <p:commandButton value="Create New Jacket Style" update="@form customizationEntitiesTabView:ViewAllJacketStyles:formAllJacketStyles:dataTableAllJacketStyles" oncomplete="PF('dialogCreateNewJacketStyle').show()" actionListener="#{customizationManagementManagedBean.createNewJacketStyle}" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+    </cc:implementation>
+</html>

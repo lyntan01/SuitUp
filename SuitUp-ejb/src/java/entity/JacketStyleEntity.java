@@ -22,8 +22,8 @@ public class JacketStyleEntity extends CustomizationEntity implements Serializab
         super();
     }
     
-    public JacketStyleEntity(String name, BigDecimal additionalPrice, String description, String image, Boolean isDisabled) {
-        super(name, additionalPrice, description, image, isDisabled);
+    public JacketStyleEntity(String name, BigDecimal additionalPrice, String description, String image) {
+        super(name, additionalPrice, description, image);
     }
 
     @Override

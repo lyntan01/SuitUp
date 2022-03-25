@@ -93,7 +93,7 @@ public class StandardProductManagementManagedBean implements Serializable {
     
     //<----------------------------CREATE--------------------------------------->
     
-    public void createNewStandardProduct(ActionEvent event) throws StandardProductNotFoundException {
+    public void createNewStandardProduct(ActionEvent event) {
         try {
             Long newStandardProductId = standardProductSessionBean.createNewStandardProduct(newStandardProductEntity, newCategoryId, newTagIds);
             StandardProductEntity newProduct = standardProductSessionBean.retrieveStandardProductByStandardProductId(newStandardProductId);
@@ -106,7 +106,7 @@ public class StandardProductManagementManagedBean implements Serializable {
             newCategoryId = null;
             newTagIds = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + newStandardProductId + ")", null));
-        } catch (UnknownPersistenceException | InputDataValidationException | CreateStandardProductException ex) {
+        } catch (UnknownPersistenceException | InputDataValidationException | CreateStandardProductException | StandardProductNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new Standard Product: " + ex.getMessage(), null));
         }
     }
@@ -294,7 +294,7 @@ public class StandardProductManagementManagedBean implements Serializable {
         } 
         catch (CategoryNotFoundException | InputDataValidationException | UpdateEntityException ex) 
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating size: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating category: " + ex.getMessage(), null));
         }
     }
     
