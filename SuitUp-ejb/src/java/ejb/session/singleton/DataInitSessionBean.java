@@ -6,13 +6,16 @@
 package ejb.session.singleton;
 
 import ejb.session.stateless.AddressSessionBeanLocal;
+import ejb.session.stateless.AppointmentSessionBeanLocal;
 import ejb.session.stateless.CategorySessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.EmailSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.StaffSessionBeanLocal;
 import ejb.session.stateless.StandardProductSessionBeanLocal;
+import ejb.session.stateless.StoreSessionBeanLocal;
 import entity.AddressEntity;
+import entity.AppointmentEntity;
 import entity.CategoryEntity;
 import entity.CustomerEntity;
 import entity.OrderEntity;
@@ -20,6 +23,7 @@ import entity.OrderLineItemEntity;
 import entity.ProductEntity;
 import entity.StaffEntity;
 import entity.StandardProductEntity;
+import entity.StoreEntity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,10 +36,12 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.enumeration.AccessRightEnum;
+import util.enumeration.AppointmentTypeEnum;
 import util.enumeration.CollectionMethodEnum;
 import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
 import util.exception.CategoryNotFoundException;
+import util.exception.CreateNewAppointmentException;
 import util.exception.CreateNewOrderException;
 import util.exception.CreateStandardProductException;
 import util.exception.CustomerEmailExistException;
@@ -44,6 +50,7 @@ import util.exception.InputDataValidationException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
 import util.exception.StandardProductNotFoundException;
+import util.exception.StoreNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -75,6 +82,12 @@ public class DataInitSessionBean {
 
     @EJB
     private StandardProductSessionBeanLocal standardProductSessionBeanLocal;
+
+    @EJB
+    private AppointmentSessionBeanLocal appointmentSessionBeanLocal;
+
+    @EJB
+    private StoreSessionBeanLocal storeSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
@@ -126,6 +139,9 @@ public class DataInitSessionBean {
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
             orderSessionBeanLocal.createNewOrder(1L, 1L, testOrder);
             //--------------[[END of Order Management Testing]]----------//
+            
+            initialiseAppointments();
+            
 
         } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
                 | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException ex) {
@@ -162,6 +178,26 @@ public class DataInitSessionBean {
             //standardProductSessionBeanLocal.createNewStandardProduct(newStandardProductEntity, Long.MAX_VALUE, tagsId)
             //new StandardProductEntity(name, description, image, skuCode, BigDecimal.ONE, Integer.BYTES, Integer.MIN_VALUE, category, tags)
         } catch (CategoryNotFoundException | CreateStandardProductException | InputDataValidationException | UnknownPersistenceException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void initialiseAppointments() {
+
+        try {
+            Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best suit store", "09:00", "22:00", "62313264"));
+
+            //1L
+            AppointmentEntity apptOne = new AppointmentEntity(new Date(), AppointmentTypeEnum.ALTERATION);
+            appointmentSessionBeanLocal.createNewAppointment(apptOne, storeId, 1L);
+            //2L
+            AppointmentEntity apptTwo = new AppointmentEntity(new Date(), AppointmentTypeEnum.CONSULTATION);
+            appointmentSessionBeanLocal.createNewAppointment(apptTwo, storeId, 1L);
+            //3L
+            AppointmentEntity apptThree = new AppointmentEntity(new Date(), AppointmentTypeEnum.MEASUREMENT);
+            appointmentSessionBeanLocal.createNewAppointment(apptThree, storeId, 1L);
+
+        } catch (CreateNewAppointmentException | StoreNotFoundException | CustomerNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
             ex.printStackTrace();
         }
     }
