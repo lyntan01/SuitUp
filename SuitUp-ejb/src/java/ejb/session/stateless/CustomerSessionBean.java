@@ -90,6 +90,9 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         CustomerEntity customerEntity = entityManager.find(CustomerEntity.class, customerId);
 
         if (customerEntity != null) {
+            customerEntity.getAddresses().size();
+            customerEntity.getAppointments().size();
+            customerEntity.getCreditCards().size();
             return customerEntity;
         } else {
             throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist!");
@@ -102,7 +105,11 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         query.setParameter("inEmail", email);
 
         try {
-            return (CustomerEntity) query.getSingleResult();
+            CustomerEntity customer = (CustomerEntity) query.getSingleResult();
+            customer.getAddresses().size();
+            customer.getAppointments().size();
+            customer.getCreditCards().size();
+            return customer;
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new CustomerNotFoundException("Customer Email " + email + " does not exist!");
         }

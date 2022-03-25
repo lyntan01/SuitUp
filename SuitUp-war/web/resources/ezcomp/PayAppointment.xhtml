@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <p:dialog id="dialogPayAppointment1" widgetVar="dialogPayAppointment1" header="Process Payment for Appointment" width="100em;" height="40em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formPayAppointment1">
+
+                <p:messages id="messages" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentId" value="Appointment ID" /></p:column>
+                        <p:column><h:outputText id="appointmentId" value="${appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.appointmentId}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentDateTime" value="Appointment Date Time" /></p:column>
+                        <p:column>
+                            <h:outputText id="appointmentDateTime" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.appointmentDateTime}">
+                                <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentType" value="Appointment Type" /></p:column>
+                        <p:column><h:outputText id="appointmentType" value="${appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.appointmentTypeEnum}" /></p:column>
+                    </p:row>
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="customerName" value="Customer's Name" /></p:column>
+                        <p:column><h:outputText id="customerName" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.firstName} #{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.lastName}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerEmail" value="Customer's Email" /></p:column>
+                        <p:column><h:outputText id="customerEmail" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.email}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerNumber" value="Customer Number" /></p:column>
+                        <p:column><h:outputText id="customerNumber" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.contactNumber}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 10em;" for="creditCards" value="Select Customer's Credit Card"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="creditCards" value="Select a credit card" required="true" requiredMessage="Credit Card required">
+                                <f:selectItems value="#{appointmentManagementManagedBean.creditCards}" var="creditCardSelected" itemValue="#{creditCardSelected}" itemLabel="#{creditCardSelected.cardNumber}" />
+                                <!--<f:attribute name="orderItemEntityToUpdate" value="#{creditCardSelected}" />-->
+                                <!--<p:ajax event="itemSelect" update="dataTableUpdateOrder" listener="#{orderManagementManagedBean.updateOrderItemStatusChange}" />-->
+                            </p:selectOneMenu>
+                        </p:column>
+
+
+
+<!--                        <p:selectOneMenu id="country" value="#{appointmentManagementManagedBean.customerOfAppointmentToPayFor.creditCards}" style="width:150px">
+</p:selectOneMenu>-->
+                        <!--                        <p:column>
+                                                    <p:inputText style="width: 20em;" id="card" value="#{appointmentManagementManagedBean.creditCards}"/>
+                                                </p:column>
+                                                <p:selectOneMenu id="country" value="#{appointmentManagementManagedBean.creditCards}" style="width:150px">
+                                                </p:selectOneMenu>-->
+
+
+                    </p:row>
+
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column colspan="3" style="text-align: center;">
+                                <p:commandButton value="Next" oncomplete="PF('dialogPayAppointment2').show(); PF('dialogPayAppointment1').hide()" />                                
+                            </p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+        
+        
+
+        <p:dialog id="dialogPayAppointment2" widgetVar="dialogPayAppointment2" header="Confirm Payment for Appointment" width="em" height="40em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formPayAppointment2">
+
+                <p:panelGrid>
+
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentId" value="Appointment ID" /></p:column>
+                        <p:column><h:outputText id="appointmentId" value="${appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.appointmentId}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentDateTime" value="Appointment Date Time" /></p:column>
+                        <p:column>
+                            <h:outputText id="appointmentDateTime" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.appointmentDateTime}">
+                                <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentType" value="Appointment Type" /></p:column>
+                        <p:column><h:outputText id="appointmentType" value="${appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.appointmentTypeEnum}" /></p:column>
+                    </p:row>
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="customerName" value="Customer's Name" /></p:column>
+                        <p:column><h:outputText id="customerName" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.firstName} #{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.lastName}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerEmail" value="Customer's Email" /></p:column>
+                        <p:column><h:outputText id="customerEmail" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.email}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerNumber" value="Customer Number" /></p:column>
+                        <p:column><h:outputText id="customerNumber" value="#{appointmentManagementManagedBean.selectedAppointmentEntityToUpdate.customer.contactNumber}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 10em;" for="verificationNumber" value="Verification Code"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="verificationNumber"/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+
+                        <p:column>
+                            <p:commandButton value="Back" oncomplete="PF('dialogPayAppointment1').show(); PF('dialogPayAppointment2').hide()" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Confirm Payment" update="@composite:dialogPayAppointment1 @form @composite:@previous:@previous:formAllAppointments:dataTableAllAppointments" process="@this" oncomplete="PF('dialogPayAppointment1').show(); PF('dialogPayAppointment2').hide();" />
+                        </p:column>
+
+                    </p:row>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>       
+
+    </cc:implementation>
+</html>

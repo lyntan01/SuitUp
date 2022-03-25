@@ -8,6 +8,7 @@ package ejb.session.singleton;
 import ejb.session.stateless.AddressSessionBeanLocal;
 import ejb.session.stateless.AppointmentSessionBeanLocal;
 import ejb.session.stateless.CategorySessionBeanLocal;
+import ejb.session.stateless.CreditCardSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.EmailSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
@@ -18,6 +19,7 @@ import ejb.session.stateless.TagSessionBeanLocal;
 import entity.AddressEntity;
 import entity.AppointmentEntity;
 import entity.CategoryEntity;
+import entity.CreditCardEntity;
 import entity.CustomerEntity;
 import entity.OrderEntity;
 import entity.OrderLineItemEntity;
@@ -27,7 +29,9 @@ import entity.StandardProductEntity;
 import entity.StoreEntity;
 import entity.TagEntity;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -48,6 +52,7 @@ import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewOrderException;
 import util.exception.CreateNewTagException;
 import util.exception.CreateStandardProductException;
+import util.exception.CreditCardNumberExistException;
 import util.exception.CustomerEmailExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -89,13 +94,15 @@ public class DataInitSessionBean {
 
     @EJB
     private StandardProductSessionBeanLocal standardProductSessionBeanLocal;
-    
 
     @EJB
     private AppointmentSessionBeanLocal appointmentSessionBeanLocal;
 
     @EJB
     private StoreSessionBeanLocal storeSessionBeanLocal;
+
+    @EJB
+    private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
@@ -127,6 +134,13 @@ public class DataInitSessionBean {
             customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobby@gmail.com", "password", "9999999")); //Customer - 1L
             addressSessionBeanLocal.createNewAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
 
+            Calendar calendar = new Calendar.Builder()
+                    .setDate(2022, Calendar.JUNE, 1)
+                    .setTimeOfDay(0, 0, 0)
+                    .build(); 
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "1111222233334444", "910", calendar.getTime()), 1L);
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "2222333344445555", "320", calendar.getTime()), 1L);
+
             //--------------[[Order Management Testing]]----------//
             initialiseCategories();
             initialiseStandardProducts();
@@ -147,12 +161,11 @@ public class DataInitSessionBean {
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
             orderSessionBeanLocal.createNewOrder(1L, 1L, testOrder);
             //--------------[[END of Order Management Testing]]----------//
-            
+
             initialiseAppointments();
-            
 
         } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
-                | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException ex) {
+                | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException ex) {
             ex.printStackTrace();
         }
     }
@@ -168,7 +181,7 @@ public class DataInitSessionBean {
         }
 
     }
-    
+
     private void initialiseTags() {
 
         try {
@@ -208,13 +221,13 @@ public class DataInitSessionBean {
             Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best suit store", "09:00", "22:00", "62313264"));
 
             //1L
-            AppointmentEntity apptOne = new AppointmentEntity(new Date(), AppointmentTypeEnum.ALTERATION);
+            AppointmentEntity apptOne = new AppointmentEntity(new Date(), AppointmentTypeEnum.ALTERATION, false);
             appointmentSessionBeanLocal.createNewAppointment(apptOne, storeId, 1L);
             //2L
-            AppointmentEntity apptTwo = new AppointmentEntity(new Date(), AppointmentTypeEnum.CONSULTATION);
+            AppointmentEntity apptTwo = new AppointmentEntity(new Date(), AppointmentTypeEnum.CONSULTATION, true);
             appointmentSessionBeanLocal.createNewAppointment(apptTwo, storeId, 1L);
             //3L
-            AppointmentEntity apptThree = new AppointmentEntity(new Date(), AppointmentTypeEnum.MEASUREMENT);
+            AppointmentEntity apptThree = new AppointmentEntity(new Date(), AppointmentTypeEnum.MEASUREMENT, true);
             appointmentSessionBeanLocal.createNewAppointment(apptThree, storeId, 1L);
 
         } catch (CreateNewAppointmentException | StoreNotFoundException | CustomerNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {

@@ -44,12 +44,16 @@ public class CreditCardEntity implements Serializable {
     @Temporal(TemporalType.DATE)
     @NotNull
     private Date expiryDate;
-            
 
     public CreditCardEntity() {
     }
-    
-    
+
+    public CreditCardEntity(String holderName, String cardNumber, String cvv, Date expiryDate) {
+        this.holderName = holderName;
+        this.cardNumber = cardNumber;
+        this.cvv = cvv;
+        this.expiryDate = expiryDate;
+    }
 
     public Long getCreditCardId() {
         return creditCardId;
@@ -115,5 +119,5 @@ public class CreditCardEntity implements Serializable {
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
-    
+
 }

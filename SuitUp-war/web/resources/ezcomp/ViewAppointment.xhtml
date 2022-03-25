@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:dialog id="dialogViewAppointment" widgetVar="dialogViewAppointment" header="View Appointment" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formViewAppointment">
+
+                <p:panelGrid style="float: left; width: 30em">
+
+                    <p:row>
+                        <p:column><p:outputLabel style="width: 10em;" for="appointmentId" value="ID" /></p:column>
+                        <p:column><h:outputText id="appointmentId" value="#{viewAppointmentManagedBean.appointmentEntityToView.appointmentId}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentDateTime" value="Appointment Date Time" /></p:column>
+                        <p:column>
+                            <h:outputText id="appointmentDateTime" value="#{viewAppointmentManagedBean.appointmentEntityToView.appointmentDateTime}">
+                                <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="appointmentType" value="Appointment Type" /></p:column>
+                        <p:column><h:outputText id="appointmentType" value="${viewAppointmentManagedBean.appointmentEntityToView.appointmentTypeEnum}" /></p:column>
+                    </p:row>
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="customerName" value="Customer's Name" /></p:column>
+                        <p:column><h:outputText id="customerName" value="#{viewAppointmentManagedBean.appointmentEntityToView.customer.firstName} #{viewAppointmentManagedBean.appointmentEntityToView.customer.lastName}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerEmail" value="Customer's Email" /></p:column>
+                        <p:column><h:outputText id="customerEmail" value="#{viewAppointmentManagedBean.appointmentEntityToView.customer.email}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerNumber" value="Customer Number" /></p:column>
+                        <p:column><h:outputText id="customerNumber" value="#{viewAppointmentManagedBean.appointmentEntityToView.customer.contactNumber}" /></p:column>
+                    </p:row>
+
+                    <!--                    <p:row>
+                                            <p:column><p:outputLabel for="totalAmount" value="Total Amount" /></p:column>
+                                            <p:column>
+                                                <h:outputText id="totalAmount" value="#{viewAppointmentManagedBean.appointmentEntityToView.totalAmount}">
+                                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:row>-->
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+    </cc:implementation>
+</html>
