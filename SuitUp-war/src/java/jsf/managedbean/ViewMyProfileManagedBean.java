@@ -5,8 +5,10 @@
  */
 package jsf.managedbean;
 
+import entity.StaffEntity;
 import java.io.IOException;
 import javafx.event.ActionEvent;
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -19,8 +21,23 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class ViewMyProfileManagedBean {
 
+    private StaffEntity staff;
+    
     public ViewMyProfileManagedBean() {
     }
     
+    @PostConstruct
+    public void postConstruct()
+    {   
+        staff = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
+    }
+
+    public StaffEntity getStaff() {
+        return staff;
+    }
+
+    public void setStaff(StaffEntity staff) {
+        this.staff = staff;
+    }
     
 }

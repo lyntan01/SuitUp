@@ -69,10 +69,6 @@
                     <h:outputText value="#{orderEntity.orderStatusEnum}" />
                 </p:column>
 
-
-
-
-
                 <p:column style="width: 5em; text-align: center;" headerText="Action">
                     <p:commandButton actionListener="#{orderManagementManagedBean.doUpdateOrder}" update="@composite:@next:@next:dialogUpdateOrder1 @composite:@next:@next:dialogUpdateOrder2" oncomplete="PF('dialogUpdateOrder1').show()" icon="pi pi-pencil" title="Update">
                         <f:attribute name="orderEntityToUpdate" value="#{orderEntity}" />

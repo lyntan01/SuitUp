@@ -55,13 +55,13 @@ public class CustomizationEntity implements Serializable {
     public CustomizationEntity() {
     }
     
-    public CustomizationEntity(String name, BigDecimal additionalPrice, String description, String image, Boolean isDisabled) {
+    public CustomizationEntity(String name, BigDecimal additionalPrice, String description, String image) {
         this();
         this.name = name;
         this.additionalPrice = additionalPrice;
         this.description = description;
         this.image = image;
-        this.isDisabled = isDisabled;
+        this.isDisabled = false;
     }
 
     public Long getCustomizationId() {

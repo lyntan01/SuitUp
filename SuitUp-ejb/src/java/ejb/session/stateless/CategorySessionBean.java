@@ -18,6 +18,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CategoryNotFoundException;
+import util.exception.CreateNewCategoryException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
@@ -45,19 +46,22 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     
     //assume that category cannot be created with a bunch of products tagged -> products to be tagged later
     @Override
-    public Long createNewCategory(CategoryEntity newCategoryEntity) throws UnknownPersistenceException, InputDataValidationException
+    public Long createNewCategory(CategoryEntity newCategoryEntity) throws UnknownPersistenceException, InputDataValidationException, CreateNewCategoryException
     {
         Set<ConstraintViolation<CategoryEntity>>constraintViolations = validator.validate(newCategoryEntity);
-        
-        if(constraintViolations.isEmpty())
-        {
-            try
-            {
-                em.persist(newCategoryEntity);
-                em.flush();
+       
+        if (constraintViolations.isEmpty()) {
+            try {
+                Query query = em.createQuery("SELECT c FROM CategoryEntity c WHERE c.name = :name");
+                query.setParameter("name", newCategoryEntity.getName());
+                if (query.getResultList().isEmpty()) {
+                    em.persist(newCategoryEntity);
+                    em.flush();
+                    return newCategoryEntity.getCategoryId();
 
-                return newCategoryEntity.getCategoryId();
-                
+                } else {
+                    throw new CreateNewCategoryException("There is an existing category with the same category name");
+                }
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
@@ -71,7 +75,6 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     public List<CategoryEntity> retrieveAllCategories()
     {
         Query query = em.createQuery("SELECT c FROM CategoryEntity c ORDER BY c.name ASC");
-        query.setParameter("notDisabled", false);
         List<CategoryEntity> categoryEntities = query.getResultList();
         
         for(CategoryEntity categoryEntity:categoryEntities)
@@ -113,7 +116,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
             {
                 CategoryEntity categoryEntityToUpdate = retrieveCategoryByCategoryId(categoryEntity.getCategoryId());
                 
-                Query query = em.createQuery("SELECT c FROM CategoryEntity c WHERE c.name = :inName AND c.categoryId <> :inCategoryId");
+                Query query = em.createQuery("SELECT c FROM CategoryEntity c WHERE c.name = :inName AND c.categoryId != :inCategoryId");
                 query.setParameter("inName", categoryEntity.getName());
                 query.setParameter("inCategoryId", categoryEntity.getCategoryId());
                 
@@ -121,9 +124,11 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
                 {
                     throw new UpdateEntityException("The name of the category to be updated is duplicated");
                 }
-                
+                else 
+                {
                 categoryEntityToUpdate.setName(categoryEntity.getName());
-                categoryEntityToUpdate.setDescription(categoryEntity.getDescription());                                               
+                categoryEntityToUpdate.setDescription(categoryEntity.getDescription());  
+                }
             }
             else
             {

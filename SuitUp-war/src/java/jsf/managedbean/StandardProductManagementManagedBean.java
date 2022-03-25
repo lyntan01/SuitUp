@@ -11,7 +11,10 @@ import ejb.session.stateless.TagSessionBeanLocal;
 import entity.CategoryEntity;
 import entity.StandardProductEntity;
 import entity.TagEntity;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
@@ -23,7 +26,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import org.primefaces.event.FileUploadEvent;
 import util.exception.CategoryNotFoundException;
+import util.exception.CreateNewCategoryException;
+import util.exception.CreateNewTagException;
 import util.exception.CreateStandardProductException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
@@ -87,19 +93,20 @@ public class StandardProductManagementManagedBean implements Serializable {
     
     //<----------------------------CREATE--------------------------------------->
     
-    public void createNewStandardProduct(ActionEvent event) throws StandardProductNotFoundException {
+    public void createNewStandardProduct(ActionEvent event) {
         try {
             Long newStandardProductId = standardProductSessionBean.createNewStandardProduct(newStandardProductEntity, newCategoryId, newTagIds);
-            standardProducts.add(newStandardProductEntity);
+            StandardProductEntity newProduct = standardProductSessionBean.retrieveStandardProductByStandardProductId(newStandardProductId);
+            standardProducts.add(newProduct);
 
             if (filteredStandardProducts != null) {
-                filteredStandardProducts.add(newStandardProductEntity);
+                filteredStandardProducts.add(newProduct);
             }
             newStandardProductEntity = new StandardProductEntity();
             newCategoryId = null;
             newTagIds = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + newStandardProductId + ")", null));
-        } catch (UnknownPersistenceException | InputDataValidationException | CreateStandardProductException ex) {
+        } catch (UnknownPersistenceException | InputDataValidationException | CreateStandardProductException | StandardProductNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new Standard Product: " + ex.getMessage(), null));
         }
     }
@@ -107,12 +114,14 @@ public class StandardProductManagementManagedBean implements Serializable {
     public void createNewCategory(ActionEvent event) {
         try {
             Long categoryId = categorySessionBean.createNewCategory(newCategoryEntity);
+            CategoryEntity category = categorySessionBean.retrieveCategoryByCategoryId(categoryId);
+            categories.add(category);
             if (filteredCategories != null) {
-                filteredCategories.add(newCategoryEntity);
+                filteredCategories.add(category);
             }
             newCategoryEntity = new CategoryEntity();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New category created successfully (Category ID: " + categoryId + ")", null));
-        } catch (UnknownPersistenceException | InputDataValidationException ex) {
+        } catch (UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CategoryNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new Category: " + ex.getMessage(), null));
         }
     }
@@ -120,12 +129,13 @@ public class StandardProductManagementManagedBean implements Serializable {
     public void createNewTag (ActionEvent event) {
         try {
             Long newTagId = tagSessionBean.createNewTag(newTagEntity);
+            tags.add(newTagEntity);
             if (filteredTags != null) {
                 filteredTags.add(newTagEntity);
             }
             newTagEntity = new TagEntity();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New tag created successfully (Tag ID: " + newTagId + ")", null));
-        } catch (UnknownPersistenceException | InputDataValidationException ex) {
+        } catch (UnknownPersistenceException | InputDataValidationException | CreateNewTagException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new tag: " + ex.getMessage(), null));
         }
     }
@@ -284,7 +294,7 @@ public class StandardProductManagementManagedBean implements Serializable {
         } 
         catch (CategoryNotFoundException | InputDataValidationException | UpdateEntityException ex) 
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating size: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating category: " + ex.getMessage(), null));
         }
     }
     
@@ -304,6 +314,48 @@ public class StandardProductManagementManagedBean implements Serializable {
         catch (TagNotFoundException | InputDataValidationException | UpdateEntityException ex) 
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating size: " + ex.getMessage(), null));
+        }
+    }
+        //<----------------------FILE UPLOAD----------------------------->
+
+    public void handleFileUpload(FileUploadEvent event)
+    {
+        try
+        {
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputStream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+
+            newStandardProductEntity.setImage(event.getFile().getFileName());
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
+        }
+        catch (IOException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
         }
     }
 

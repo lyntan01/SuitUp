@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"                
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formAllFabrics">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <p:dataTable id="dataTableAllFabrics"
+                         widgetVar="dataTableAllFabrics" 
+                         value="#{customizationManagementManagedBean.fabrics}" 
+                         var="fabric" 
+                         rowKey="#{fabric.fabricId}" 
+                         rowIndexVar="row"                      
+                         filteredValue="#{customizationManagementManagedBean.filteredFabrics}"
+                         rows="5"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,20,50,{ShowAll|'All'}">
+
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: right;">
+                        <h:outputText value="Search all fields: " />
+                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllFabrics').filter()" style="width:20em" placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="ID" sortBy="#{fabric.customizationId}" filterBy="#{fabric.customizationId}" filterMatchMode="contains">
+                    <h:outputText value="#{fabric.customizationId}" />
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{fabric.name}" filterBy="#{fabric.name}" filterMatchMode="contains">
+                    <h:outputText value="#{fabric.name}" />
+                </p:column>
+                
+                <p:column headerText="Additional Price" sortBy="#{fabric.additionalPrice}" filterBy="#{fabric.additionalPrice}" filterMatchMode="contains">
+                    <h:outputText value="#{fabric.additionalPrice}" />
+                </p:column> 
+                
+                <p:column headerText="Colour" sortBy="#{fabric.colour.name}" filterBy="#{fabric.colour.name}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="colour" onchange="PF('dataTableAllFabrics').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizationManagementManagedBean.colours}" var="colour" itemValue="#{colour.colourId}" itemLabel="#{colour.name}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{fabric.colour.name}" />
+                    </p:column>
+
+                <p:column headerText="Action" style="text-align: center;">
+                    <p:commandButton update="ViewFabric:formViewFabric" oncomplete="PF('dialogViewFabric').show()" icon="ui-icon-document" title="View">
+                        <f:setPropertyActionListener value="#{fabric}" target="#{customizationManagementManagedBean.viewCustomizationProductManagedBean.fabricToView}" />
+                        </p:commandButton>
+                    <p:commandButton icon="pi pi-pencil" actionListener="#{customizationManagementManagedBean.doUpdateFabric}" update="UpdateFabric:formUpdateFabric" oncomplete="PF('dialogUpdateFabric').show()">
+                        <f:attribute name="selectedFabricToUpdate" value="#{fabric}" />
+                    </p:commandButton>
+                    <p:commandButton icon="pi pi-trash" actionListener="#{customizationManagementManagedBean.deleteFabric}" update="@form:dataTableAllFabrics @form:messages">
+                        <f:attribute name="fabricToDelete" value="#{fabric}" />
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete #{fabric.name} (ID: #{fabric.customizationId})?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+
+        </h:form>
+    </cc:implementation>
+</html>

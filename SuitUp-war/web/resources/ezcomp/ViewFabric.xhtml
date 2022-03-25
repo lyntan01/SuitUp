@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+    </cc:interface>
+    
+    <cc:implementation>
+        
+        <h:form id="formViewFabric">
+            
+            <p:dialog id="dialogViewFabric" widgetVar="dialogViewFabric" header="View Fabric" closable="true">
+
+                <p:panelGrid>
+                    
+                    <p:row>
+                        <p:column style="width: 12em;"></p:column>
+                        <p:column>
+                            <p:graphicImage style="width: 30em;" value="/images/productImages/#{viewCustomizationProductManagedBean.fabricToView.image}" alt="image" rendered="#{viewCustomizationProductManagedBean.fabricToView.image != null}" />                            
+                        </p:column>                        
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Fabric ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewCustomizationProductManagedBean.fabricToView.customizationId}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewCustomizationProductManagedBean.fabricToView.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Additional Price " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewCustomizationProductManagedBean.fabricToView.additionalPrice}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Description: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewCustomizationProductManagedBean.fabricToView.description}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Colour: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewCustomizationProductManagedBean.fabricToView.colour.name}" />
+                        </p:column>
+                    </p:row>
+                    
+                </p:panelGrid>
+
+            </p:dialog>
+            
+        </h:form>
+        
+    </cc:implementation>
+</html>

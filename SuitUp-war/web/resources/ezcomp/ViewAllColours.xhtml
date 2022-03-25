@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"                
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formAllColours">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <p:dataTable id="dataTableAllColours"
+                         widgetVar="dataTableAllColours" 
+                         value="#{customizationManagementManagedBean.colours}" 
+                         var="colour" 
+                         rowKey="#{colour.colourId}" 
+                         rowIndexVar="row"                      
+                         filteredValue="#{customizationManagementManagedBean.filteredColours}"
+                         rows="5"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                         rowsPerPageTemplate="5,10,20,50,{ShowAll|'All'}">
+
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: right;">
+                        <h:outputText value="Search all fields: " />
+                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllColours').filter()" style="width:20em" placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column headerText="ID" sortBy="#{colour.colourId}" filterBy="#{colour.customizationId}" filterMatchMode="contains">
+                    <h:outputText value="#{colour.colourId}" />
+                </p:column>
+
+                <p:column headerText="Name" sortBy="#{colour.name}" filterBy="#{colour.name}" filterMatchMode="contains">
+                    <h:outputText value="#{colour.name}" />
+                </p:column>
+                
+                <p:column headerText="Hex Code" sortBy="#{colour.hexCode}" filterBy="#{colour.hexCode}" filterMatchMode="contains">
+                    <h:outputText value="#{colour.hexCode}" />
+                </p:column> 
+                
+                <p:column headerText="Action" style="text-align: center;">
+                    <p:commandButton icon="pi pi-pencil" actionListener="#{customizationManagementManagedBean.doUpdateColour}" update="UpdateColour:formUpdateColour" oncomplete="PF('dialogUpdateColour').show()">
+                        <f:attribute name="selectedColourToUpdate" value="#{colour}" />
+                    </p:commandButton>
+                    <p:commandButton icon="pi pi-trash" actionListener="#{customizationManagementManagedBean.deleteColour}" update="@form:dataTableAllColours @form:messages">
+                        <f:attribute name="colourToDelete" value="#{colour}" />
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete #{colour.name} (ID: #{colour.colourId})?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+
+        </h:form>
+    </cc:implementation>
+</html>

@@ -27,8 +27,8 @@ public class FabricEntity extends CustomizationEntity implements Serializable {
         super();
     }
     
-    public FabricEntity(String name, BigDecimal additionalPrice, String description, String image, Boolean isDisabled) {
-        super(name, additionalPrice, description, image, isDisabled);
+    public FabricEntity(String name, BigDecimal additionalPrice, String description, String image) {
+        super(name, additionalPrice, description, image);
     }
 
     @Override

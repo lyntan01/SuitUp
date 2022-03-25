@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.TagEntity;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateNewTagException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.TagNotFoundException;
@@ -23,7 +24,7 @@ public interface TagSessionBeanLocal {
 
     public TagEntity retrieveTagByTagId(Long tagId) throws TagNotFoundException;
 
-    public Long createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException;
+    public Long createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException, CreateNewTagException;
 
     public List<TagEntity> retrieveAllTags();
 

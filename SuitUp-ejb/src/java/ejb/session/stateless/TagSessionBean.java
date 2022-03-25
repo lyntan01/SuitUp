@@ -18,6 +18,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateNewTagException;
 import util.exception.TagNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
@@ -50,7 +51,7 @@ public class TagSessionBean implements TagSessionBeanLocal {
     
     
     @Override
-    public Long createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException
+    public Long createNewTag(TagEntity newTagEntity) throws UnknownPersistenceException, InputDataValidationException, CreateNewTagException
     {
         Set<ConstraintViolation<TagEntity>>constraintViolations = validator.validate(newTagEntity);
         
@@ -58,11 +59,16 @@ public class TagSessionBean implements TagSessionBeanLocal {
         {
             try
             {
-                em.persist(newTagEntity);
-                em.flush();
+                Query query = em.createQuery("SELECT t FROM TagEntity t WHERE t.name = :name");
+                query.setParameter("name", newTagEntity.getName());
+                if (query.getResultList().isEmpty()) {
+                    em.persist(newTagEntity);
+                    em.flush();
+                    return newTagEntity.getTagId();
+                } else {
+                    throw new CreateNewTagException("There is an existing tag with the same tag name");
+                }
 
-                return newTagEntity.getTagId();
-                
             } catch (PersistenceException ex) {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
