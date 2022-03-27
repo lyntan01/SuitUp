@@ -136,8 +136,6 @@ public class FabricSessionBean implements FabricSessionBeanLocal {
         
         if (query_one.getResultList().isEmpty() && query_two.getResultList().isEmpty() && query_three.getResultList().isEmpty()) {
             fabricToRemove.getColour().getFabrics().remove(fabricToRemove);
-            fabricToRemove.setColour(null);
-            
             em.remove(fabricToRemove);
         } else {
             fabricToRemove.setIsDisabled(Boolean.TRUE);
