@@ -44,9 +44,11 @@
                     <h:outputText value="#{jacketStyle.name}" />
                 </p:column>
                 
-                <p:column headerText="Additional Price" sortBy="#{jacketStyle.additionalPrice}" filterBy="#{jacketStyle.additionalPrice}" filterMatchMode="contains">
-                    <h:outputText value="#{jacketStyle.additionalPrice}" />
-                </p:column>                                 
+                <p:column headerText="Unit Price" sortBy="#{jacketStyle.additionalPrice}" filterBy="#{jacketStyle.additionalPrice}" filterMatchMode="contains" style="text-align: right;">
+                    <h:outputText value="#{jacketStyle.additionalPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>                                
 
                 <p:column headerText="Action" style="text-align: center;">
                     <p:commandButton update="ViewJacketStyle:formViewJacketStyle" oncomplete="PF('dialogViewJacketStyle').show()" icon="ui-icon-document" title="View">

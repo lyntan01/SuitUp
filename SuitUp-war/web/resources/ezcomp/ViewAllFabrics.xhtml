@@ -43,16 +43,18 @@
                 <p:column headerText="Name" sortBy="#{fabric.name}" filterBy="#{fabric.name}" filterMatchMode="contains">
                     <h:outputText value="#{fabric.name}" />
                 </p:column>
-                
-                <p:column headerText="Additional Price" sortBy="#{fabric.additionalPrice}" filterBy="#{fabric.additionalPrice}" filterMatchMode="contains">
-                    <h:outputText value="#{fabric.additionalPrice}" />
-                </p:column> 
-                
+
+                <p:column headerText="Additional Price" sortBy="#{fabric.additionalPrice}" filterBy="#{fabric.additionalPrice}" filterMatchMode="contains" style="text-align: right;">
+                    <h:outputText value="#{fabric.additionalPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>
+
                 <p:column headerText="Colour" sortBy="#{fabric.colour.name}" filterBy="#{fabric.colour.name}" filterMatchMode="exact">
-                        <f:facet name="filter">
+                    <f:facet name="filter">
                             <p:selectOneMenu id="colour" onchange="PF('dataTableAllFabrics').filter()">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
-                                <f:selectItems value="#{customizationManagementManagedBean.colours}" var="colour" itemValue="#{colour.colourId}" itemLabel="#{colour.name}" />
+                                <f:selectItems value="#{customizationManagementManagedBean.colours}" var="colour" itemValue="#{colour.name}" itemLabel="#{colour.name}" />
                             </p:selectOneMenu>
                         </f:facet>
                         <h:outputText value="#{fabric.colour.name}" />

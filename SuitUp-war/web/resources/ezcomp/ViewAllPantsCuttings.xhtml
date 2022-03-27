@@ -44,8 +44,10 @@
                     <h:outputText value="#{pantsCutting.name}" />
                 </p:column>
                 
-                <p:column headerText="Additional Price" sortBy="#{pantsCutting.additionalPrice}" filterBy="#{pantsCutting.additionalPrice}" filterMatchMode="contains">
-                    <h:outputText value="#{pantsCutting.additionalPrice}" />
+                <p:column headerText="Additional Price" sortBy="#{pantsCutting.additionalPrice}" filterBy="#{pantsCutting.additionalPrice}" filterMatchMode="contains" style="text-align: right;">
+                    <h:outputText value="#{pantsCutting.additionalPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
                 </p:column>                                 
 
                 <p:column headerText="Action" style="text-align: center;">

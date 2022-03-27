@@ -44,9 +44,11 @@
                     <h:outputText value="#{pocketStyle.name}" />
                 </p:column>
                 
-                <p:column headerText="Additional Price" sortBy="#{pocketStyle.additionalPrice}" filterBy="#{pocketStyle.additionalPrice}" filterMatchMode="contains">
-                    <h:outputText value="#{pocketStyle.additionalPrice}" />
-                </p:column>                                 
+                <p:column headerText="Additional Price" sortBy="#{pocketStyle.additionalPrice}" filterBy="#{pocketStyle.additionalPrice}" filterMatchMode="contains" style="text-align: right;">
+                    <h:outputText value="#{pocketStyle.additionalPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                    </h:outputText>
+                </p:column>                            
 
                 <p:column headerText="Action" style="text-align: center;">
                     <p:commandButton update="ViewPocketStyle:formViewPocketStyle" oncomplete="PF('dialogViewPocketStyle').show()" icon="ui-icon-document" title="View">

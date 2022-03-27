@@ -240,6 +240,8 @@ public class CustomizationManagementManagedBean implements Serializable {
     public void doUpdateFabric(ActionEvent event)
     {
         selectedFabricToUpdate = (FabricEntity) event.getComponent().getAttributes().get("selectedFabricToUpdate");
+        selectedColourIdUpdate = selectedFabricToUpdate.getColour().getColourId();
+
     }
 
     public void updateFabric(ActionEvent event)

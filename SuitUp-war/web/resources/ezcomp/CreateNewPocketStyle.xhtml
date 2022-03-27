@@ -21,13 +21,24 @@
                 <p:panelGrid id="createNewPocketStyleGrid" style="width: 30em;" styleClass="noBorder">
 
                     <p:row>
-                        <p:column style="width: 30%;"><p:outputLabel style="font-weight: bold;" for="name" value="Name: "/></p:column>
-                        <p:column style="width:70%;"><p:inputText id="name" value="#{customizationManagementManagedBean.newPocketStyle.name}" placeholder="Pocket Style 1" required="true" requiredMessage="Name is required" /></p:column>
+                        <p:column style="width: 30%;">
+                            <p:outputLabel style="font-weight: bold;" for="name" value="Name: "/>
+                        </p:column>
+                        <p:column style="width:70%;">
+                            <p:inputText id="name" value="#{customizationManagementManagedBean.newPocketStyle.name}" placeholder="Pocket Style 1" required="true" requiredMessage="Name is required" />
+                        </p:column>
                     </p:row>
                     
                     <p:row>
-                        <p:column><p:outputLabel style="font-weight: bold;" for="additionalPrice" value="Additional Price: "/></p:column>
-                        <p:column><p:inputText id="additionalPrice" value="#{customizationManagementManagedBean.newPocketStyle.additionalPrice}" placeholder="100" required="true" requiredMessage="Additional Price is required" /></p:column>
+                        <p:column>
+                            <p:outputLabel for="additionalPrice" value="Additional Price " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.newPocketStyle.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" required="true" requiredMessage="Additional Price is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="additionalPrice" />
+                        </p:column>
                     </p:row>
 
                     <p:row>

@@ -23,7 +23,7 @@
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Pants Cutting ID: " />
+                                <h:outputLabel value="Customization ID: " />
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{customizationManagementManagedBean.selectedPantsCuttingToUpdate.customizationId}" />
@@ -62,7 +62,7 @@
                                 <p:outputLabel for="additionalPrice" value="Additional Price " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.selectedPantsCuttingToUpdate.additionalPrice}" placeholder="100" min="0" required="true" requiredMessage="Quantity On Hand is required" />
+                                <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.selectedPantsCuttingToUpdate.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" required="true" requiredMessage="Additional Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="additionalPrice" />

@@ -23,7 +23,7 @@
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Pocket Style ID: " />
+                                <h:outputLabel value="Customization ID: " />
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{customizationManagementManagedBean.selectedPocketStyleToUpdate.customizationId}" />
@@ -32,13 +32,13 @@
                                 &nbsp;
                             </p:column>
                         </p:row>
-
+                        
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="name" value="Name: " />
+                                <p:outputLabel for="name" value="Name " />
                             </p:column>
                             <p:column>
-                                <p:inputText id="name" value="#{customizationManagementManagedBean.selectedPocketStyleToUpdate.name}" placeholder="PocketStyle 1" required="true" requiredMessage="Name is required" />
+                                <p:inputText id="name" value="#{customizationManagementManagedBean.selectedPocketStyleToUpdate.name}" placeholder="Pocket Style 1" required="true" requiredMessage="Name is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="name" />
@@ -62,7 +62,7 @@
                                 <p:outputLabel for="additionalPrice" value="Additional Price " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.selectedPocketStyleToUpdate.additionalPrice}" placeholder="100" min="0" required="true" requiredMessage="Quantity On Hand is required" />
+                                <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.selectedPocketStyleToUpdate.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" required="true" requiredMessage="Additional Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="additionalPrice" />
