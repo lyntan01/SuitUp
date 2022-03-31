@@ -5,31 +5,56 @@
  */
 package jsf.managedbean;
 
+import ejb.session.stateless.StaffSessionBeanLocal;
 import entity.StaffEntity;
-import java.io.IOException;
-import javafx.event.ActionEvent;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
+import util.exception.StaffNotFoundException;
+import util.exception.UpdateStaffException;
 
 /**
  *
  * @author lyntan
  */
 @Named(value = "viewMyProfileManagedBean")
-@RequestScoped
-public class ViewMyProfileManagedBean {
+@ViewScoped
+public class ViewMyProfileManagedBean implements Serializable {
 
-    private StaffEntity staff;
+    @EJB
+    private StaffSessionBeanLocal staffSessionBeanLocal;
     
+    private StaffEntity staff;
+
     public ViewMyProfileManagedBean() {
     }
-    
+
     @PostConstruct
-    public void postConstruct()
-    {   
+    public void postConstruct() {
         staff = (StaffEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentStaffEntity");
+    }
+
+    public void editProfile(ActionEvent event) {
+        try {
+            staffSessionBeanLocal.updateStaff(staff);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentStaffEntity", staff);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Profile updated successfully", null));
+        }
+        catch(StaffNotFoundException | UpdateStaffException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating profile: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+
     }
 
     public StaffEntity getStaff() {
@@ -39,5 +64,5 @@ public class ViewMyProfileManagedBean {
     public void setStaff(StaffEntity staff) {
         this.staff = staff;
     }
-    
+
 }
