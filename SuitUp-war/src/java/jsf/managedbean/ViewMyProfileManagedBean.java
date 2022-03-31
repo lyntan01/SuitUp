@@ -15,6 +15,8 @@ import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import util.exception.ChangePasswordException;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.StaffNotFoundException;
 import util.exception.UpdateStaffException;
 
@@ -30,6 +32,11 @@ public class ViewMyProfileManagedBean implements Serializable {
     private StaffSessionBeanLocal staffSessionBeanLocal;
     
     private StaffEntity staff;
+    
+    // Change Password
+    private String oldPassword;
+    private String newPassword;
+    private String confirmNewPassword;
 
     public ViewMyProfileManagedBean() {
     }
@@ -56,6 +63,30 @@ public class ViewMyProfileManagedBean implements Serializable {
         }
 
     }
+    
+    public void changePassword(ActionEvent event) {
+        
+        try {
+            
+            System.out.println("old = " + oldPassword);
+            System.out.println("new = " + newPassword);
+            System.out.println("confirm = " + confirmNewPassword);
+            
+            if (!newPassword.equals(confirmNewPassword)) {
+                throw new ChangePasswordException("New Password and Confirm New Password do not match.");
+            }
+            
+            staff = staffSessionBeanLocal.staffChangePassword(staff.getUsername(), oldPassword, newPassword);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentStaffEntity", staff);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Password changed successfully", null));
+            
+        } catch (ChangePasswordException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), null));
+            oldPassword = "";
+            newPassword = "";
+            confirmNewPassword = "";
+        }
+    }
 
     public StaffEntity getStaff() {
         return staff;
@@ -63,6 +94,30 @@ public class ViewMyProfileManagedBean implements Serializable {
 
     public void setStaff(StaffEntity staff) {
         this.staff = staff;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmNewPassword() {
+        return confirmNewPassword;
+    }
+
+    public void setConfirmNewPassword(String confirmNewPassword) {
+        this.confirmNewPassword = confirmNewPassword;
     }
 
 }

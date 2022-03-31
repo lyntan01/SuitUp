@@ -19,7 +19,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.DeleteStaffException;
+import util.exception.ChangePasswordException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.StaffNotFoundException;
@@ -116,6 +116,25 @@ public class StaffSessionBean implements StaffSessionBeanLocal {
             }
         } catch (StaffNotFoundException ex) {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+        }
+    }
+    
+    @Override
+    public StaffEntity staffChangePassword(String username, String oldPassword, String newPassword) throws ChangePasswordException {
+        try {
+            
+            StaffEntity staffEntity = staffLogin(username, oldPassword);
+            
+            if (newPassword.equals(oldPassword)) {
+                throw new ChangePasswordException("Please provide a different password from your previous password.");
+            } else {
+                staffEntity.setPassword(newPassword);
+            }
+            
+            return staffEntity;
+            
+        } catch (InvalidLoginCredentialException ex) {
+            throw new ChangePasswordException("Invalid old password. Please re-enter old password.");
         }
     }
 

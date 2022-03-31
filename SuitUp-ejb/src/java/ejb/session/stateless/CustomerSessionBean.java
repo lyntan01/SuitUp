@@ -191,7 +191,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
 
             if (newPassword == null || newPassword.isEmpty()) {
                 throw new ChangePasswordException("Please provide a password.");
-            } else if (newPassword == oldPassword) {
+            } else if (newPassword.equals(oldPassword)) {
                 throw new ChangePasswordException("Please provide a different password from your previous password.");
             } else {
                 customerEntity.setPassword(newPassword);

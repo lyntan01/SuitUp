@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.StaffEntity;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.ChangePasswordException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.StaffNotFoundException;
@@ -35,5 +36,7 @@ public interface StaffSessionBeanLocal {
     public void updateStaff(StaffEntity staffEntity) throws StaffNotFoundException, UpdateStaffException, InputDataValidationException;
 
     public void deleteStaff(Long staffId) throws StaffNotFoundException;
+
+    public StaffEntity staffChangePassword(String username, String oldPassword, String newPassword) throws ChangePasswordException;
     
 }

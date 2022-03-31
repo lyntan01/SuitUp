@@ -53,14 +53,15 @@
 
                 <p:row>
                     <p:column colspan="2" style="text-align: center">
-                        <p:commandButton oncomplete="PF('dialogEditStaffProfile').show()" icon="pi pi-pencil" value="Edit My Profile"/>
+                        <p:commandButton update="EditStaffProfile:formEditStaffProfile" oncomplete="PF('dialogEditStaffProfile').show()" icon="pi pi-pencil" value="Edit My Profile"/>
                         <br/>
-                        <p:commandButton icon="pi pi-lock" value="Change My Password"/>
+                        <p:commandButton update="ChangePassword:formChangePassword" oncomplete="PF('dialogChangePassword').show()" icon="pi pi-lock" value="Change My Password"/>
                     </p:column>
                 </p:row>
 
             </p:panelGrid>
 
+            <ez:ChangePassword id="ChangePassword"/>
             <ez:EditStaffProfile id="EditStaffProfile" />
         </div>
     </ui:define>
