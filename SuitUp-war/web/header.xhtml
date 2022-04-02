@@ -8,24 +8,24 @@
 
     <header style="text-align: right;">
         <h:form>                
-            <p:menubar class="ui-g">
+            <p:menubar>
                 <p:menuitem outcome="/index" styleClass="logo">
                     <p:graphicImage library="images" name="logo.png" alt="Logo" style="width: 15vw; margin: 1em"/>
                 </p:menuitem>
 
-                <p:menuitem value="Home" outcome="/index" icon="pi pi-home"></p:menuitem>
+                <p:menuitem value="Home" outcome="/index" icon="pi pi-home" styleClass="navBar"></p:menuitem>
 
-                <p:submenu label="Cashier Operations" icon="pi pi-fw pi-dollar">
+                <p:submenu label="Cashier Operations" icon="pi pi-fw pi-dollar" style="margin-top: 15px;">
                     <p:menuitem value="Orders" outcome="/orderManagement" icon="pi pi-fw pi-file"/>
                     <p:menuitem value="Appointments" outcome="/appointmentManagement" icon="pi pi-fw pi-calendar"/>
                 </p:submenu>
 
-                <p:submenu label="System Administration" icon="pi pi-fw pi-th-large">
+                <p:submenu label="System Administration" icon="pi pi-fw pi-th-large" style="margin-top: 15px;">
                     <p:menuitem value="Customers" outcome="/customerManagement" icon="pi pi-fw pi-users"/>
                     <p:menuitem value="Support Tickets" outcome="/supportTicketManagement" icon="pi pi-fw pi-question-circle"/>
                     <p:submenu label="Products" icon="pi pi-fw pi-shopping-cart">
                         <p:menuitem value="Standard Products" outcome="/products/standardProductManagement" icon="pi pi-fw pi-table"></p:menuitem>
-                        <p:menuitem value="Customization Products" outcome="/products/customizationManagement" icon="pi pi-fw pi-pencil"></p:menuitem>
+                        <p:menuitem value="Customization Products" outcome="/products/customizationManagement" icon="pi pi-fw pi-pencil" style="width: fit-content"></p:menuitem>
                     </p:submenu>
                     <p:menuitem value="Staff" outcome="/staffManagement" icon="pi pi-fw pi-user-edit"/>
                     <p:menuitem value="Stores" outcome="/storeManagement" icon="pi pi-fw pi-map-marker"/>
