@@ -28,15 +28,19 @@ a:link:hover, a:visited:hover  {
   text-decoration : underline;
 }
 
-ul.ui-menu-child {
-    white-space: nowrap;
-    /*width: auto !important;*/
-}
+/*Remove borders*/
 
 div.ui-layout-unit, div.ui-menubar {
     border: 0;
     border-style: none;
     font-size: 16px;
+}
+
+/*Header formatting*/
+
+ul.ui-menu-child {
+    white-space: nowrap;
+    /*width: auto !important;*/
 }
 
 .navBar {
@@ -49,4 +53,8 @@ div.ui-layout-unit, div.ui-menubar {
 
 div.ui-layout-center {
     z-index: -1 !important;
+}
+
+.productsMenu ul {
+    width: 14em !important;
 }
