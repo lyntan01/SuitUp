@@ -72,8 +72,7 @@ public class SecurityFilter implements Filter {
         if(accessRight.equals(AccessRightEnum.TAILOR))
         {            
             if(path.equals("/staffProfile.xhtml") ||
-                path.equals("/cashierOperation/voidRefund.xhtml") ||
-                path.equals("/cashierOperation/viewMySaleTransactions.xhtml"))
+                path.equals("/customerManagement.xhtml"))
             {
                 return true;
             }
@@ -83,8 +82,8 @@ public class SecurityFilter implements Filter {
             }
         } else if (accessRight.equals(AccessRightEnum.CASHIER)) {
             if (path.equals("/staffProfile.xhtml")
-                    || path.equals("/cashierOperation/voidRefund.xhtml")
-                    || path.equals("/cashierOperation/viewMySaleTransactions.xhtml")) {
+                    || path.equals("/orderManagement.xhtml")
+                    || path.equals("/appointmentManagement.xhtml")) {
                 return true;
             } else {
                 return false;
@@ -93,19 +92,12 @@ public class SecurityFilter implements Filter {
             if (path.equals("/staffProfile.xhtml")
                     || path.equals("/products/standardProductManagement.xhtml")
                     || path.equals("/products/customizationManagement.xhtml")
-                    || path.equals("/systemAdministration/createNewStaff.xhtml")
-                    || path.equals("/systemAdministration/viewStaffDetails.xhtml")
-                    || path.equals("/systemAdministration/viewAllStaffs.xhtml")
-                    || path.equals("/systemAdministration/createNewProduct.xhtml")
-                    || path.equals("/systemAdministration/viewProductDetails.xhtml")
-                    || path.equals("/systemAdministration/updateProduct.xhtml")
-                    || path.equals("/systemAdministration/deleteProduct.xhtml")
-                    || path.equals("/systemAdministration/viewAllProducts.xhtml")
-                    || path.equals("/systemAdministration/searchProductsByName.xhtml")
-                    || path.equals("/systemAdministration/filterProductsByCategory.xhtml")
-                    || path.equals("/systemAdministration/filterProductsByTags.xhtml")
                     || path.equals("/appointmentManagement.xhtml")
-                    || path.equals("/orderManagement.xhtml")) {
+                    || path.equals("/customerManagement.xhtml")
+                    || path.equals("/orderManagement.xhtml")
+                    || path.equals("/staffManagement.xhtml")
+                    || path.equals("/storeManagement.xhtml")
+                    || path.equals("/supportTicketManagement.xhtml")) {
                 return true;
             } else {
                 return false;

@@ -45,6 +45,7 @@ ul.ui-menu-child {
 
 .navBar {
     margin-top: 15px;
+    /*padding-left: 300px !important;*/
 }
 
 .ui-menu .ui-menu-parent .ui-menu-child {
@@ -57,4 +58,9 @@ div.ui-layout-north {
 
 .productsMenu ul {
     width: 14.5em !important;
+}
+
+/*Content formatting*/
+div.ui-layout-center {
+    text-align: center;
 }

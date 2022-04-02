@@ -12,8 +12,8 @@
                 <p:menuitem outcome="/index" styleClass="logo">
                     <p:graphicImage library="images" name="logo.png" alt="Logo" style="width: 15vw; margin: 1em"/>
                 </p:menuitem>
-
-                <p:menuitem value="Home" outcome="/index" icon="pi pi-home" styleClass="navBar"></p:menuitem>
+                
+                <p:menuitem value="Home" outcome="/index" icon="pi pi-home" styleClass="navBar" containerStyle="margin-left: 25%"></p:menuitem>
 
                 <p:submenu label="Cashier Operations" icon="pi pi-fw pi-dollar" style="margin-top: 15px;">
                     <p:menuitem value="Orders" outcome="/orderManagement" icon="pi pi-fw pi-file"/>
@@ -31,10 +31,9 @@
                     <p:menuitem value="Stores" outcome="/storeManagement" icon="pi pi-fw pi-map-marker"/>
                 </p:submenu>
 
-
                 <f:facet name="options">
-                    <p:button value="My Profile" outcome="/staffProfile" icon="pi pi-user" style="margin: 1em;" rendered="${sessionScope.isLogin == true}" styleClass="ui-button-info"/>
-                    <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout}" style="margin: 1em;" rendered="${sessionScope.isLogin == true}" styleClass="ui-button-info"/>
+                    <p:button value="My Profile" outcome="/staffProfile" icon="pi pi-user" style="margin: 1em 0.5em;" rendered="${sessionScope.isLogin == true}" styleClass="ui-button-info"/>
+                    <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout}" style="margin: 1em 0.5em;" rendered="${sessionScope.isLogin == true}" styleClass="ui-button-info"/>
                 </f:facet>
 
             </p:menubar> 

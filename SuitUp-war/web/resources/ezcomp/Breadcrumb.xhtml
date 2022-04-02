@@ -16,22 +16,25 @@
 
                 <p:menuitem icon="pi pi-home" url="#{application.contextPath}/index.xhtml" style="text-decoration-line: none;" />
 
-<!--                <p:menuitem value="Product Management" url="#{application.contextPath}/productManagement.xhtml" rendered="#{cc.attrs.pageName == 'productManagement'}" />
-
-                <p:menuitem value="Staff Management" url="#{application.contextPath}/staffManagement.xhtml" rendered="#{cc.attrs.pageName == 'staffManagement'}" />
-                -->
                 <p:menuitem value="Order Management" url="#{application.contextPath}/orderManagement.xhtml" rendered="#{cc.attrs.pageName == 'orderManagement'}" />
+                <p:menuitem value="Appointment Management" url="#{application.contextPath}/appointmentManagement.xhtml" style="text-decoration-line: none;" rendered="#{cc.attrs.pageName == 'appointmentManagement'}" />
+
+                <p:menuitem value="Customer Management" url="#{application.contextPath}/customerManagement.xhtml" rendered="#{cc.attrs.pageName == 'customerManagement'}" />
+                <p:menuitem value="Support Ticket Management" url="#{application.contextPath}/supportTicketManagement.xhtml" rendered="#{cc.attrs.pageName == 'supportTicketManagement'}" />
+                <p:menuitem value="Customization Product Management" url="#{application.contextPath}/customisationManagement.xhtml" rendered="#{cc.attrs.pageName == 'customisationManagement'}" />
+                <p:menuitem value="Standard Product Management" url="#{application.contextPath}/standardProductManagement.xhtml" rendered="#{cc.attrs.pageName == 'standardProductManagement'}" />
+                <p:menuitem value="Staff Management" url="#{application.contextPath}/staffManagement.xhtml" rendered="#{cc.attrs.pageName == 'staffManagement'}" />
+                <p:menuitem value="Store Management" url="#{application.contextPath}/storeManagement.xhtml" rendered="#{cc.attrs.pageName == 'storeManagement'}" />
                 
                 <p:menuitem value="View My Profile" url="#{application.contextPath}/staffProfile.xhtml" rendered="#{cc.attrs.pageName == 'staffProfile'}" />
 
-<!--                <p:menuitem value="Customer Management" url="#{application.contextPath}/customerManagement.xhtml" rendered="#{cc.attrs.pageName == 'customerManagement'}" />
-                
+<!--
                 <p:menuitem value="Promotion Management" url="#{application.contextPath}/promotionManagement.xhtml" rendered="#{cc.attrs.pageName == 'promotionManagement'}" />
-                
+
                 <p:menuitem value="Miscellaneous" url="#{application.contextPath}/miscellaneous.xhtml" rendered="#{cc.attrs.pageName == 'miscellaneous'}" />
-                
-                <p:menuitem value="View Report" url="#{application.contextPath}/jasperreport/ViewReport.xhtml" rendered="#{cc.attrs.pageName == 'viewReport'}" />
-                -->
+
+                <p:menuitem value="View Report" url="#{application.contextPath}/jasperreport/ViewReport.xhtml" rendered="#{cc.attrs.pageName == 'viewReport'}" />-->
+
             </p:breadCrumb>
 
         </h:form>
