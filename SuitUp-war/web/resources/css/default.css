@@ -51,10 +51,10 @@ ul.ui-menu-child {
     position: fixed !important;
 }
 
-div.ui-layout-center {
-    z-index: -1 !important;
+div.ui-layout-north {
+    z-index: 1 !important;
 }
 
 .productsMenu ul {
-    width: 14em !important;
+    width: 14.5em !important;
 }
