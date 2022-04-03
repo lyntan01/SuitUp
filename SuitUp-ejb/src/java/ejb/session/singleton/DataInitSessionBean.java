@@ -132,7 +132,7 @@ public class DataInitSessionBean {
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor Two", AccessRightEnum.TAILOR, "tailor2", "password"));
 
             customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobby@gmail.com", "password", "9999999")); //Customer - 1L
-            addressSessionBeanLocal.createNewAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
+            addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
 
             Calendar calendar = new Calendar.Builder()
                     .setDate(2022, Calendar.JUNE, 1)
@@ -219,6 +219,7 @@ public class DataInitSessionBean {
 
         try {
             Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best suit store", "09:00", "22:00", "62313264"));
+            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Store Address", "68765432", "10 Orchard Road", "Far East Plaza", "228213"), storeId);
 
             //1L
             AppointmentEntity apptOne = new AppointmentEntity(new Date(), AppointmentTypeEnum.ALTERATION, false);

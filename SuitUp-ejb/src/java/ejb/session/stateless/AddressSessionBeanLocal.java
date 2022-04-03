@@ -12,6 +12,7 @@ import util.exception.AddressNotFoundException;
 import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
+import util.exception.StoreNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
 
@@ -22,8 +23,10 @@ import util.exception.UpdateEntityException;
 @Local
 public interface AddressSessionBeanLocal {
 
-    public Long createNewAddress(AddressEntity newAddressEntity, Long customerId) throws CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException;
+    public Long createNewCustomerAddress(AddressEntity newAddressEntity, Long customerId) throws CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException;
 
+    public Long createNewStoreAddress(AddressEntity newAddressEntity, Long storeId) throws StoreNotFoundException, UnknownPersistenceException, InputDataValidationException;
+    
     public List<AddressEntity> retrieveAllAddresss();
 
     public AddressEntity retrieveAddressByAddressId(Long addressId) throws AddressNotFoundException;

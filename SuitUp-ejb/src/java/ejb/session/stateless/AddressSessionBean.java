@@ -8,7 +8,7 @@ package ejb.session.stateless;
 import entity.AddressEntity;
 import entity.CustomerEntity;
 import entity.OrderEntity;
-import entity.StaffEntity;
+import entity.StoreEntity;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -26,6 +26,7 @@ import util.exception.AddressNotFoundException;
 import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
+import util.exception.StoreNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateEntityException;
 
@@ -41,6 +42,9 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
 
     @EJB
     private CustomerSessionBeanLocal customerSessionBeanLocal;
+    
+    @EJB
+    private StoreSessionBeanLocal storeSessionBeanLocal;
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -51,7 +55,7 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
     }
 
     @Override
-    public Long createNewAddress(AddressEntity newAddressEntity, Long customerId) throws CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException {
+    public Long createNewCustomerAddress(AddressEntity newAddressEntity, Long customerId) throws CustomerNotFoundException, UnknownPersistenceException, InputDataValidationException {
         Set<ConstraintViolation<AddressEntity>> constraintViolations = validator.validate(newAddressEntity);
 
         if (constraintViolations.isEmpty()) {
@@ -60,6 +64,26 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
                 em.persist(newAddressEntity);
                 em.flush();
                 customerEntity.getAddresses().add(newAddressEntity);
+
+                return newAddressEntity.getAddressId();
+            } catch (PersistenceException ex) {
+                throw new UnknownPersistenceException(ex.getMessage());
+            }
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    @Override
+    public Long createNewStoreAddress(AddressEntity newAddressEntity, Long storeId) throws StoreNotFoundException, UnknownPersistenceException, InputDataValidationException {
+        Set<ConstraintViolation<AddressEntity>> constraintViolations = validator.validate(newAddressEntity);
+
+        if (constraintViolations.isEmpty()) {
+            try {
+                StoreEntity storeEntity = storeSessionBeanLocal.retrieveStoreByStoreId(storeId);
+                em.persist(newAddressEntity);
+                em.flush();
+                storeEntity.setAddress(newAddressEntity);
 
                 return newAddressEntity.getAddressId();
             } catch (PersistenceException ex) {

@@ -107,7 +107,7 @@ public class StoreSessionBean implements StoreSessionBeanLocal {
     public void deleteStore(Long storeId) throws StoreNotFoundException, DeleteEntityException {
         StoreEntity storeEntityToRemove = retrieveStoreByStoreId(storeId);
         
-        if(storeEntityToRemove.getAppointments().isEmpty())
+        if(storeEntityToRemove.getAppointments().isEmpty() && storeEntityToRemove.getStaff().isEmpty())
         {
             // Disassociation
             for (StaffEntity staff : storeEntityToRemove.getStaff()) {
@@ -119,8 +119,8 @@ public class StoreSessionBean implements StoreSessionBeanLocal {
         }
         else
         {
-            // Prevent deleting stores with existing appointment(s)
-            throw new DeleteEntityException("Store ID " + storeId + " is associated with existing appointment(s) and cannot be deleted!");
+            // Prevent deleting stores with existing appointment(s) and/or staff
+            throw new DeleteEntityException("Store ID " + storeId + " is associated with existing appointment(s) and/or staff and cannot be deleted!");
         }
         
     }
