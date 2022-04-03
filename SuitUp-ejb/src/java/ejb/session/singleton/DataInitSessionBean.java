@@ -219,7 +219,7 @@ public class DataInitSessionBean {
 
         try {
             Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best suit store", "09:00", "22:00", "62313264"));
-            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Store Address", "68765432", "10 Orchard Road", "Far East Plaza", "228213"), storeId);
+            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Store Address", "62313264", "10 Orchard Road", "Far East Plaza", "228213"), storeId);
 
             //1L
             AppointmentEntity apptOne = new AppointmentEntity(new Date(), AppointmentTypeEnum.ALTERATION, false);

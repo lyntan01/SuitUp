@@ -25,9 +25,8 @@
                              paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
 
                     <f:facet name="header">
-                        <span>
-                            <p:button value="Create New Store" onclick="PF('dialogCreateNewStore').show()" icon="pi pi-plus"/>
-                        </span>
+                        <p:commandButton value="Create New Store" update="CreateNewStore:formCreateNewStore" onclick="PF('dialogCreateNewStore').show()" icon="pi pi-plus" style="float: left; margin-top: -1px;"/>
+
                         <div style="text-align: right;">
                             <h:outputText value="Search all fields: " />
                             <p:inputText id="globalFilter" onkeyup="PF('dataTableAllStores').filter()" style="width: 20em" placeholder="Enter keyword"/>
@@ -53,18 +52,22 @@
                     <p:column headerText="Closing Hour" sortBy="#{storeEntity.closingHour}" filterBy="#{storeEntity.closingHour}" filterMatchMode="contains">
                         <h:outputText value="#{storeEntity.closingHour}"/>
                     </p:column>
-                    
+
+                    <p:column headerText="Phone Number" sortBy="#{storeEntity.contactNumber}" filterBy="#{storeEntity.contactNumber}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.contactNumber}"/>
+                    </p:column>
+
                     <p:column headerText="Address" sortBy="#{storeEntity.address}" filterBy="#{storeEntity.address}" filterMatchMode="contains">
                         <h:outputText value="#{storeEntity.address}"/>
                     </p:column>
 
                     <p:column style="width: 5em; text-align: center;" headerText="Action">
-                        
+
                         <p:commandButton actionListener="#{storeManagementManagedBean.doUpdateStore}" update="UpdateStore:formUpdateStore1" oncomplete="PF('dialogUpdateStore1').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="storeEntityToUpdate" value="#{storeEntity}" />
                         </p:commandButton>
-                                                
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{storeManagementManagedBean.deleteStore}" update="formAllStores:dataTableAllStores">
+
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{storeManagementManagedBean.deleteStore}" update="@form">
                             <f:attribute name="storeToDelete" value="#{storeEntity}" />
                             <p:confirm header="Confirmation" message="Are you sure you want to delete #{storeEntity.storeName} (Store ID: #{storeEntity.storeId})?" icon="ui-icon-alert" />
                         </p:commandButton>
@@ -72,7 +75,7 @@
 
                     <p:columnGroup type="footer">   
                         <p:row>
-                            <p:column colspan="7" footerText="#{storeManagementManagedBean.storeEntities.size()} stores" />
+                            <p:column colspan="8" footerText="#{storeManagementManagedBean.storeEntities.size()} stores" />
                         </p:row>
                     </p:columnGroup>
 
@@ -83,7 +86,7 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            
+
             <ezcomp:CreateNewStore id="CreateNewStore" />
 
             <ezcomp:UpdateStore id="UpdateStore" />
