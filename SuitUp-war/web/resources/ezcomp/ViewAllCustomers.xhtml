@@ -19,7 +19,7 @@
             <p:dataTable id="dataTableAllCustomers" widgetVar="dataTableAllCustomers" value="#{customerManagementManagedBean.customerEntities}"
                          var="customerEntity" rowKey="#{customerEntity.customerId}"
                          rowIndexVar="row" selection="#{customerManagementManagedBean.viewCustomerManagedBean.customerEntityToView}" selectionMode="single"
-                         filteredValue="#{customerManagementManagedBean.filteredCustomerEntities}" rows="5"
+                         filteredValue="#{customerManagementManagedBean.filteredCustomerEntities}" rows="10"
                          paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
 
                 <p:ajax event="rowDblselect" update="ViewCustomer:dialogViewCustomer" global="false" oncomplete="PF('dialogViewCustomer').show()"/>

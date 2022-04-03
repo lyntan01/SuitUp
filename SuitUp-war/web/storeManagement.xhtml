@@ -21,7 +21,7 @@
 
                 <p:dataTable id="dataTableAllStores" widgetVar="dataTableAllStores" value="#{storeManagementManagedBean.storeEntities}"
                              var="storeEntity" rowKey="#{storeEntity.storeId}"
-                             rowIndexVar="row" filteredValue="#{storeManagementManagedBean.filteredStoreEntities}" rows="5"
+                             rowIndexVar="row" filteredValue="#{storeManagementManagedBean.filteredStoreEntities}" rows="10"
                              paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
 
                     <f:facet name="header">
