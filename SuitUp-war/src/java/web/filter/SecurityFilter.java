@@ -95,6 +95,7 @@ public class SecurityFilter implements Filter {
                     || path.equals("/appointmentManagement.xhtml")
                     || path.equals("/customerManagement.xhtml")
                     || path.equals("/orderManagement.xhtml")
+                    || path.equals("/promotionManagement.xhtml")
                     || path.equals("/staffManagement.xhtml")
                     || path.equals("/storeManagement.xhtml")
                     || path.equals("/supportTicketManagement.xhtml")) {

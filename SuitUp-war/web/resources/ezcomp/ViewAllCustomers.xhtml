@@ -22,7 +22,7 @@
                          filteredValue="#{customerManagementManagedBean.filteredCustomerEntities}" rows="5"
                          paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
 
-                <p:ajax event="rowDblselect" update="ccViewCustomer:dialogViewCustomer" global="false" oncomplete="PF('dialogViewCustomer').show()"/>
+                <p:ajax event="rowDblselect" update="ViewCustomer:dialogViewCustomer" global="false" oncomplete="PF('dialogViewCustomer').show()"/>
 
                 <f:facet name="header">
                     <div style="text-align: right;">
@@ -52,15 +52,14 @@
                 </p:column>
 
                 <p:column style="width: 5em; text-align: center;" headerText="Action">
-                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" icon="ui-icon-pencil" title="Update">
-                    <!--<p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" update="UpdateCustomer:formUpdateCustomer" oncomplete="PF('dialogUpdateCustomer').show()" icon="ui-icon-pencil" title="Update">-->
+                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" update="UpdateCustomer:formUpdateCustomer" oncomplete="PF('dialogUpdateCustomer').show()" icon="ui-icon-pencil" title="Update">
                         <f:attribute name="customerEntityToUpdate" value="#{customerEntity}" />
                     </p:commandButton>
                 </p:column>
 
                 <p:columnGroup type="footer">   
                     <p:row>
-                        <p:column colspan="9" footerText="#{customerManagementManagedBean.customerEntities.size()} customers" />
+                        <p:column colspan="6" footerText="#{customerManagementManagedBean.customerEntities.size()} customers" />
                     </p:row>
                 </p:columnGroup>
 

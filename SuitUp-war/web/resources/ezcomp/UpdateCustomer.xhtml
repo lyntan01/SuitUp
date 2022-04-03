@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:cc="http://xmlns.jcp.org/jsf/composite">
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      template="/template/defaultTemplate.xhtml"
+      xmlns:p="http://primefaces.org/ui">>
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -9,5 +13,85 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
+        <h:form id="formUpdateCustomer">
+
+                <p:dialog id="dialogUpdateCustomer" widgetVar="dialogUpdateCustomer" header="Update Standard Product" closable="true">
+
+                    <p:messages id="messagesUpdateCustomer" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Customer ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerManagementManagedBean.selectedCustomerEntityToUpdate.customerId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="firstName" value="First Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="firstName" value="#{customerManagementManagedBean.selectedCustomerEntityToUpdate.firstName}" placeholder="Customer 1" required="true" requiredMessage="First Name is required"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="firstName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lastName" value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="lastName" value="#{customerManagementManagedBean.selectedCustomerEntityToUpdate.lastName}" placeholder="Customer 1" required="true" requiredMessage="Last Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="lastName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="email" value="Email: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="email" value="#{customerManagementManagedBean.selectedCustomerEntityToUpdate.email}" placeholder="customer1@email.com" required="true" requiredMessage="Email is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="email" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="contactNumber" value="Quantity In Stock " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="contactNumber" value="#{customerManagementManagedBean.selectedCustomerEntityToUpdate.contactNumber}" placeholder="91234567" required="true" requiredMessage="Contact Number is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="contactNumber" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Standard Product" update="@form ViewAllCustomers:formAllCustomers:dataTableAllCustomers" actionListener="#{customerManagementManagedBean.updateCustomer}" oncomplete="PF('dialogUpdateCustomer').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+        
     </cc:implementation>
 </html>

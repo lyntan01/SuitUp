@@ -166,7 +166,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         }
 
         if (customerEntityToRemove.getAppointments().size() > 0 || customerEntityToRemove.getAppointments() != null) {
-            throw new DeleteEntityException("Can't delete a customer if he/she has appointmnets!");
+            throw new DeleteEntityException("Can't delete a customer if he/she has appointments!");
         }
 
         for (CreditCardEntity creditCard : customerEntityToRemove.getCreditCards()) {

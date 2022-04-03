@@ -25,36 +25,26 @@
                     </p:row>
 
                     <p:row>
-                        <p:column><p:outputLabel for="serialNumber" value="Serial Number" /></p:column>
-                        <p:column><h:outputText id="serialNumber" value="#{viewCustomerManagedBean.customerEntityToView.serialNumber}" /></p:column>
+                        <p:column><p:outputLabel for="firstName" value="First Name" /></p:column>
+                        <p:column><h:outputText id="firstName" value="#{viewCustomerManagedBean.customerEntityToView.firstName}" /></p:column>
                     </p:row>
 
                     <p:row>                    
-                        <p:column><p:outputLabel for="totalCustomerLineItem" value="Total Customer Line Item" /></p:column>
-                        <p:column><h:outputText id="totalCustomerLineItem" value="#{viewCustomerManagedBean.customerEntityToView.totalLineItem}" /></p:column>
+                        <p:column><p:outputLabel for="lastName" value="Last Name" /></p:column>
+                        <p:column><h:outputText id="lastName" value="#{viewCustomerManagedBean.customerEntityToView.lastName}" /></p:column>
                     </p:row>
 
                     <p:row>
-                        <p:column><p:outputLabel for="totalQuantity" value="Total Quantity" /></p:column>
-                        <p:column><h:outputText id="totalQuantity" value="#{viewCustomerManagedBean.customerEntityToView.totalQuantity}" /></p:column>
+                        <p:column><p:outputLabel for="email" value="Email" /></p:column>
+                        <p:column><h:outputText id="email" value="#{viewCustomerManagedBean.customerEntityToView.email}" /></p:column>
                     </p:row>
 
                     <p:row>
-                        <p:column><p:outputLabel for="totalAmount" value="Total Amount" /></p:column>
-                        <p:column>
-                            <h:outputText id="totalAmount" value="#{viewCustomerManagedBean.customerEntityToView.totalAmount}">
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
-                            </h:outputText>
-                        </p:column>
+                        <p:column><p:outputLabel for="contactNumber" value="Contact Number" /></p:column>
+                        <p:column><h:outputText id="contactNumber" value="#{viewCustomerManagedBean.customerEntityToView.contactNumber}" /></p:column>
                     </p:row>
 
-                    <p:row>
-                        <p:column><p:outputLabel for="customerDateTime" value="Customer Date Time" /></p:column>
-                        <p:column>
-                            <h:outputText id="customerDateTime" value="#{viewCustomerManagedBean.customerEntityToView.customerDateTime}">
-                            </h:outputText>
-                        </p:column>
-                    </p:row>
+                    <!-- Show jacket and pants measurement?? -->
 
                 </p:panelGrid>
 
