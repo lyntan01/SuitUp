@@ -10,13 +10,24 @@ package util.enumeration;
  * @author keithcharleschan
  */
 public enum OrderStatusEnum {
-    UNPAID,
-    PAID,
-    PROCESSING,
-    READY_FOR_PICKUP,
-    PICKED_UP,
-    IN_DELIVERY,
-    DELIVERED,
-    COMPLETED,
-    CANCELLED
+    UNPAID("Unpaid"),
+    PAID("Paid"),
+    PROCESSING("Processing"),
+    READY_FOR_PICKUP("Ready For Pickup"),
+    PICKED_UP("Picked Up"),
+    IN_DELIVERY("In Delivery"),
+    DELIVERED("Delivered"),
+    COMPLETED("Completed"),
+    CANCELLED("Cancelled");
+    
+    private final String name;
+
+    OrderStatusEnum(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+    
 }
