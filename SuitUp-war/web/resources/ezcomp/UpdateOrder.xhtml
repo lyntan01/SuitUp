@@ -131,7 +131,7 @@
                         <p:row>
                             <p:column colspan="3" style="text-align: center;">
                                 <p:commandButton value="Next" oncomplete="PF('dialogUpdateOrder2').show(); PF('dialogUpdateOrder1').hide()" />
-                                <p:commandButton value="Update Order" update="@composite:dialogUpdateOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" process="@this" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide();" />
+                                <p:commandButton value="Update Order" actionListener="#{orderManagementManagedBean.sendEmail}" update="@composite:dialogUpdateOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" process="@this" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide();" />
                             </p:column>
                         </p:row>
                     </p:columnGroup>

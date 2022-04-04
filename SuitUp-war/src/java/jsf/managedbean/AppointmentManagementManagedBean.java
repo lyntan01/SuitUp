@@ -70,7 +70,7 @@ public class AppointmentManagementManagedBean implements Serializable {
     private String verificationCodeToVerifyAgainst;
     private String providedVerificationCodeByCustomer;
 
-    private double cost;
+    private BigDecimal cost;
 
     public AppointmentManagementManagedBean() {
         appointmentEntities = new ArrayList<>();
@@ -193,6 +193,7 @@ public class AppointmentManagementManagedBean implements Serializable {
     public void generateVerification(ActionEvent event) {
         RandomStringGenerator generator = new RandomStringGenerator(6);
         this.verificationCodeToVerifyAgainst = generator.nextString();
+//        System.out.println("Test: " + verificationCodeToVerifyAgainst);
         emailSessionBeanLocal.emailVerificationCodeSync(selectedAppointmentEntityToUpdate, selectedStringCreditCard, verificationCodeToVerifyAgainst, customerOfAppointmentToPayFor, "keithccys@gmail.com");
     }
 
@@ -204,16 +205,26 @@ public class AppointmentManagementManagedBean implements Serializable {
         this.providedVerificationCodeByCustomer = providedVerificationCodeByCustomer;
     }
 
-    public void doCompletePayment() {
+    public void doCompletePayment(ActionEvent event) {
+        
+//        System.out.println("Test1: " + verificationCodeToVerifyAgainst);
+//        System.out.println("Test2: " + providedVerificationCodeByCustomer);
+
         if (verificationCodeToVerifyAgainst.equals(providedVerificationCodeByCustomer)) {
-            try {
-                System.out.println("Verification successful");
-                transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(new BigDecimal("003"), new Date(), selectedAppointmentEntityToUpdate, null), selectedAppointmentEntityToUpdate.getAppointmentId(), null);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Verification successful. Payment completed!", null));
-                verificationCodeToVerifyAgainst = "";
-                //Add updating of payment status of the appointment to prevent further paying /extra checks
-            } catch (AppointmentNotFoundException | CreateNewTransactionException | OrderNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
-                System.out.println(ex.getMessage() + "Error");
+
+            if (selectedAppointmentEntityToUpdate.getTransaction() != null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Appointment has been paid for. Please close this window.", null));
+            } else {
+                try {
+                    System.out.println("Verification successful");
+                    transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(this.cost, new Date(), selectedAppointmentEntityToUpdate, null), selectedAppointmentEntityToUpdate.getAppointmentId(), null);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Verification successful. Payment completed! Please close this window.", null));
+                    verificationCodeToVerifyAgainst = "";
+                    //Add updating of payment status of the appointment to prevent further paying /extra checks
+                } catch (AppointmentNotFoundException | CreateNewTransactionException | OrderNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
+                    System.out.println(ex.getMessage() + "Error");
+                }
+
             }
 
         } else {
@@ -222,13 +233,12 @@ public class AppointmentManagementManagedBean implements Serializable {
         }
     }
 
-    public double getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
-   
 }

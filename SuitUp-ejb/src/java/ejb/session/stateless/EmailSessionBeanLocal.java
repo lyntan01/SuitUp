@@ -25,4 +25,10 @@ public interface EmailSessionBeanLocal {
     public Boolean emailVerificationCodeSync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
 
     public Future<Boolean> emailVerificationCodeAsync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
+
+    public Boolean emailUpdatedOrderStatusSync(OrderEntity orderEntity, CustomerEntity customerEntity, String toEmailAddress);
+
+    public Future<Boolean> emailUpdatedOrderStatusAsync(OrderEntity orderEntity, CustomerEntity customerEntity, String toEmailAddress);
+
+
 }

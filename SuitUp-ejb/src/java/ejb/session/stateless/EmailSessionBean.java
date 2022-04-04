@@ -43,8 +43,6 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
         }
 
     }
-    
-    
 
     @Asynchronous
     @Override
@@ -62,7 +60,7 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
         }
 
     }
-    
+
     @Override
     public Boolean emailVerificationCodeSync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
 
@@ -78,8 +76,7 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
         }
 
     }
-    
-    
+
     @Asynchronous
     @Override
     public Future<Boolean> emailVerificationCodeAsync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
@@ -92,6 +89,39 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
             return new AsyncResult<>(true);
         } else {
             System.out.print("Returned False for emailVerificationCodeAsync");
+            return new AsyncResult<>(false);
+        }
+
+    }
+
+    @Override
+    public Boolean emailUpdatedOrderStatusSync(OrderEntity orderEntity, CustomerEntity customerEntity, String toEmailAddress) {
+
+        EmailManager emailManager = new EmailManager(USERNAME, PASSWORD);
+        Boolean sentEmail = emailManager.emailUpdatedOrderStatus(orderEntity, customerEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
+
+        if (sentEmail == true) {
+            System.out.print("Returned True for emailUpdatedOrderStatusSync");
+            return true;
+        } else {
+            System.out.print("Returned False for emailUpdatedOrderStatusSync");
+            return false;
+        }
+
+    }
+
+    @Asynchronous
+    @Override
+    public Future<Boolean> emailUpdatedOrderStatusAsync(OrderEntity orderEntity, CustomerEntity customerEntity, String toEmailAddress) {
+
+        EmailManager emailManager = new EmailManager(USERNAME, PASSWORD);
+        Boolean sentEmail = emailManager.emailUpdatedOrderStatus(orderEntity, customerEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
+
+        if (sentEmail == true) {
+            System.out.print("Returned True for emailUpdatedOrderStatusAsync");
+            return new AsyncResult<>(true);
+        } else {
+            System.out.print("Returned False for emailUpdatedOrderStatusAsync");
             return new AsyncResult<>(false);
         }
 

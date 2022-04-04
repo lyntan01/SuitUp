@@ -17,6 +17,8 @@
 
             <h:form id="formPayAppointment1">
 
+                <!--<p:messages id="messages" redisplay="false" />-->
+
                 <p:panelGrid>
                     <p:row>
                         <p:column><p:outputLabel for="appointmentId" value="Appointment ID" /></p:column>
@@ -65,12 +67,17 @@
                                         </p:row>-->
 
                     <p:row>
+                        <p:column>
+                               <p:outputLabel for="ajaxSpinnerValue" value="Cost"/>
+                        </p:column>
+                        <p:column>
                         <p:outputPanel>
-                            <p:spinner id="ajaxSpinner" value="#{appointmentManagementManagedBean.cost}">
-                                <p:ajax update="ajaxSpinnerValue" process="@this" />
+                            <p:spinner id="ajaxSpinnerValue" value="#{appointmentManagementManagedBean.cost}" stepFactor="0.01" required="true">
+                                <p:ajax update="ajaxSpinnerValue"/>
                             </p:spinner>
-                            <h:outputText id="ajaxSpinnerValue" value="#{appointmentManagementManagedBean.cost}" style="padding-left: 10px" />
+                            <!--<h:outputText id="ajaxSpinnerValue" value="#{appointmentManagementManagedBean.cost}" style="padding-left: 10px" />-->
                         </p:outputPanel>
+                        </p:column>
                     </p:row>
 
 
@@ -92,7 +99,7 @@
                     <p:columnGroup type="footer">
                         <p:row>
                             <p:column colspan="3" style="text-align: center;">
-                                <p:commandButton value="Next" oncomplete="PF('dialogPayAppointment2').show(); PF('dialogPayAppointment1').hide()" actionListener="#{appointmentManagementManagedBean.generateVerification}"/>                                
+                                <p:commandButton value="Next" oncomplete="PF('dialogPayAppointment2').show(); PF('dialogPayAppointment1').hide()" update="@composite:dialogPayAppointment2" actionListener="#{appointmentManagementManagedBean.generateVerification}"/>                                
                             </p:column>
                         </p:row>
                     </p:columnGroup>
