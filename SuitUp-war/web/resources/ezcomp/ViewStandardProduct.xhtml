@@ -13,14 +13,14 @@
         
         <h:form id="formViewStandardProduct">
             
-            <p:dialog id="dialogViewStandardProduct" widgetVar="dialogViewStandardProduct" header="View Standard Product" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+            <p:dialog id="dialogViewStandardProduct" widgetVar="dialogViewStandardProduct" header="View Standard Product" closable="true">
 
-                <p:panelGrid style="float: left; width: 30em">
+                <p:panelGrid>
                     
                     <p:row>
                         <p:column style="width: 12em;"></p:column>
                         <p:column>
-                            <p:graphicImage style="width: 30em;" value="/productImages/#{viewStandardProductManagedBean.standardProductToView.image}" alt="image" rendered="#{viewStandardProductManagedBean.standardProductToView.image != null}" />                            
+                            <p:graphicImage style="width: 30em;" value="/images/productImages/#{viewStandardProductManagedBean.standardProductToView.image}" alt="image" rendered="#{viewStandardProductManagedBean.standardProductToView.image != null}" />                            
                         </p:column>                        
                     </p:row>
                     

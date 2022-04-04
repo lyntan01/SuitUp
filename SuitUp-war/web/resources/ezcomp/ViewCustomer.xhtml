@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <p:dialog id="dialogViewCustomer" widgetVar="dialogViewCustomer" header="View Customer" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formViewCustomer">
+
+                <p:panelGrid style="float: left; width: 30em">
+
+                    <p:row>
+                        <p:column><p:outputLabel style="width: 10em;" for="customerId" value="ID" /></p:column>
+                        <p:column><h:outputText id="customerId" value="#{viewCustomerManagedBean.customerEntityToView.customerId}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="firstName" value="First Name" /></p:column>
+                        <p:column><h:outputText id="firstName" value="#{viewCustomerManagedBean.customerEntityToView.firstName}" /></p:column>
+                    </p:row>
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="lastName" value="Last Name" /></p:column>
+                        <p:column><h:outputText id="lastName" value="#{viewCustomerManagedBean.customerEntityToView.lastName}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="email" value="Email" /></p:column>
+                        <p:column><h:outputText id="email" value="#{viewCustomerManagedBean.customerEntityToView.email}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="contactNumber" value="Contact Number" /></p:column>
+                        <p:column><h:outputText id="contactNumber" value="#{viewCustomerManagedBean.customerEntityToView.contactNumber}" /></p:column>
+                    </p:row>
+
+                    <!-- Show jacket and pants measurement?? -->
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+    </cc:implementation>
+</html>

@@ -21,17 +21,17 @@
                 <p:panelGrid id="createNewJacketStyleGrid" style="width: 30em;" styleClass="noBorder">
 
                     <p:row>
-                        <p:column style="width: 40%;">
+                        <p:column style="width: 30%;">
                             <p:outputLabel style="font-weight: bold;" for="name" value="Name: "/>
                         </p:column>
-                        <p:column style="width:60%;">
+                        <p:column style="width:70%;">
                             <p:inputText id="name" value="#{customizationManagementManagedBean.newJacketStyle.name}" placeholder="Jacket Style 1" required="true" requiredMessage="Name is required" />
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="font-weight: bold;" for="additionalPrice" value="Additional Price " />
+                            <p:outputLabel for="additionalPrice" value="Additional Price " />
                         </p:column>
                         <p:column>
                             <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.newJacketStyle.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" required="true" requiredMessage="Additional Price is required" />
@@ -46,13 +46,13 @@
                             <p:outputLabel style="font-weight: bold;" for="description" value="Description: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="description" value="#{customizationManagementManagedBean.newJacketStyle.description}" placeholder="Jacket Style 1" required="true" requiredMessage="Description is required" />
+                            <p:inputText id="description" value="#{customizationManagementManagedBean.newJacketStyle.description}" placeholder="Pocket Style 1" required="true" requiredMessage="Description is required" />
                         </p:column>
                     </p:row>
 
-                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{customizationManagementManagedBean.newJacketStyle.image == null}" />
-                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{customizationManagementManagedBean.handleJacketStyleFileUpload}" rendered="#{customizationManagementManagedBean.newJacketStyle.image == null}" />
-                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{customizationManagementManagedBean.newJacketStyle.image != null}" />
+                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.handleFileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image != null}" />
 
 
                     <p:row>

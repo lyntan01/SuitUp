@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formAllCustomers">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <p:dataTable id="dataTableAllCustomers" widgetVar="dataTableAllCustomers" value="#{customerManagementManagedBean.customerEntities}"
+                         var="customerEntity" rowKey="#{customerEntity.customerId}"
+                         rowIndexVar="row" selection="#{customerManagementManagedBean.viewCustomerManagedBean.customerEntityToView}" selectionMode="single"
+                         filteredValue="#{customerManagementManagedBean.filteredCustomerEntities}" rows="10"
+                         paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
+
+                <p:ajax event="rowDblselect" update="ViewCustomer:dialogViewCustomer" global="false" oncomplete="PF('dialogViewCustomer').show()"/>
+
+                <f:facet name="header">
+                    <div style="text-align: right;">
+                        <h:outputText value="Search all fields: " />
+                        <p:inputText id="globalFilter" onkeyup="PF('dataTableAllCustomers').filter()" style="width: 20em" placeholder="Enter keyword"/>
+                    </div>
+                </f:facet>
+
+                <p:column style="width: 5em;" headerText="ID" sortBy="#{customerEntity.customerId}" filterBy="#{customerEntity.customerId}" filterMatchMode="contains">
+                    <h:outputText value="#{customerEntity.customerId}" />
+                </p:column>
+
+                <p:column style="width: 10em;" headerText="First Name" sortBy="#{customerEntity.firstName}" filterBy="#{customerEntity.firstName}" filterMatchMode="contains">
+                    <h:outputText value="#{customerEntity.firstName}" />
+                </p:column>
+
+                <p:column headerText="Last Name" sortBy="#{customerEntity.lastName}" filterBy="#{customerEntity.lastName}" filterMatchMode="contains">
+                    <h:outputText value="#{customerEntity.lastName}" />
+                </p:column>
+
+                <p:column headerText="Email" sortBy="#{customerEntity.email}" filterBy="#{customerEntity.email}" filterMatchMode="contains">
+                    <h:outputText value="#{customerEntity.email}" />
+                </p:column>
+
+                <p:column headerText="Contact Number" sortBy="#{customerEntity.contactNumber}" filterBy="#{customerEntity.contactNumber}" filterMatchMode="contains">
+                    <h:outputText value="#{customerEntity.contactNumber}"/>
+                </p:column>
+
+                <p:column style="width: 5em; text-align: center;" headerText="Action">
+                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" update="UpdateCustomer:formUpdateCustomer" oncomplete="PF('dialogUpdateCustomer').show()" icon="ui-icon-pencil" title="Update">
+                        <f:attribute name="customerEntityToUpdate" value="#{customerEntity}" />
+                    </p:commandButton>
+                </p:column>
+
+                <p:columnGroup type="footer">   
+                    <p:row>
+                        <p:column colspan="6" footerText="#{customerManagementManagedBean.customerEntities.size()} customers" />
+                    </p:row>
+                </p:columnGroup>
+
+            </p:dataTable>
+        </h:form>
+    </cc:implementation>
+</html>

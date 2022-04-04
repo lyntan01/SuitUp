@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:dialog id="dialogViewSupportTicket" widgetVar="dialogViewSupportTicket" header="View Support Ticket" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formViewSupportTicket">
+
+                <p:panelGrid style="float: left; width: 40em">
+
+                    <p:row>
+                        <p:column style="width: 30%;"><p:outputLabel for="supportTicketId" value="ID" /></p:column>
+                        <p:column style="width: 70%;"><h:outputText id="supportTicketId" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.ticketId}" /></p:column>
+                    </p:row>
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="customerName" value="Customer Name" /></p:column>
+                        <p:column><h:outputText id="customerName" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.customer.firstName} #{viewSupportTicketManagedBean.supportTicketEntityToView.customer.lastName}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerEmail" value="Customer Email" /></p:column>
+                        <p:column><h:outputText id="customerEmail" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.customer.email}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerNumber" value="Customer Number" /></p:column>
+                        <p:column><h:outputText id="customerNumber" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.customer.contactNumber}" /></p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column><p:outputLabel for="supportTicketDateTime" value="Ticket Date Time" /></p:column>
+                        <p:column>
+                            <h:outputText id="supportTicketDateTime" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.dateTime}">
+                                <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column><p:outputLabel for="title" value="Title" /></p:column>
+                        <p:column><h:outputText id="title" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.name}" /></p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column><p:outputLabel for="description" value="Description" /></p:column>
+                        <p:column><h:outputText id="description" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.description}" /></p:column>
+                    </p:row>
+                    
+                    <p:row rendered="#{viewSupportTicketManagedBean.supportTicketEntityToView.isResolved}">
+                        <p:column><p:outputLabel for="staffReply" value="Staff Reply" /></p:column>
+                        <p:column><h:outputText id="staffReply" value="#{viewSupportTicketManagedBean.supportTicketEntityToView.staffReply}" /></p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+    </cc:implementation>
+</html>

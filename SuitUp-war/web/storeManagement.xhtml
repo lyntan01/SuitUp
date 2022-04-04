@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./template/defaultTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <ezcomp:Breadcrumb pageName="storeManagement"/>
+
+        <h3>Store Management</h3>
+
+        <div>
+
+            <h:form id="formAllStores">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllStores" widgetVar="dataTableAllStores" value="#{storeManagementManagedBean.storeEntities}"
+                             var="storeEntity" rowKey="#{storeEntity.storeId}"
+                             rowIndexVar="row" filteredValue="#{storeManagementManagedBean.filteredStoreEntities}" rows="10"
+                             paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
+
+                    <f:facet name="header">
+                        <p:commandButton value="Create New Store" update="CreateNewStore:formCreateNewStore" onclick="PF('dialogCreateNewStore').show()" icon="pi pi-plus" style="float: left; margin-top: -1px;"/>
+
+                        <div style="text-align: right;">
+                            <h:outputText value="Search all fields: " />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllStores').filter()" style="width: 20em" placeholder="Enter keyword"/>
+                        </div>
+                    </f:facet>
+
+                    <p:column style="width: 5em;" headerText="ID" sortBy="#{storeEntity.storeId}" filterBy="#{storeEntity.storeId}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.storeId}" />
+                    </p:column>
+
+                    <p:column headerText="Store Name" sortBy="#{storeEntity.storeName}" filterBy="#{storeEntity.storeName}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.storeName}" />
+                    </p:column>
+
+                    <p:column style="width: 10em;" headerText="Store Description" sortBy="#{storeEntity.storeDescription}" filterBy="#{storeEntity.storeDescription}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.storeDescription}" />
+                    </p:column>
+
+                    <p:column headerText="Opening Hour" sortBy="#{storeEntity.openingHour}" filterBy="#{storeEntity.openingHour}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.openingHour}" />
+                    </p:column>
+
+                    <p:column headerText="Closing Hour" sortBy="#{storeEntity.closingHour}" filterBy="#{storeEntity.closingHour}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.closingHour}"/>
+                    </p:column>
+
+                    <p:column headerText="Phone Number" sortBy="#{storeEntity.contactNumber}" filterBy="#{storeEntity.contactNumber}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.contactNumber}"/>
+                    </p:column>
+
+                    <p:column headerText="Address" sortBy="#{storeEntity.address}" filterBy="#{storeEntity.address}" filterMatchMode="contains">
+                        <h:outputText value="#{storeEntity.address}"/>
+                    </p:column>
+
+                    <p:column style="width: 5em; text-align: center;" headerText="Action">
+
+                        <p:commandButton actionListener="#{storeManagementManagedBean.doUpdateStore}" update="UpdateStore:formUpdateStore1" oncomplete="PF('dialogUpdateStore1').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="storeEntityToUpdate" value="#{storeEntity}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{storeManagementManagedBean.deleteStore}" update="@form">
+                            <f:attribute name="storeToDelete" value="#{storeEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{storeEntity.storeName} (Store ID: #{storeEntity.storeId})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:columnGroup type="footer">   
+                        <p:row>
+                            <p:column colspan="8" footerText="#{storeManagementManagedBean.storeEntities.size()} stores" />
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:dataTable>
+            </h:form>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+            <ezcomp:CreateNewStore id="CreateNewStore" />
+
+            <ezcomp:UpdateStore id="UpdateStore" />
+
+        </div>
+    </ui:define>
+
+</ui:composition>

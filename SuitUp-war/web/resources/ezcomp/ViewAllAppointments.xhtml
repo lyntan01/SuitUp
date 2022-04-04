@@ -67,7 +67,7 @@
                                 </p:column>-->
 
                 <p:column style="width: 5em; text-align: center;" headerText="Action">
-                    <p:commandButton actionListener="#{appointmentManagementManagedBean.doPaymentForAppointment}" value="PAY" rendered="#{appointmentEntity.isFree == false}" disabled="#{appointmentEntity.transaction != null}" update="@composite:@next:@next:dialogPayAppointment1 @composite:@next:@next:dialogPayAppointment2" oncomplete="PF('dialogPayAppointment1').show()" title="Pay">
+                    <p:commandButton actionListener="#{appointmentManagementManagedBean.doPaymentForAppointment}" value="PAY" rendered="#{appointmentEntity.isFree == false}"  update="@composite:@next:@next:dialogPayAppointment1 @composite:@next:@next:dialogPayAppointment2" oncomplete="PF('dialogPayAppointment1').show()" title="Pay">
                         <f:attribute name="appointmentEntityToPayFor" value="#{appointmentEntity}" />
                     </p:commandButton>
                 </p:column>

@@ -19,7 +19,7 @@
 
                 <p:messages id="messages" redisplay="false" />
 
-                <p:panelGrid>
+                <p:panelGrid id="dataTableUpdateStatus">
 
                     <p:row>
                         <p:column>
@@ -99,11 +99,23 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="orderStatus" value="Order Status"/>
+                            <p:outputLabel for="selOrderStatus" value="Order Status" style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width: 20em;" id="orderStatus" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.orderStatusEnum}" disabled="true" />
-                        </p:column>
+                            <p:selectOneMenu id="selOrderStatus" value="#{orderManagementManagedBean.selectedOrderEntityToUpdate.orderStatusEnum}">
+                                <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" itemDisabled="true" />
+                                <f:selectItem itemValue="UNPAID" itemLabel="Unpaid" />
+                                <f:selectItem itemValue="PAID" itemLabel="Paid" />
+                                <f:selectItem itemValue="PROCESSING" itemLabel="Processing"  />  
+                                <f:selectItem itemValue="READY_FOR_PICKUP" itemLabel="Ready For Pickup" />
+                                <f:selectItem itemValue="PICKED_UP" itemLabel="Picked Up" />
+                                <f:selectItem itemValue="IN_DELIVERY" itemLabel="In Delivery"  />  
+                                <f:selectItem itemValue="DELIVERED" itemLabel="Delivered"  />  
+                                <f:selectItem itemValue="COMPLETED" itemLabel="Completed"  />  
+                                <f:selectItem itemValue="CANCELLED" itemLabel="Cancelled"  />  
+                                <p:ajax event="itemSelect" update="dataTableUpdateStatus" listener="#{orderManagementManagedBean.updateOrderStatusChange}" />
+                            </p:selectOneMenu>
+                        </p:column> 
                     </p:row>
 
                     <p:row>
@@ -118,7 +130,8 @@
                     <p:columnGroup type="footer">
                         <p:row>
                             <p:column colspan="3" style="text-align: center;">
-                                <p:commandButton value="Next" oncomplete="PF('dialogUpdateOrder2').show(); PF('dialogUpdateOrder1').hide()" />                                
+                                <p:commandButton value="Next" oncomplete="PF('dialogUpdateOrder2').show(); PF('dialogUpdateOrder1').hide()" />
+                                <p:commandButton value="Update Order" update="@composite:dialogUpdateOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" process="@this" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide();" />
                             </p:column>
                         </p:row>
                     </p:columnGroup>
@@ -155,31 +168,14 @@
                         <h:outputText value="#{orderLineItemEntity.subTotal}" >
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                         </h:outputText>
-                    </p:column>  
-
-<!--                    <p:column style="text-align: center; width: 8em;" headerText="Order Item Status" filterBy="#{orderLineItemEntity.orderItemStatusEnum}" filterMatchMode="exact">
-                        <f:facet name="filter">
-                            <p:selectOneMenu id="filterItemStatus">
-                                <f:selectItem itemValue="#{null}" itemLabel="[All]" noSelectionOption="true" />
-                                <f:selectItems value="#{orderManagementManagedBean.orderItemStatusEnums}" var="orderItemStatusEnum" itemValue="#{orderItemStatusEnum}" itemLabel="#{orderItemStatusEnum.printName}" />
-                                <p:ajax event="itemSelect" update="dataTableUpdateOrder" listener="#{orderManagementManagedBean.filterOrderItemStatusChange}" />
-                            </p:selectOneMenu>
-                        </f:facet>
-                        <p:selectOneMenu id="selItemStatus" value="#{orderLineItemEntity.orderItemStatusEnum}" required="true" requiredMessage="Order item status required">
-                            <f:selectItems value="#{orderManagementManagedBean.orderItemStatusEnums}" var="orderItemStatusEnum" itemValue="#{orderItemStatusEnum}" itemLabel="#{orderItemStatusEnum.printName}" />
-                            <f:attribute name="orderLineItemEntityToUpdate" value="#{orderLineItemEntity}" />
-                            <p:ajax event="itemSelect" update="dataTableUpdateOrder" listener="#{orderManagementManagedBean.updateOrderItemStatusChange}" />
-                        </p:selectOneMenu>
-                    </p:column>  -->
-
+                    </p:column> 
+                    
                     <f:facet name="footer">
+                        
                         <p:column>
                             <p:commandButton value="Back" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide()" />
                         </p:column>
-                        <p:column>
-                            <!--<p:commandButton value="Update Order" update="@composite:dialogUpdateOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" process="@this" actionListener="#{orderManagementManagedBean.updateOrder}" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide();" />-->
-                            <p:commandButton value="Update Order" update="@composite:dialogUpdateOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" process="@this" oncomplete="PF('dialogUpdateOrder1').show(); PF('dialogUpdateOrder2').hide();" />
-                        </p:column>
+                        
                     </f:facet>
 
                 </p:dataTable>

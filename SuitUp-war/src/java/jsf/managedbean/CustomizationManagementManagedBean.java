@@ -15,10 +15,6 @@ import entity.FabricEntity;
 import entity.JacketStyleEntity;
 import entity.PantsCuttingEntity;
 import entity.PocketStyleEntity;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
@@ -29,7 +25,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
-import org.primefaces.event.FileUploadEvent;
 import util.exception.ColourIdExistException;
 import util.exception.ColourNotFoundException;
 import util.exception.CustomizationIdExistException;
@@ -411,173 +406,7 @@ public class CustomizationManagementManagedBean implements Serializable {
         }    
     }
     //<----------------------FILE UPLOAD----------------------------->
-    public void handlePocketStyleFileUpload(FileUploadEvent event)
-    {
-        try
-        {
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-
-            File file = new File(newFilePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = event.getFile().getInputStream();
-
-            while (true)
-            {
-                a = inputStream.read(buffer);
-
-                if (a < 0)
-                {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-
-            newPocketStyle.setImage(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("uploadedFilesPath") + "/" + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
-        }
-        catch (IOException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
-        }
-    }
-    
-    public void handleJacketStyleFileUpload(FileUploadEvent event)
-    {
-        try
-        {
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-
-            File file = new File(newFilePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = event.getFile().getInputStream();
-
-            while (true)
-            {
-                a = inputStream.read(buffer);
-
-                if (a < 0)
-                {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-
-            newJacketStyle.setImage(event.getFile().getFileName());
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
-        }
-        catch (IOException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
-        }
-    }
-    
-    public void handleFabricFileUpload(FileUploadEvent event)
-    {
-        try
-        {
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-
-            File file = new File(newFilePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = event.getFile().getInputStream();
-
-            while (true)
-            {
-                a = inputStream.read(buffer);
-
-                if (a < 0)
-                {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-
-            newFabric.setImage(event.getFile().getFileName());
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
-        }
-        catch (IOException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
-        }
-    }
-    
-    public void handlePantsCuttingFileUpload(FileUploadEvent event)
-    {
-        try
-        {
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-
-            File file = new File(newFilePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = event.getFile().getInputStream();
-
-            while (true)
-            {
-                a = inputStream.read(buffer);
-
-                if (a < 0)
-                {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-
-            newPantsCutting.setImage(event.getFile().getFileName());
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
-        }
-        catch (IOException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
-        }
-    }
-
-    
+    //sorry idk how to do this yet will add in soon ~~~
 
     //<----------------------------GETTERS AND SETTERS--------------------------------------->
 
