@@ -53,6 +53,7 @@ public class CustomizationEntity implements Serializable {
     private Boolean isDisabled;
     
     public CustomizationEntity() {
+        this.isDisabled = false;
     }
     
     public CustomizationEntity(String name, BigDecimal additionalPrice, String description, String image) {
@@ -61,7 +62,6 @@ public class CustomizationEntity implements Serializable {
         this.additionalPrice = additionalPrice;
         this.description = description;
         this.image = image;
-        this.isDisabled = false;
     }
 
     public Long getCustomizationId() {

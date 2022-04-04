@@ -5,16 +5,14 @@
                 template="./template/defaultTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-        <ez:Breadcrumb pageName="staffProfile"/>
-
-
+        <ezcomp:Breadcrumb pageName="staffProfile"/>
+        
         <div style="text-align: center;">
-
             <h3>Staff Profile</h3>
-            <p:panelGrid id="viewStaffProfileTable" style="margin: 0 auto;">
+            <p:panelGrid style="margin: 0 auto;">
                 <p:row>
                     <p:column>
                         <p:outputLabel style="font-weight: bold;" for="staffId" value="Staff ID" />
@@ -50,19 +48,17 @@
                         <h:outputText id="accessRight" value="#{viewMyProfileManagedBean.staff.accessRightEnum.name}"/>
                     </p:column>
                 </p:row>
-
+                
                 <p:row>
                     <p:column colspan="2" style="text-align: center">
-                        <p:commandButton update="EditStaffProfile:formEditStaffProfile" oncomplete="PF('dialogEditStaffProfile').show()" icon="pi pi-pencil" value="Edit My Profile"/>
+                        <p:commandButton icon="pi pi-pencil" value="Edit My Profile"/>
                         <br/>
-                        <p:commandButton update="ChangePassword:formChangePassword" oncomplete="PF('dialogChangePassword').show()" icon="pi pi-lock" value="Change My Password"/>
+                        <p:commandButton icon="pi pi-lock" value="Change My Password"/>
                     </p:column>
                 </p:row>
 
-            </p:panelGrid>
 
-            <ez:ChangePassword id="ChangePassword"/>
-            <ez:EditStaffProfile id="EditStaffProfile" />
+            </p:panelGrid>
         </div>
     </ui:define>
 

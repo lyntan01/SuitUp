@@ -8,14 +8,12 @@
                 template="/template/defaultTemplate.xhtml">
 
     <ui:define name="content">
-        
-        <h:form style="padding-top: 5%">
-            <p:messages globalOnly="true" redisplay="false" closable="true" style="width: 360px; margin: 0 auto"/>
+
+        <h:form>
+            <p:messages globalOnly="true" redisplay="false" closable="true"/>
             <br/>
 
-            <h:outputText value="SuitUp Management System Login" rendered="#{sessionScope.isLogin == false}" style="font-weight: bold; font-size: large; margin-bottom: 1em; display: block"/>
-            
-            <p:panelGrid rendered="#{sessionScope.isLogin == false}" style="margin: 0 auto">
+            <p:panelGrid rendered="#{sessionScope.isLogin == false}" style="display: block; margin: auto">
 
                 <p:row>
                     <p:column>

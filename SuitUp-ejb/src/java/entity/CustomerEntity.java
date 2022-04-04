@@ -18,7 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -69,9 +68,6 @@ public class CustomerEntity implements Serializable {
     @NotNull
     @Size(max = 10)
     private String contactNumber;
-    
-    @Transient
-    private String fullName;
 
     //-------[Relationship Attributes]-------
     @OneToMany(mappedBy = "customer")
@@ -118,7 +114,6 @@ public class CustomerEntity implements Serializable {
         this.email = email;
         this.contactNumber = contactNumber;
         setPassword(password);
-        this.fullName = this.firstName + " " + this.lastName;
     }
 
     public Long getCustomerId() {
@@ -260,17 +255,6 @@ public class CustomerEntity implements Serializable {
     @Override
     public String toString() {
         return "CustomerEntity{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", contactNumber=" + contactNumber + ", appointments=" + appointments + ", creditCards=" + creditCards + ", addresses=" + addresses + ", orders=" + orders + ", jacketMeasurement=" + jacketMeasurement + ", pantsMeasurement=" + pantsMeasurement + ", supportTickets=" + supportTickets + '}';
-    }
-
-    public String getFullName() {
-        if (fullName == null) {
-            this.fullName = this.firstName + " " + this.lastName;
-        } 
-        return this.fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
 }

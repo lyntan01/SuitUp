@@ -65,8 +65,8 @@
                     <h:outputText value="#{orderEntity.collectionMethodEnum}" />
                 </p:column>
 
-                <p:column headerText="Order Status" sortBy="#{orderEntity.orderStatusEnum.name}" filterBy="#{orderEntity.orderStatusEnum.name}" filterMatchMode="contains">
-                    <h:outputText value="#{orderEntity.orderStatusEnum.name}" />
+                <p:column headerText="Order Status" sortBy="#{orderEntity.orderStatusEnum}" filterBy="#{orderEntity.orderStatusEnum}" filterMatchMode="contains">
+                    <h:outputText value="#{orderEntity.orderStatusEnum}" />
                 </p:column>
 
                 <p:column style="width: 5em; text-align: center;" headerText="Action">

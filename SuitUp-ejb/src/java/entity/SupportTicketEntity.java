@@ -34,9 +34,9 @@ public class SupportTicketEntity implements Serializable {
     @NotNull
     @Size(max = 32)
     private String name;
-    @Column(nullable = false, length = 256)
+    @Column(nullable = false, length = 128)
     @NotNull
-    @Size(min = 2, max = 256)
+    @Size(min = 2, max = 128)
     private String description;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -45,8 +45,8 @@ public class SupportTicketEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Boolean isResolved;
-    @Column(length = 256)
-    @Size(min = 2, max = 256)
+    @Column(length = 128)
+    @Size(min = 2, max = 128)
     private String staffReply;
     
     @ManyToOne(optional = false)
@@ -56,18 +56,11 @@ public class SupportTicketEntity implements Serializable {
     public SupportTicketEntity() {
     }
     
-    public SupportTicketEntity(String name, String description, Date dateTime) {
+    public SupportTicketEntity(String name, String description, Date dateTime, Boolean isResolved, String staffReply) {
         this.name = name;
         this.description = description;
         this.dateTime = dateTime;
-        this.isResolved = Boolean.FALSE;
-    }
-
-    public SupportTicketEntity(String name, String description, Date dateTime, String staffReply) {
-        this.name = name;
-        this.description = description;
-        this.dateTime = dateTime;
-        this.isResolved = Boolean.TRUE;
+        this.isResolved = isResolved;
         this.staffReply = staffReply;
     }
 

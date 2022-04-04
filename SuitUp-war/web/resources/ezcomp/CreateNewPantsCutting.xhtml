@@ -18,20 +18,20 @@
 
                 <p:messages id="messages" redisplay="false" closable="true" />
 
-                <p:panelGrid id="createNewPantsCuttingGrid" style="width: 30em;" styleClass="noBorder">
+                <p:panelGrid id="createNewPantsCuttingGrid" style="width: 35em;" styleClass="noBorder">
 
                     <p:row>
-                        <p:column style="width: 30%;">
+                        <p:column style="width: 40%;">
                             <p:outputLabel style="font-weight: bold;" for="name" value="Name: "/>
                         </p:column>
-                        <p:column style="width:70%;">
+                        <p:column style="width:60%;">
                             <p:inputText id="name" value="#{customizationManagementManagedBean.newPantsCutting.name}" placeholder="Pants Cutting 1" required="true" requiredMessage="Name is required" />
                         </p:column>
                     </p:row>
                     
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="additionalPrice" value="Additional Price " />
+                            <p:outputLabel style="font-weight: bold;" for="additionalPrice" value="Additional Price " />
                         </p:column>
                         <p:column>
                             <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.newPantsCutting.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" required="true" requiredMessage="Additional Price is required" />
@@ -46,13 +46,13 @@
                             <p:outputLabel style="font-weight: bold;" for="description" value="Description: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="description" value="#{customizationManagementManagedBean.newPantsCutting.description}" placeholder="Pocket Style 1" required="true" requiredMessage="Description is required" />
+                            <p:inputText id="description" value="#{customizationManagementManagedBean.newPantsCutting.description}" placeholder="Pants Cutting 1" required="true" requiredMessage="Description is required" />
                         </p:column>
                     </p:row>
 
-                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
-                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.handleFileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
-                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image != null}" />
+                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{customizationManagementManagedBean.newPantsCutting.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{customizationManagementManagedBean.handlePantsCuttingFileUpload}" rendered="#{customizationManagementManagedBean.newPantsCutting.image == null}" />
+                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{customizationManagementManagedBean.newPantsCutting.image != null}" />
 
 
                     <p:row>

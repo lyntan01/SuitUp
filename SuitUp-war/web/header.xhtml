@@ -8,33 +8,23 @@
 
     <header style="text-align: right;">
         <h:form>                
-            <p:menubar>
+            <p:menubar class="ui-g">
                 <p:menuitem outcome="/index" styleClass="logo">
                     <p:graphicImage library="images" name="logo.png" alt="Logo" style="width: 15vw; margin: 1em"/>
                 </p:menuitem>
-                
-                <p:menuitem value="Home" outcome="/index" icon="pi pi-home" styleClass="navBar" containerStyle="margin-left: 25%" rendered="${sessionScope.isLogin == true}"></p:menuitem>
 
-                <p:submenu label="Cashier Operations" icon="pi pi-fw pi-dollar" style="margin-top: 15px;" rendered="${sessionScope.isLogin == true}">
-                    <p:menuitem value="Orders" outcome="/orderManagement" icon="pi pi-fw pi-file"/>
-                    <p:menuitem value="Appointments" outcome="/appointmentManagement" icon="pi pi-fw pi-calendar"/>
-                </p:submenu>
-
-                <p:submenu label="System Administration" icon="pi pi-fw pi-th-large" style="margin-top: 15px;" rendered="${sessionScope.isLogin == true}">
-                    <p:menuitem value="Customers" outcome="/customerManagement" icon="pi pi-fw pi-users"/>
-                    <p:menuitem value="Support Tickets" outcome="/supportTicketManagement" icon="pi pi-fw pi-question-circle"/>
-                    <p:submenu label="Products" icon="pi pi-fw pi-shopping-cart" styleClass="productsMenu">
-                        <p:menuitem value="Standard Products" outcome="/products/standardProductManagement" icon="pi pi-fw pi-table"></p:menuitem>
-                        <p:menuitem value="Customization Products" outcome="/products/customizationManagement" icon="pi pi-fw pi-pencil"></p:menuitem>
-                    </p:submenu>
-                    <p:menuitem value="Promotions" outcome="/promotionManagement" icon="pi pi-fw pi-tag"/>
-                    <p:menuitem value="Staff" outcome="/staffManagement" icon="pi pi-fw pi-user-edit"/>
-                    <p:menuitem value="Stores" outcome="/storeManagement" icon="pi pi-fw pi-map-marker"/>
-                </p:submenu>
+                <p:menuitem value="Home" outcome="/index"></p:menuitem>
+                <p:menuitem value="Cashier Operations" outcome="/appointmentManagement"></p:menuitem>
+                <p:menuitem value="Staff Management" outcome="/index"></p:menuitem>
+                <p:menuitem value="Customer Management" outcome="/index"></p:menuitem>
+                <p:menuitem value="Order Management" outcome="/orderManagement"></p:menuitem>
+                <p:menuitem value="Standard Product Management" outcome="/products/standardProductManagement"></p:menuitem>
+                <p:menuitem value="Customization Product Management" outcome="/products/customizationManagement"></p:menuitem>
+                <p:menuitem value="Store Management" outcome="/index"></p:menuitem>
 
                 <f:facet name="options">
-                    <p:button value="My Profile" outcome="/staffProfile" icon="pi pi-user" style="margin: 1em 0.5em;" rendered="${sessionScope.isLogin == true}" styleClass="ui-button-info"/>
-                    <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout}" style="margin: 1em 0.5em;" rendered="${sessionScope.isLogin == true}" styleClass="ui-button-info"/>
+                    <p:button value="My Profile" outcome="/staffProfile" icon="pi pi-user" style="margin: 1em;" rendered="${sessionScope.isLogin == true}"/>
+                    <p:commandButton value="Logout" icon="pi pi-sign-out" actionListener="#{loginManagedBean.logout}" style="margin: 1em;" rendered="${sessionScope.isLogin == true}"/>
                 </f:facet>
 
             </p:menubar> 

@@ -7,7 +7,7 @@
 
     <ui:define name="content">
         <div>
-            <h:outputText value="Access Right Error" style="color: red"/> <!-- id="errorHeadMessage"  -->
+            <h:outputText value="Access Right Error" /> <!-- id="errorHeadMessage"  -->
             <br/><br/>
             <h:outputText value="Please login to view this page." rendered="#{sessionScope.isLogin == true}" /> <!-- id="errorAccessMessage" -->
             <h:link outcome="index.html" value="Back to login page" rendered="#{sessionScope.isLogin == false}" />

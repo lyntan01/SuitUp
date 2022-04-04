@@ -166,7 +166,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         }
 
         if (customerEntityToRemove.getAppointments().size() > 0 || customerEntityToRemove.getAppointments() != null) {
-            throw new DeleteEntityException("Can't delete a customer if he/she has appointments!");
+            throw new DeleteEntityException("Can't delete a customer if he/she has appointmnets!");
         }
 
         for (CreditCardEntity creditCard : customerEntityToRemove.getCreditCards()) {
@@ -191,7 +191,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
 
             if (newPassword == null || newPassword.isEmpty()) {
                 throw new ChangePasswordException("Please provide a password.");
-            } else if (newPassword.equals(oldPassword)) {
+            } else if (newPassword == oldPassword) {
                 throw new ChangePasswordException("Please provide a different password from your previous password.");
             } else {
                 customerEntity.setPassword(newPassword);

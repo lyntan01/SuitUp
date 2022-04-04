@@ -6,10 +6,8 @@
 package ejb.session.stateless;
 
 import entity.StaffEntity;
-import entity.StoreEntity;
 import java.util.List;
 import java.util.Set;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -21,12 +19,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import util.exception.ChangePasswordException;
+import util.exception.DeleteStaffException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
-import util.exception.StoreNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UpdateStaffException;
 import util.security.CryptographicHelper;
@@ -40,9 +37,6 @@ public class StaffSessionBean implements StaffSessionBeanLocal {
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager entityManager;
-
-    @EJB
-    private StoreSessionBeanLocal storeSessionBeanLocal;
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -125,25 +119,6 @@ public class StaffSessionBean implements StaffSessionBeanLocal {
         }
     }
 
-    @Override
-    public StaffEntity staffChangePassword(String username, String oldPassword, String newPassword) throws ChangePasswordException {
-        try {
-
-            StaffEntity staffEntity = staffLogin(username, oldPassword);
-
-            if (newPassword.equals(oldPassword)) {
-                throw new ChangePasswordException("Please provide a different password from your previous password.");
-            } else {
-                staffEntity.setPassword(newPassword);
-            }
-
-            return staffEntity;
-
-        } catch (InvalidLoginCredentialException ex) {
-            throw new ChangePasswordException("Invalid old password. Please re-enter old password.");
-        }
-    }
-
     // Updated in v4.1 to update selective attributes instead of merging the entire state passed in from the client
     // Also check for existing staff before proceeding with the update
     // Updated in v4.2 with bean validation
@@ -159,22 +134,9 @@ public class StaffSessionBean implements StaffSessionBeanLocal {
                     staffEntityToUpdate.setFirstName(staffEntity.getFirstName());
                     staffEntityToUpdate.setLastName(staffEntity.getLastName());
                     staffEntityToUpdate.setAccessRightEnum(staffEntity.getAccessRightEnum());
-                    // Username and password are deliberately NOT updated to demonstrate that client is not allowed to update account credential through this business method         
+                    // Username and password are deliberately NOT updated to demonstrate that client is not allowed to update account credential through this business method
                 } else {
                     throw new UpdateStaffException("Username of staff record to be updated does not match the existing record");
-                }
-
-                // Update store that staff is working at
-                // Store can be null if e.g. staff is manager
-                if (staffEntity.getStore() != null) {
-                    try {
-                        StoreEntity updatedStoryEntity = storeSessionBeanLocal.retrieveStoreByStoreId(staffEntity.getStore().getStoreId());
-                        staffEntityToUpdate.setStore(updatedStoryEntity);
-                    } catch (StoreNotFoundException ex) {
-                        throw new UpdateStaffException("Store not found: " + ex.getMessage());
-                    }
-                } else {
-                    staffEntityToUpdate.setStore(null);
                 }
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
@@ -189,10 +151,8 @@ public class StaffSessionBean implements StaffSessionBeanLocal {
         StaffEntity staffEntityToRemove = retrieveStaffByStaffId(staffId);
 
         // Disassociate staff and store
-        if (staffEntityToRemove.getStore() != null) {
-            staffEntityToRemove.getStore().getStaff().remove(staffEntityToRemove);
-            staffEntityToRemove.setStore(null);
-        }
+        staffEntityToRemove.getStore().getStaff().remove(staffEntityToRemove);
+        staffEntityToRemove.setStore(null);
 
         entityManager.remove(staffEntityToRemove);
     }

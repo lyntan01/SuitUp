@@ -8,7 +8,7 @@ body {
 
 h1 {
     font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    /*border-bottom: 1px solid #AFAFAF;*/ 
+    border-bottom: 1px solid #AFAFAF; 
     font-size:  16px;
     font-weight: bold;
     margin: 0px;
@@ -26,41 +26,4 @@ a:link:hover, a:visited:hover  {
   color: #045491;
   font-weight : bold;
   text-decoration : underline;
-}
-
-/*Remove borders*/
-
-div.ui-layout-unit, div.ui-menubar {
-    border: 0;
-    border-style: none;
-    font-size: 16px;
-}
-
-/*Header formatting*/
-
-ul.ui-menu-child {
-    white-space: nowrap;
-    /*width: auto !important;*/
-}
-
-.navBar {
-    margin-top: 15px;
-    /*padding-left: 300px !important;*/
-}
-
-.ui-menu .ui-menu-parent .ui-menu-child {
-    position: fixed !important;
-}
-
-div.ui-layout-north {
-    z-index: 1 !important;
-}
-
-.productsMenu ul {
-    width: 14.5em !important;
-}
-
-/*Content formatting*/
-div.ui-layout-center {
-    text-align: center;
 }

@@ -77,18 +77,6 @@ public class StaffEntity implements Serializable {
         this.username = username;
         setPassword(password);
     }
-
-    public StaffEntity(String firstName, String lastName, AccessRightEnum accessRightEnum, String username, String password, StoreEntity store) {
-        this();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.accessRightEnum = accessRightEnum;
-        this.username = username;
-        setPassword(password);
-        this.store = store;
-    }
-    
-    
     
     public Long getStaffId() {
         return staffId;

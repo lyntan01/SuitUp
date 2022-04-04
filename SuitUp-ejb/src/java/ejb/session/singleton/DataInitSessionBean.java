@@ -15,7 +15,6 @@ import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.StaffSessionBeanLocal;
 import ejb.session.stateless.StandardProductSessionBeanLocal;
 import ejb.session.stateless.StoreSessionBeanLocal;
-import ejb.session.stateless.SupportTicketSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import entity.AddressEntity;
 import entity.AppointmentEntity;
@@ -28,9 +27,9 @@ import entity.ProductEntity;
 import entity.StaffEntity;
 import entity.StandardProductEntity;
 import entity.StoreEntity;
-import entity.SupportTicketEntity;
 import entity.TagEntity;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,9 +60,7 @@ import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
 import util.exception.StandardProductNotFoundException;
 import util.exception.StoreNotFoundException;
-import util.exception.SupportTicketIdExistException;
 import util.exception.UnknownPersistenceException;
-import util.exception.UnsuccessfulTicketException;
 
 /**
  *
@@ -106,9 +103,6 @@ public class DataInitSessionBean {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
-    
-    @EJB
-    private SupportTicketSessionBeanLocal supportTicketSessionBeanLocal;
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
@@ -131,19 +125,14 @@ public class DataInitSessionBean {
 
     private void initializeData() {
         try {
-            
-            Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best suit store", "09:00", "22:00", "62313264"));
-            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Store Address", "62313264", "10 Orchard Road", "Far East Plaza", "228213"), storeId);
-
-            StoreEntity storeEntity = storeSessionBeanLocal.retrieveStoreByStoreId(storeId);
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Manager", AccessRightEnum.MANAGER, "manager", "password"));
-            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier One", AccessRightEnum.CASHIER, "cashier1", "password", storeEntity));
-            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier Two", AccessRightEnum.CASHIER, "cashier2", "password", storeEntity));
-            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor One", AccessRightEnum.TAILOR, "tailor1", "password", storeEntity));
-            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor Two", AccessRightEnum.TAILOR, "tailor2", "password", storeEntity));
+            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier One", AccessRightEnum.CASHIER, "cashier1", "password"));
+            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier Two", AccessRightEnum.CASHIER, "cashier2", "password"));
+            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor One", AccessRightEnum.TAILOR, "tailor1", "password"));
+            staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor Two", AccessRightEnum.TAILOR, "tailor2", "password"));
 
-            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobby@gmail.com", "password", "99999999")); //Customer - 1L
-            addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
+            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobby@gmail.com", "password", "9999999")); //Customer - 1L
+            addressSessionBeanLocal.createNewAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
 
             Calendar calendar = new Calendar.Builder()
                     .setDate(2022, Calendar.JUNE, 1)
@@ -174,11 +163,9 @@ public class DataInitSessionBean {
             //--------------[[END of Order Management Testing]]----------//
 
             initialiseAppointments();
-            initialiseSupportTickets();
 
         } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
-                | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException 
-                | StoreNotFoundException ex) {
+                | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException ex) {
             ex.printStackTrace();
         }
     }
@@ -231,34 +218,21 @@ public class DataInitSessionBean {
     private void initialiseAppointments() {
 
         try {
+            Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best suit store", "09:00", "22:00", "62313264"));
+
             //1L
             AppointmentEntity apptOne = new AppointmentEntity(new Date(), AppointmentTypeEnum.ALTERATION, false);
-            appointmentSessionBeanLocal.createNewAppointment(apptOne, 1L, 1L);
+            appointmentSessionBeanLocal.createNewAppointment(apptOne, storeId, 1L);
             //2L
             AppointmentEntity apptTwo = new AppointmentEntity(new Date(), AppointmentTypeEnum.CONSULTATION, true);
-            appointmentSessionBeanLocal.createNewAppointment(apptTwo, 1L, 1L);
+            appointmentSessionBeanLocal.createNewAppointment(apptTwo, storeId, 1L);
             //3L
             AppointmentEntity apptThree = new AppointmentEntity(new Date(), AppointmentTypeEnum.MEASUREMENT, true);
-            appointmentSessionBeanLocal.createNewAppointment(apptThree, 1L, 1L);
+            appointmentSessionBeanLocal.createNewAppointment(apptThree, storeId, 1L);
 
         } catch (CreateNewAppointmentException | StoreNotFoundException | CustomerNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
             ex.printStackTrace();
         }
-    }
-    
-    private void initialiseSupportTickets() {
-
-        try {
-            supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Suit came in the wrong colour", "Hi, I ordered a suit in navy but it came in grey. It also doesn't seem to fit me well. By any chance, was the wrong suit delivered to me?", new Date()), 1L);
-            supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("When will my suit come?", "Hello I ordered my suit 2 days ago but it still has not arrived. When is it coming?", new Date(), "Hello Mr Bobby, thank you for reaching out to us. Since you opted for normal delivery, the expected delivery time is 3-7 days. Thank you for your understanding and do reach out to us should you require any assistance. Cheers, The SuitUp Team."), 1L);
-        
-            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Suzy", "Bae", "suzy@hotmail.com", "password", "88888888")); //Customer - 2L
-            supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Seeking colour recommendation", "Which colour will suit my skin tone more? I can't decide between navy and grey.", new Date()), 2L);
-            supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Female Suits", "Do you also customise female suits?", new Date(), "Hello Ms Suzy, we do offer customisation services for female suits, with a wide range of fabrics and customisations to choose from. Do let us know if there is any way we can help should you require further assistance. Cheers, The SuitUp Team."), 2L);
-        } catch (CustomerEmailExistException | SupportTicketIdExistException | UnsuccessfulTicketException | InputDataValidationException | UnknownPersistenceException ex) {
-            ex.printStackTrace();
-        }
-
     }
 
 }

@@ -22,17 +22,17 @@
                 <p:panelGrid id="createNewFabricGrid" style="width: 30em;" styleClass="noBorder">
 
                     <p:row>
-                        <p:column style="width: 30%;"
+                        <p:column style="width: 40%;"
                                   ><p:outputLabel style="font-weight: bold;" for="name" value="Name: "/>
                         </p:column>
-                        <p:column style="width:70%;">
+                        <p:column style="width:60%;">
                             <p:inputText id="name" value="#{customizationManagementManagedBean.newFabric.name}" placeholder="Fabric 1" required="true" requiredMessage="Name is required" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="additionalPrice" value="Additional Price " />
+                            <p:outputLabel style="font-weight: bold;" for="additionalPrice" value="Additional Price " />
                         </p:column>
                         <p:column>
                             <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.newFabric.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" required="true" requiredMessage="Additional Price is required" />
@@ -63,9 +63,9 @@
                         </p:column>
                     </p:row>
 
-                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
-                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.handleFileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
-                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image != null}" />
+                    <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{customizationManagementManagedBean.newFabric.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{customizationManagementManagedBean.handleFabricFileUpload}" rendered="#{customizationManagementManagedBean.newFabric.image == null}" />
+                    <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{customizationManagementManagedBean.newFabric.image != null}" />
 
 
                     <p:row>

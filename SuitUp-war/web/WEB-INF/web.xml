@@ -8,10 +8,10 @@
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
      </context-param>
-    <context-param>
+<!--    <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>suitup</param-value>
-    </context-param>
+        <param-value>blitzer</param-value>
+    </context-param>-->
     <listener>
         <description>ServletContextListener</description>
         <listener-class>web.listener.DefaultServerListener</listener-class>
@@ -33,4 +33,20 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    <context-param>
+        <param-name>javax.faces.ENABLE_WEBSOCKET_ENDPOINT</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>native</param-value>
+    </context-param>
+    <context-param>
+        <param-name>alternatedocroot_1</param-name>
+        <param-value>/Users/xianhui/glassfish-5.1.0-uploadedfiles/uploadedFiles</param-value>
+    </context-param>
+    <context-param>
+        <param-name>uploadedFilesPath</param-name>
+        <param-value>/uploadedFiles</param-value>
+    </context-param>
 </web-app>
