@@ -176,7 +176,7 @@ public class StandardProductSessionBean implements StandardProductSessionBeanLoc
     public void deleteStandardProduct(Long standardProductId) throws StandardProductNotFoundException, DeleteEntityException {
         StandardProductEntity standardProductEntityToRemove = retrieveStandardProductByStandardProductId(standardProductId);
         
-        Query query = em.createQuery("SELECT o FROM OrderLineEntity o WHERE o.productEntity.name = :name");
+        Query query = em.createQuery("SELECT o FROM OrderLineItemEntity o WHERE o.product.name = :name");
         query.setParameter("name", standardProductEntityToRemove.getName());
         
         if(query.getResultList().isEmpty())
@@ -187,7 +187,6 @@ public class StandardProductSessionBean implements StandardProductSessionBeanLoc
             }
             standardProductEntityToRemove.getTags().clear();
             standardProductEntityToRemove.getCategory().getStandardProducts().remove(standardProductEntityToRemove);
-            standardProductEntityToRemove.getCategory().setCategoryId(null);
             em.remove(standardProductEntityToRemove);
         }
         else

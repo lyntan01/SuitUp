@@ -69,9 +69,9 @@
                         <p:commandButton actionListener="#{standardProductManagementManagedBean.doUpdateStandardProduct}" update="UpdateStandardProduct:formUpdateStandardProduct" oncomplete="PF('dialogUpdateStandardProduct').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="selectedStandardProductToUpdate" value="#{standardProduct}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteStandardProduct}" update="viewStandardProductsTabView:ViewAllStandardProducts:formAllStandardProducts:dataTableAllStandardProducts">
-                            <f:attribute name="standardProductToDelete" value="#{standardProductToDelete}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{standardProductToDelete.name} (SKU Code: #{standardProductToDelete.skuCode})?" icon="ui-icon-alert" />
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{standardProductManagementManagedBean.deleteStandardProduct}" update="@form:dataTableAllStandardProducts @form:messages">
+                            <f:attribute name="standardProductToDelete" value="#{standardProduct}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{standardProduct.name} (SKU Code: #{standardProduct.skuCode})?" icon="ui-icon-alert" />
                         </p:commandButton>
                     </p:column>
 

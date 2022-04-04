@@ -350,7 +350,7 @@ public class StandardProductManagementManagedBean implements Serializable {
             inputStream.close();
 
             newStandardProductEntity.setImage(event.getFile().getFileName());
-
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         }
         catch (IOException ex)
