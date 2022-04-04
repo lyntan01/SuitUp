@@ -46,15 +46,11 @@
                 <p:column  headerText="Customer Email" sortBy="#{supportTicketEntity.customer.email}" filterBy="#{supportTicketEntity.customer.email}" filterMatchMode="contains">
                     <h:outputText value="#{supportTicketEntity.customer.email}" />
                 </p:column>
-                
-                <p:column headerText="Ticket Date Time" sortBy="#{supportTicketEntity.dateTime}" filterBy="#{supportTicketEntity.dateTime}" filterMatchMode="between">
-<!--                    <f:facet name="filter">
-                        <p:datePicker selectionMode="range" onchange="PF('dataTableAllSupportTickets').filter()" />
-                    </f:facet>-->
+
+                <p:column headerText="Ticket Date Time" sortBy="#{supportTicketEntity.dateTime}" filterBy="#{supportTicketEntity.dateTime}" filterMatchMode="contains">
                     <h:outputText id="supportTicketDateTime" value="#{supportTicketEntity.dateTime}">
                         <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" />
                     </h:outputText>
-<!--                    <p:tooltip for="supportTicketDateTime" value="#{supportTicketEntity.dateTime}" />-->
                 </p:column>
 
                 <p:column style="width: 30em;" headerText="Title" sortBy="#{supportTicketEntity.name}" filterBy="#{supportTicketEntity.name}" filterMatchMode="contains">
