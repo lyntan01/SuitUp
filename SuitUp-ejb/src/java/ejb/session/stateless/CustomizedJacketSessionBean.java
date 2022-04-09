@@ -10,6 +10,7 @@ import entity.FabricEntity;
 import entity.JacketMeasurementEntity;
 import entity.JacketStyleEntity;
 import entity.PocketStyleEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -80,6 +81,9 @@ public class CustomizedJacketSessionBean implements CustomizedJacketSessionBeanL
                 newCustomizedJacket.setInnerFabric(innerFabric);
                 newCustomizedJacket.setOuterFabric(outerFabric);
                 newCustomizedJacket.setJacketMeasurement(jacketMeasurement);
+                
+                BigDecimal totalPrice = new BigDecimal("200.00").add(pocketStyle.getAdditionalPrice()).add(jacketStyle.getAdditionalPrice()).add(innerFabric.getAdditionalPrice()).add(outerFabric.getAdditionalPrice());
+                newCustomizedJacket.setTotalPrice(totalPrice);
                 
                 em.persist(newCustomizedJacket);
                 em.flush();

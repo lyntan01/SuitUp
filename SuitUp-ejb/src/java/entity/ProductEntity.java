@@ -36,8 +36,7 @@ public abstract class ProductEntity implements Serializable {
     @NotNull
     @Size(max = 120)
     private String description;
-    @Column(nullable = false, length = 128)
-    @NotNull
+    @Column(nullable = true, length = 128)
     @Size(min = 2, max = 128)
     private String image;
 
@@ -48,6 +47,11 @@ public abstract class ProductEntity implements Serializable {
         this.name = name;
         this.description = description;
         this.image = image;
+    }
+    
+    public ProductEntity(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public Long getProductId() {

@@ -35,8 +35,12 @@ public class CustomizedPantsEntity extends CustomizedProductEntity implements Se
     public CustomizedPantsEntity() {
     }
     
-    public CustomizedPantsEntity(String name, String description, String image, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
-        super(name, description, image, basePrice, totalPrice, gender); 
+    public CustomizedPantsEntity(String name, String description, String image, BigDecimal totalPrice, String gender) {
+        super(name, description, image, new BigDecimal("100.00"), totalPrice, gender); 
+    }
+    
+    public CustomizedPantsEntity(String name, String description, BigDecimal totalPrice, String gender) {
+        super(name, description, new BigDecimal("100.00"), totalPrice, gender); 
     }
 
 
@@ -62,7 +66,7 @@ public class CustomizedPantsEntity extends CustomizedProductEntity implements Se
 
     @Override
     public String toString() {
-        return "entity.CustomizedPantsEntity[ id=" + this.getProductId() + " ]";
+        return "[Fabric: " + fabric.getName() + "Pants Cutting: " + pantsCutting.getName() + "]";
     }
 
     public FabricEntity getFabric() {
