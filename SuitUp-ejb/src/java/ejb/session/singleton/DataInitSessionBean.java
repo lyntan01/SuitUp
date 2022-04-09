@@ -174,7 +174,7 @@ public class DataInitSessionBean {
             items.add(new OrderLineItemEntity(2, new BigDecimal("60.00"), productThree));
 
             //SerialNumber, TotalLineItems, TotalQuantity, TotalAmount, OrderDateTime, expressOrder, orderStatus, collectionMethod, List of OrderLineItems
-            OrderEntity testOrder = new OrderEntity("ABCD", 3, 6, new BigDecimal("120.00"), new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
+            OrderEntity testOrder = new OrderEntity("ABCDEF", 3, 6, new BigDecimal("120.00"), new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
 
             //Uses Bobby Tan and Bobby's Tan Address
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
