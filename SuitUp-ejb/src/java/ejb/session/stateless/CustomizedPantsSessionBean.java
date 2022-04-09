@@ -9,6 +9,7 @@ import entity.CustomizedPantsEntity;
 import entity.FabricEntity;
 import entity.PantsCuttingEntity;
 import entity.PantsMeasurementEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -73,6 +74,9 @@ public class CustomizedPantsSessionBean implements CustomizedPantsSessionBeanLoc
                 newCustomizedPants.setFabric(fabric);
                 newCustomizedPants.setPantsCutting(pantsCutting);
                 newCustomizedPants.setPantsMeasurement(pantsMeasurement);
+                
+                BigDecimal totalPrice = new BigDecimal("100.00").add(fabric.getAdditionalPrice()).add(pantsCutting.getAdditionalPrice());
+                newCustomizedPants.setTotalPrice(totalPrice);
                 
                 em.persist(newCustomizedPants);
                 em.flush();

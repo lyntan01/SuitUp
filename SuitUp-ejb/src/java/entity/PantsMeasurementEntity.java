@@ -71,8 +71,7 @@ public class PantsMeasurementEntity implements Serializable {
     public PantsMeasurementEntity() {
     }
 
-    public PantsMeasurementEntity(Long pantsMeasurementId, BigDecimal legsLength, BigDecimal lowerWaistGirth, BigDecimal hipGirth, BigDecimal crotch, BigDecimal thighGrith, BigDecimal kneeGrith, BigDecimal calfGrith, BigDecimal pantsOpeningWidth) {
-        this.pantsMeasurementId = pantsMeasurementId;
+    public PantsMeasurementEntity(BigDecimal legsLength, BigDecimal lowerWaistGirth, BigDecimal hipGirth, BigDecimal crotch, BigDecimal thighGrith, BigDecimal kneeGrith, BigDecimal calfGrith, BigDecimal pantsOpeningWidth) {
         this.legsLength = legsLength;
         this.lowerWaistGirth = lowerWaistGirth;
         this.hipGirth = hipGirth;

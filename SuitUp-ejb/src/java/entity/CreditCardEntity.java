@@ -32,13 +32,15 @@ public class CreditCardEntity implements Serializable {
     @NotNull
     @Size(max = 64)
     private String holderName;
-    @Column(nullable = false, length = 16, unique = true)
+//    @Column(nullable = false, length = 16, unique = true)
+    @Column(nullable = false, unique = true)
     @NotNull
-    @Size(min = 16, max = 16)
+//    @Size(min = 16, max = 16)
     private String cardNumber;
-    @Column(nullable = false, length = 3)
+//    @Column(nullable = false, length = 3)
+    @Column(nullable = false)
     @NotNull
-    @Size(min = 3, max = 3)
+//    @Size(min = 3, max = 3)
     private String cvv;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)

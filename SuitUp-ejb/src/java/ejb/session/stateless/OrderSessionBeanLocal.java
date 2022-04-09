@@ -28,7 +28,7 @@ import util.exception.VoidTransactionException;
 @Local
 public interface OrderSessionBeanLocal {
 
-    public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException;
+    public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException, StackOverflowError;
 
     public List<OrderEntity> retrieveAllOrders();
 

@@ -44,8 +44,12 @@ public class CustomizedJacketEntity extends CustomizedProductEntity implements S
         super();
     }
     
-    public CustomizedJacketEntity(String name, String description, String image, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
-        super(name, description, image, basePrice, totalPrice, gender); 
+    public CustomizedJacketEntity(String name, String description, String image, BigDecimal totalPrice, String gender) {
+        super(name, description, image, new BigDecimal("200.00"), totalPrice, gender); 
+    }
+    
+    public CustomizedJacketEntity(String name, String description, BigDecimal totalPrice, String gender) {
+        super(name, description, new BigDecimal("200.00"), totalPrice, gender); 
     }
 
     @Override
@@ -70,7 +74,7 @@ public class CustomizedJacketEntity extends CustomizedProductEntity implements S
 
     @Override
     public String toString() {
-        return "entity.CustomizedJacketEntity[ id=" + this.getProductId() + " ]";
+        return "[Pocket Style: " + pocketStyle.getName() + ", Jacket Style: " + jacketStyle.getName() + ", Outer Fabric: " + outerFabric.getName() + ", Inner Fabric: " + innerFabric.getName() + "]";
     }
 
     public PocketStyleEntity getPocketStyle() {

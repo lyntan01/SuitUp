@@ -94,6 +94,40 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
 
     }
 
+
+    @Override
+    public Boolean emailVerificationCodeSync(OrderEntity orderEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
+
+        EmailManager emailManager = new EmailManager(USERNAME, PASSWORD);
+        Boolean sentEmail = emailManager.emailVerificationCode(orderEntity, selectedCreditCard, verificationCode, customerEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
+
+        if (sentEmail == true) {
+            System.out.print("Returned True for emailVerificationCodeSync");
+            return true;
+        } else {
+            System.out.print("Returned False for emailVerificationCodeSync");
+            return false;
+        }
+
+    }
+
+    @Asynchronous
+    @Override
+    public Future<Boolean> emailVerificationCodeAsync(OrderEntity orderEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
+
+        EmailManager emailManager = new EmailManager(USERNAME, PASSWORD);
+        Boolean sentEmail = emailManager.emailVerificationCode(orderEntity, selectedCreditCard, verificationCode, customerEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
+
+        if (sentEmail == true) {
+            System.out.print("Returned True for emailVerificationCodeAsync");
+            return new AsyncResult<>(true);
+        } else {
+            System.out.print("Returned False for emailVerificationCodeAsync");
+            return new AsyncResult<>(false);
+        }
+
+    }
+
     @Override
     public Boolean emailUpdatedOrderStatusSync(OrderEntity orderEntity, CustomerEntity customerEntity, String toEmailAddress) {
 
@@ -126,5 +160,8 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
         }
 
     }
+    
+    
+    
 
 }

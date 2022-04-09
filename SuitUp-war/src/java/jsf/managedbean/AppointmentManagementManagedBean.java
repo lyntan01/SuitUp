@@ -32,6 +32,8 @@ import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.generator.RandomStringGenerator;
+import util.security.CryptographicHelper;
+import util.security.GlassFishCryptographicHelper;
 
 /**
  *
@@ -86,6 +88,10 @@ public class AppointmentManagementManagedBean implements Serializable {
     }
 
     public void doPaymentForAppointment(ActionEvent event) throws Exception {
+
+        CryptographicHelper cryptographicHelper = CryptographicHelper.getInstance();
+        GlassFishCryptographicHelper glassFishCryptographicHelper = GlassFishCryptographicHelper.getInstanceOf();
+//        
         censoredCreditCards = new ArrayList<>();
 
         selectedAppointmentEntityToUpdate = (AppointmentEntity) event.getComponent().getAttributes().get("appointmentEntityToPayFor");
@@ -94,7 +100,9 @@ public class AppointmentManagementManagedBean implements Serializable {
         creditCards = customerOfAppointmentToPayFor.getCreditCards();
 
         for (CreditCardEntity creditCard : creditCards) {
-            censoredCreditCards.add("**** **** **** " + creditCard.getCardNumber().substring(12, 16));
+            String recoveredCardNumber = cryptographicHelper.doAESDecryption(creditCard.getCardNumber(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv());
+            censoredCreditCards.add("**** **** **** " + recoveredCardNumber.substring(12, 16));
+//            censoredCreditCards.add("**** **** **** " + creditCard.getCardNumber().substring(12, 16));
         }
 
     }
@@ -206,10 +214,9 @@ public class AppointmentManagementManagedBean implements Serializable {
     }
 
     public void doCompletePayment(ActionEvent event) {
-        
+
 //        System.out.println("Test1: " + verificationCodeToVerifyAgainst);
 //        System.out.println("Test2: " + providedVerificationCodeByCustomer);
-
         if (verificationCodeToVerifyAgainst.equals(providedVerificationCodeByCustomer)) {
 
             if (selectedAppointmentEntityToUpdate.getTransaction() != null) {

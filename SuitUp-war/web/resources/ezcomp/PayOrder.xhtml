@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <p:dialog id="dialogPayOrder1" widgetVar="dialogPayOrder1" header="Process Payment for Order" width="100em;" height="40em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formPayOrder1">
+
+                <!--<p:messages id="messages" redisplay="false" />-->
+
+                <p:panelGrid>
+                    <p:row>
+                        <p:column><p:outputLabel style="width: 10em;" for="orderId" value="ID" /></p:column>
+                        <p:column><h:outputText id="orderId" value="#{orderManagementManagedBean.orderEntityToPayFor.orderId}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="serialNumber" value="Serial Number" /></p:column>
+                        <p:column><h:outputText id="serialNumber" value="#{orderManagementManagedBean.orderEntityToPayFor.serialNumber}" /></p:column>
+                    </p:row>
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="totalOrderLineItem" value="Total Order Line Item" /></p:column>
+                        <p:column><h:outputText id="totalOrderLineItem" value="#{orderManagementManagedBean.orderEntityToPayFor.totalLineItem}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="totalQuantity" value="Total Quantity" /></p:column>
+                        <p:column><h:outputText id="totalQuantity" value="#{orderManagementManagedBean.orderEntityToPayFor.totalQuantity}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="totalAmount" value="Total Amount" /></p:column>
+                        <p:column>
+                            <h:outputText id="totalAmount" value="#{orderManagementManagedBean.orderEntityToPayFor.totalAmount}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="orderDateTime" value="Order Date Time" /></p:column>
+                        <p:column>
+                            <h:outputText id="orderDateTime" value="#{orderManagementManagedBean.orderEntityToPayFor.orderDateTime}">
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="deliveryAddress" value="Delivery Address" /></p:column>
+                        <p:column><h:outputText id="deliveryAddress" value="${orderManagementManagedBean.orderEntityToPayFor.deliveryAddress}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="collectionMethod" value="Collection Method" /></p:column>
+                        <p:column><h:outputText id="collectionMethod" value="${viewOrderManagedBean.orderEntityToView.collectionMethodEnum}" /></p:column>
+                    </p:row>
+
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="customerName" value="Customer's Name" /></p:column>
+                        <p:column><h:outputText id="customerName" value="#{orderManagementManagedBean.orderEntityToPayFor.customer.firstName} #{orderManagementManagedBean.orderEntityToPayFor.customer.lastName}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerEmail" value="Customer's Email" /></p:column>
+                        <p:column><h:outputText id="customerEmail" value="#{orderManagementManagedBean.orderEntityToPayFor.customer.email}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerNumber" value="Customer Number" /></p:column>
+                        <p:column><h:outputText id="customerNumber" value="#{orderManagementManagedBean.orderEntityToPayFor.customer.contactNumber}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 10em;" for="creditCards" value="Select Customer's Credit Card"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="creditCards" value="#{orderManagementManagedBean.selectedStringCreditCard}" required="true" requiredMessage="Credit Card required">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select A Card]" noSelectionOption="true" />
+                                <f:selectItems value="#{orderManagementManagedBean.censoredCreditCards}" var="creditCardSelected" itemValue="#{creditCardSelected}" itemLabel="#{creditCardSelected}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+
+                    </p:row>
+
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column colspan="3" style="text-align: center;">
+                                <p:commandButton value="Next" oncomplete="PF('dialogPayOrder2').show(); PF('dialogPayOrder1').hide()" update="@composite:dialogPayOrder2" actionListener="#{orderManagementManagedBean.generateVerification}"/>                                
+                            </p:column>
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+
+
+        <p:dialog id="dialogPayOrder2" widgetVar="dialogPayOrder2" header="Confirm Payment for Order" width="em" height="40em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <h:form id="formPayOrder2">
+
+                <p:messages id="messages" redisplay="false" />
+
+                <p:panelGrid>
+
+
+                    <p:row>
+                        <p:column><p:outputLabel style="width: 10em;" for="orderId" value="ID" /></p:column>
+                        <p:column><h:outputText id="orderId" value="#{orderManagementManagedBean.orderEntityToPayFor.orderId}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="serialNumber" value="Serial Number" /></p:column>
+                        <p:column><h:outputText id="serialNumber" value="#{orderManagementManagedBean.orderEntityToPayFor.serialNumber}" /></p:column>
+                    </p:row>
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="totalOrderLineItem" value="Total Order Line Item" /></p:column>
+                        <p:column><h:outputText id="totalOrderLineItem" value="#{orderManagementManagedBean.orderEntityToPayFor.totalLineItem}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="totalQuantity" value="Total Quantity" /></p:column>
+                        <p:column><h:outputText id="totalQuantity" value="#{orderManagementManagedBean.orderEntityToPayFor.totalQuantity}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="totalAmount" value="Total Amount" /></p:column>
+                        <p:column>
+                            <h:outputText id="totalAmount" value="#{orderManagementManagedBean.orderEntityToPayFor.totalAmount}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="orderDateTime" value="Order Date Time" /></p:column>
+                        <p:column>
+                            <h:outputText id="orderDateTime" value="#{orderManagementManagedBean.orderEntityToPayFor.orderDateTime}">
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="deliveryAddress" value="Delivery Address" /></p:column>
+                        <p:column><h:outputText id="deliveryAddress" value="${orderManagementManagedBean.orderEntityToPayFor.deliveryAddress}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="collectionMethod" value="Collection Method" /></p:column>
+                        <p:column><h:outputText id="collectionMethod" value="${viewOrderManagedBean.orderEntityToView.collectionMethodEnum}" /></p:column>
+                    </p:row>
+
+
+                    <p:row>                    
+                        <p:column><p:outputLabel for="customerName" value="Customer's Name" /></p:column>
+                        <p:column><h:outputText id="customerName" value="#{orderManagementManagedBean.orderEntityToPayFor.customer.firstName} #{orderManagementManagedBean.orderEntityToPayFor.customer.lastName}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerEmail" value="Customer's Email" /></p:column>
+                        <p:column><h:outputText id="customerEmail" value="#{orderManagementManagedBean.orderEntityToPayFor.customer.email}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column><p:outputLabel for="customerNumber" value="Customer Number" /></p:column>
+                        <p:column><h:outputText id="customerNumber" value="#{orderManagementManagedBean.orderEntityToPayFor.customer.contactNumber}" /></p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 10em;" for="verificationNumber" value="Verification Code"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 20em;" id="verificationNumber" value="#{orderManagementManagedBean.providedVerificationCodeByCustomer}" maxlength="6" required="true" requiredMessage="Verification code is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="verificationNumber" />
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+
+                        <p:column>
+                            <p:commandButton value="Back" oncomplete="PF('dialogPayOrder1').show(); PF('dialogPayOrder2').hide()" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Confirm Payment" update="@composite:dialogPayOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" actionListener="#{orderManagementManagedBean.doCompletePayment}" oncomplete="PF('dialogPayOrder2').show();" />
+                        </p:column>
+
+                    </p:row>
+
+                </p:panelGrid>
+
+            </h:form>
+
+        </p:dialog>      
+    </cc:implementation>
+</html>

@@ -46,9 +46,9 @@ public class OrderEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @Column(nullable = false, unique = true, length = 4)
+    @Column(nullable = false, unique = true, length = 6)
     @NotNull
-    @Size(min = 4, max = 4)
+    @Size(min = 6, max = 6)
     private String serialNumber;
 
     @NotNull

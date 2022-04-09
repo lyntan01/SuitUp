@@ -77,7 +77,7 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 
     // Updated in v4.1
     @Override
-    public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException {
+    public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException, StackOverflowError {
         Set<ConstraintViolation<OrderEntity>> constraintViolations = validator.validate(newOrderEntity);
 
         if (constraintViolations.isEmpty()) {
@@ -90,7 +90,6 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                     CustomerEntity customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                     newOrderEntity.setCustomer(customerEntity);
                     customerEntity.getOrders().add(newOrderEntity);
-                    
 
                     entityManager.persist(newOrderEntity);
 
@@ -106,6 +105,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 
                     return newOrderEntity;
                 } catch (StandardProductNotFoundException | StandardProductInsufficientQuantityOnHandException ex) {
+                    System.out.println("ERRORRR");
+                    System.out.println(ex.getMessage());
                     // The line below rolls back all changes made to the database.
                     context.setRollbackOnly();
 
@@ -116,11 +117,11 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             }
 
         } else {
+            System.out.println("ERRORRR");
+            System.out.println(prepareInputDataValidationErrorsMessage(constraintViolations));
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
-
-    
 
     @Override
     public List<OrderEntity> retrieveAllOrders() {
@@ -232,4 +233,3 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         return msg;
     }
 }
-

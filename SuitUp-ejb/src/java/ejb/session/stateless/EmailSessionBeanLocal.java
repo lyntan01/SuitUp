@@ -30,5 +30,9 @@ public interface EmailSessionBeanLocal {
 
     public Future<Boolean> emailUpdatedOrderStatusAsync(OrderEntity orderEntity, CustomerEntity customerEntity, String toEmailAddress);
 
+    public Boolean emailVerificationCodeSync(OrderEntity orderEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
+
+    public Future<Boolean> emailVerificationCodeAsync(OrderEntity orderEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
+
 
 }

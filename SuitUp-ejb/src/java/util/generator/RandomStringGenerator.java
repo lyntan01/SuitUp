@@ -25,6 +25,13 @@ public class RandomStringGenerator {
             buf[idx] = symbols[random.nextInt(symbols.length)];
         return new String(buf);
     }
+    
+    public String generateSerial() {
+         for (int idx = 0; idx < buf.length; ++idx)
+            buf[idx] = symbols[random.nextInt(symbols.length)];
+        String value = new String(buf);
+        return "#" + value.toUpperCase();
+    }
 
     public static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

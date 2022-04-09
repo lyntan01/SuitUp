@@ -51,6 +51,13 @@ public class CustomizedProductEntity extends ProductEntity implements Serializab
         this.gender = gender;
     }
     
+    public CustomizedProductEntity(String name, String description, BigDecimal basePrice, BigDecimal totalPrice, String gender) {
+        super(name, description);
+        this.basePrice = basePrice;
+        this.totalPrice = totalPrice;
+        this.gender = gender;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

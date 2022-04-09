@@ -115,7 +115,7 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
     }
 
     @Override
-    public void updateAppointment(AppointmentEntity appointmentEntity) throws AppointmentNotFoundException, UpdateEntityException, InputDataValidationException {
+    public void updateAppointment(AppointmentEntity appointmentEntity, Long storeId) throws AppointmentNotFoundException, StoreNotFoundException, UpdateEntityException, InputDataValidationException {
         if (appointmentEntity != null && appointmentEntity.getAppointmentId() != null) {
             Set<ConstraintViolation<AppointmentEntity>> constraintViolations = validator.validate(appointmentEntity);
 
@@ -123,6 +123,16 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
                 AppointmentEntity appointmentEntityToUpdate = retrieveAppointmentByAppointmentId(appointmentEntity.getAppointmentId());
 
                 if (appointmentEntityToUpdate.getAppointmentId().equals(appointmentEntity.getAppointmentId())) {
+                    
+                    if(storeId != null && (!appointmentEntityToUpdate.getStore().getStoreId().equals(storeId)))
+                    {
+                        StoreEntity oldStoreEntity = storeSessionBeanLocal.retrieveStoreByStoreId(appointmentEntityToUpdate.getStore().getStoreId());
+                        oldStoreEntity.getAppointments().remove(appointmentEntityToUpdate);
+                        StoreEntity newStoreEntity = storeSessionBeanLocal.retrieveStoreByStoreId(storeId);
+                        appointmentEntityToUpdate.setStore(newStoreEntity);
+                        newStoreEntity.getAppointments().add(appointmentEntityToUpdate);
+                    }
+                    
                     appointmentEntityToUpdate.setAppointmentDateTime(appointmentEntity.getAppointmentDateTime());
                     appointmentEntityToUpdate.setAppointmentTypeEnum(appointmentEntity.getAppointmentTypeEnum());
                 } else {

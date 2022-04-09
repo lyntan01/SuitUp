@@ -73,6 +73,10 @@
                     <p:commandButton actionListener="#{orderManagementManagedBean.doUpdateOrder}" update="@composite:@next:@next:dialogUpdateOrder1 @composite:@next:@next:dialogUpdateOrder2" oncomplete="PF('dialogUpdateOrder1').show()" icon="pi pi-pencil" title="Update">
                         <f:attribute name="orderEntityToUpdate" value="#{orderEntity}" />
                     </p:commandButton>
+                     <p:commandButton actionListener="#{orderManagementManagedBean.doPaymentForOrder}" value="PAY" disabled="#{orderEntity.transaction != null}"
+                                    update="@composite:@next:@next:dialogPayOrder1 @composite:@next:@next:dialogPayOrder2" oncomplete="PF('dialogPayOrder').show()" title="Pay">
+                        <f:attribute name="orderEntityToPayFor" value="#{orderEntity}" />
+                    </p:commandButton>
                 </p:column>
 
                 <p:columnGroup type="footer">   
