@@ -13,5 +13,90 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
+        <p:dialog id="dialogCreateNewCustomizedJacket" widgetVar="dialogCreateNewCustomizedJacket" header="Add New Customized Jacket" width="100em;" height="25em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+            <h:form id="formCreateNewCustomizedJacket">
+
+                <p:messages id="messages" redisplay="false" />
+
+                <p:panelGrid id="createNewJacketGrid" style="width: 30em;" styleClass="noBorder">
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="name" value="Name: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="name" value="#{customizedJacketManagedBean.newCustomizedJacket.name}" placeholder="Name of Jacket" required="true" requiredMessage="Name is required" />
+                        </p:column>
+                    </p:row> 
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="description" value="Description "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="description" value="#{customizedJacketManagedBean.newCustomizedJacket.description}" placeholder="Description of Jacket" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="innerFabric" value="Inner Fabric"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="innerFabric" value="#{customizedJacketManagedBean.innerFabricId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Inner Fabric]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.fabrics}" var="innerFabric" itemLabel="#{innerFabric.name}" itemValue="#{innerFabric.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="outerFabric" value="Outer Fabric"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="outerFabric" value="#{customizedJacketManagedBean.outerFabricId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Outer Fabric]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.fabrics}" var="outerFabric" itemLabel="#{outerFabric.name}" itemValue="#{outerFabric.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="pocketStyle" value="Pocket Style"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="pocketStyle" value="#{customizedJacketManagedBean.pocketStyleId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Pocket Style]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.pocketStyles}" var="pocketStyle" itemLabel="#{pocketStyle.name}" itemValue="#{pocketStyle.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="jacketStyle" value="Jacket Style"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="jacketStyle" value="#{customizedJacketManagedBean.jacketStyleId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Jacket Style]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.jacketStyles}" var="jacketStyle" itemLabel="#{jacketStyle.name}" itemValue="#{jacketStyle.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center;">
+                            <p:commandButton type="reset" value="Back" oncomplete="PF('dialogCreateNewCustomizedJacket').hide() PF('dialogCreateNewOrder').show()">
+
+                            </p:commandButton>&nbsp;
+                            <p:commandButton value="Create New Customized Jacket" oncomplete="PF('dialogCreateNewCustomizedJacket').show() PF('dialogCreateNewOrder').hide()" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
     </cc:implementation>
 </html>

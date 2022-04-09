@@ -33,6 +33,7 @@ public class CustomizedPantsEntity extends CustomizedProductEntity implements Se
     private PantsMeasurementEntity pantsMeasurement;
     
     public CustomizedPantsEntity() {
+        super(new BigDecimal("100.00"));
     }
     
     public CustomizedPantsEntity(String name, String description, String image, BigDecimal totalPrice, String gender) {
