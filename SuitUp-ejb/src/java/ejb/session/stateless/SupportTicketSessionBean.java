@@ -76,7 +76,7 @@ public class SupportTicketSessionBean implements SupportTicketSessionBeanLocal {
                     throw new UnknownPersistenceException(ex.getMessage());
                 }
             } catch (CustomerNotFoundException ex) {
-                throw new UnsuccessfulTicketException();
+                throw new UnsuccessfulTicketException("Customer ID " + customerId + " not found.");
             }
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));

@@ -30,7 +30,9 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.rest.CorsFilter.class);
+        resources.add(ws.rest.PromotionResource.class);
         resources.add(ws.rest.StoreResource.class);
+        resources.add(ws.rest.SupportTicketResource.class);
     }
     
 }
