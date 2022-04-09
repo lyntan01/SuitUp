@@ -51,8 +51,34 @@
             </p:panelGrid>
 
         </h:form>
+        
+        <h:panelGroup rendered="${sessionScope.isLogin == true}" style="margin-top: 10%">
+            <h:outputText value="Welcome Back, #{sessionScope.currentStaffEntity.firstName} #{sessionScope.currentStaffEntity.lastName}." /><br />
+            <h:outputText value="You are currently logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." />
+  
+            <div class="flexBox">
+                <h:form id="formAllReports">
+<!--                    <p:panel header="Staff Report">
+                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateReport}" ajax="false" />
+                    </p:panel>-->
 
-        <h:outputText value="Placeholder for index page. Logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." rendered="${sessionScope.isLogin == true}" />
+                    <p:panel header="Orders Report">
+                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateReport}" ajax="false" />
+                    </p:panel>
+<!--                    <p:panel header="Inventory Report">
+                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateReport}" ajax="false" />
+                    </p:panel>
+                    <p:panel header="Sales Report">
+                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateReport}" ajax="false" />
+                    </p:panel>-->
+                </h:form>
+            </div>
+        
+        </h:panelGroup>
+
+        
+            
+           
     </ui:define>
 
 </ui:composition>

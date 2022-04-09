@@ -3,7 +3,7 @@
 <glassfish-web-app error-url="">
   <context-root>/SuitUp</context-root>
   <resource-ref>
-    <res-ref-name>suitUp</res-ref-name>
+    <res-ref-name>suitUpDataSource</res-ref-name>
     <jndi-name>jdbc/suitUp</jndi-name>
   </resource-ref>
   <class-loader delegate="true"/>
