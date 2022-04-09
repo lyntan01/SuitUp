@@ -28,7 +28,7 @@ public interface PantsMeasurementSessionBeanLocal {
 
     public PantsMeasurementEntity retrievePantsMeasurementByPantsMeasurementId(Long pantsMeasurementId) throws PantsMeasurementNotFoundException;
 
-    public void updatePantsMeasurement(PantsMeasurementEntity pantsMeasurementEntity) throws InputDataValidationException, PantsMeasurementNotFoundException, UpdateEntityException;
+    public void updatePantsMeasurement(PantsMeasurementEntity pantsMeasurementEntity) throws InputDataValidationException, PantsMeasurementNotFoundException, UpdateEntityException, UnknownPersistenceException, CustomerNotFoundException;
 
     public void deletePantsMeasurement(Long pantsMeasurementId) throws PantsMeasurementNotFoundException, DeleteEntityException;
     

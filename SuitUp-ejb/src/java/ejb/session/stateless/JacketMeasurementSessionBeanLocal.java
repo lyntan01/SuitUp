@@ -28,7 +28,7 @@ public interface JacketMeasurementSessionBeanLocal {
 
     public JacketMeasurementEntity retrieveJacketMeasurementByJacketMeasurementId(Long jacketMeasurementId) throws JacketMeasurementNotFoundException;
 
-    public void updateJacketMeasurement(JacketMeasurementEntity jacketMeasurementEntity) throws InputDataValidationException, JacketMeasurementNotFoundException, UpdateEntityException;
+    public void updateJacketMeasurement(JacketMeasurementEntity jacketMeasurementEntity) throws InputDataValidationException, JacketMeasurementNotFoundException, UpdateEntityException, UnknownPersistenceException, CustomerNotFoundException;
 
     public void deleteJacketMeasurement(Long jacketMeasurementId) throws JacketMeasurementNotFoundException, DeleteEntityException;
     

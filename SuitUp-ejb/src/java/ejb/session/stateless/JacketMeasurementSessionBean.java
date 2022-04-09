@@ -89,25 +89,37 @@ public class JacketMeasurementSessionBean implements JacketMeasurementSessionBea
     }
 
     @Override
-    public void updateJacketMeasurement(JacketMeasurementEntity jacketMeasurementEntity) throws InputDataValidationException, JacketMeasurementNotFoundException, UpdateEntityException {
+    public void updateJacketMeasurement(JacketMeasurementEntity jacketMeasurementEntity) throws InputDataValidationException, JacketMeasurementNotFoundException, UpdateEntityException, UnknownPersistenceException, CustomerNotFoundException 
+    {
         Set<ConstraintViolation<JacketMeasurementEntity>> constraintViolations = validator.validate(jacketMeasurementEntity);
 
         if (constraintViolations.isEmpty()) {
             if (jacketMeasurementEntity.getJacketMeasurementId() != null) {
+                Query query = em.createQuery("SELECT j FROM CustomizedJacketEntity j WHERE j.jacketMeasurement.jacketMeasurementId = :id");
+                query.setParameter("id", jacketMeasurementEntity.getJacketMeasurementId());
                 JacketMeasurementEntity jacketMeasurementEntityToUpdate = retrieveJacketMeasurementByJacketMeasurementId(jacketMeasurementEntity.getJacketMeasurementId());
-                jacketMeasurementEntityToUpdate.setNeck(jacketMeasurementEntity.getNeck());
-                jacketMeasurementEntityToUpdate.setFrontLength(jacketMeasurementEntity.getFrontLength());
-                jacketMeasurementEntityToUpdate.setChestGirth(jacketMeasurementEntity.getChestGirth());
-                jacketMeasurementEntityToUpdate.setFrontChestWidth(jacketMeasurementEntity.getFrontChestWidth());
-                jacketMeasurementEntityToUpdate.setUpperWaistGrith(jacketMeasurementEntity.getUpperWaistGrith());
-                jacketMeasurementEntityToUpdate.setHipGirth(jacketMeasurementEntity.getHipGirth());
-                jacketMeasurementEntityToUpdate.setArmhole(jacketMeasurementEntity.getArmhole());
-                jacketMeasurementEntityToUpdate.setShoulderWidth(jacketMeasurementEntity.getShoulderWidth());
-                jacketMeasurementEntityToUpdate.setSleeveLength(jacketMeasurementEntity.getSleeveLength());
-                jacketMeasurementEntityToUpdate.setBackwidth(jacketMeasurementEntity.getBackwidth());
-                jacketMeasurementEntityToUpdate.setBicepGirth(jacketMeasurementEntity.getBicepGirth());
-                jacketMeasurementEntityToUpdate.setForearmGirth(jacketMeasurementEntity.getForearmGirth());
-                jacketMeasurementEntityToUpdate.setWristGirth(jacketMeasurementEntity.getWristGirth());
+
+                if (query.getResultList().isEmpty()) {
+                    jacketMeasurementEntityToUpdate.setNeck(jacketMeasurementEntity.getNeck());
+                    jacketMeasurementEntityToUpdate.setFrontLength(jacketMeasurementEntity.getFrontLength());
+                    jacketMeasurementEntityToUpdate.setChestGirth(jacketMeasurementEntity.getChestGirth());
+                    jacketMeasurementEntityToUpdate.setFrontChestWidth(jacketMeasurementEntity.getFrontChestWidth());
+                    jacketMeasurementEntityToUpdate.setUpperWaistGrith(jacketMeasurementEntity.getUpperWaistGrith());
+                    jacketMeasurementEntityToUpdate.setHipGirth(jacketMeasurementEntity.getHipGirth());
+                    jacketMeasurementEntityToUpdate.setArmhole(jacketMeasurementEntity.getArmhole());
+                    jacketMeasurementEntityToUpdate.setShoulderWidth(jacketMeasurementEntity.getShoulderWidth());
+                    jacketMeasurementEntityToUpdate.setSleeveLength(jacketMeasurementEntity.getSleeveLength());
+                    jacketMeasurementEntityToUpdate.setBackwidth(jacketMeasurementEntity.getBackwidth());
+                    jacketMeasurementEntityToUpdate.setBicepGirth(jacketMeasurementEntity.getBicepGirth());
+                    jacketMeasurementEntityToUpdate.setForearmGirth(jacketMeasurementEntity.getForearmGirth());
+                    jacketMeasurementEntityToUpdate.setWristGirth(jacketMeasurementEntity.getWristGirth());
+                } else {
+                    Query customerQuery = em.createQuery("SELECT c FROM CustomerEntity c WHERE c.jacketMeasurement.jacketMeasurementId = :id");
+                    customerQuery.setParameter("id", jacketMeasurementEntity.getJacketMeasurementId());
+                    CustomerEntity customer = (CustomerEntity) customerQuery.getSingleResult();
+                    customer.setJacketMeasurement(null);
+                    createNewJacketMeasurement(jacketMeasurementEntity, customer.getCustomerId());
+                }
             } else {
                 throw new JacketMeasurementNotFoundException("JacketMeasurement ID not provided for jacketMeasurement to be updated");
             }

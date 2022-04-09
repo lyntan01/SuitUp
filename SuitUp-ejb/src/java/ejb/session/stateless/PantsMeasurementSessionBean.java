@@ -102,26 +102,34 @@ public class PantsMeasurementSessionBean implements PantsMeasurementSessionBeanL
     
 
     @Override
-    public void updatePantsMeasurement(PantsMeasurementEntity pantsMeasurementEntity) throws InputDataValidationException, PantsMeasurementNotFoundException, UpdateEntityException
+    public void updatePantsMeasurement(PantsMeasurementEntity pantsMeasurementEntity) throws InputDataValidationException, PantsMeasurementNotFoundException, UpdateEntityException, UnknownPersistenceException, CustomerNotFoundException
     {
         Set<ConstraintViolation<PantsMeasurementEntity>>constraintViolations = validator.validate(pantsMeasurementEntity);
         
         if(constraintViolations.isEmpty())
         {
-            if(pantsMeasurementEntity.getPantsMeasurementId()!= null)
-            {
+            if(pantsMeasurementEntity.getPantsMeasurementId() != null) {
+                Query query = em.createQuery("SELECT p FROM CustomizedPantsEntity p WHERE p.pantsMeasurement.pantsMeasurementId = :id");
+                query.setParameter("id", pantsMeasurementEntity.getPantsMeasurementId());
                 PantsMeasurementEntity pantsMeasurementEntityToUpdate = retrievePantsMeasurementByPantsMeasurementId(pantsMeasurementEntity.getPantsMeasurementId());
-                pantsMeasurementEntityToUpdate.setLegsLength(pantsMeasurementEntity.getLegsLength());
-                pantsMeasurementEntityToUpdate.setLowerWaistGirth(pantsMeasurementEntity.getLowerWaistGirth());
-                pantsMeasurementEntityToUpdate.setHipGirth(pantsMeasurementEntity.getHipGirth());
-                pantsMeasurementEntityToUpdate.setCrotch(pantsMeasurementEntity.getCrotch());
-                pantsMeasurementEntityToUpdate.setThighGirth(pantsMeasurementEntity.getThighGirth());
-                pantsMeasurementEntityToUpdate.setKneeGirth(pantsMeasurementEntity.getKneeGirth());
-                pantsMeasurementEntityToUpdate.setCalfGirth(pantsMeasurementEntity.getCalfGirth());
-                pantsMeasurementEntityToUpdate.setPantsOpeningWidth(pantsMeasurementEntity.getPantsOpeningWidth());
-            }
-            else
-            {
+
+                if (query.getResultList().isEmpty()) {
+                    pantsMeasurementEntityToUpdate.setLegsLength(pantsMeasurementEntity.getLegsLength());
+                    pantsMeasurementEntityToUpdate.setLowerWaistGirth(pantsMeasurementEntity.getLowerWaistGirth());
+                    pantsMeasurementEntityToUpdate.setHipGirth(pantsMeasurementEntity.getHipGirth());
+                    pantsMeasurementEntityToUpdate.setCrotch(pantsMeasurementEntity.getCrotch());
+                    pantsMeasurementEntityToUpdate.setThighGirth(pantsMeasurementEntity.getThighGirth());
+                    pantsMeasurementEntityToUpdate.setKneeGirth(pantsMeasurementEntity.getKneeGirth());
+                    pantsMeasurementEntityToUpdate.setCalfGirth(pantsMeasurementEntity.getCalfGirth());
+                    pantsMeasurementEntityToUpdate.setPantsOpeningWidth(pantsMeasurementEntity.getPantsOpeningWidth());
+                } else {
+                    Query customerQuery = em.createQuery("SELECT c FROM CustomerEntity c WHERE c.pantsMeasurement.pantsMeasurementId = :id");
+                    customerQuery.setParameter("id", pantsMeasurementEntity.getPantsMeasurementId());
+                    CustomerEntity customer = (CustomerEntity) customerQuery.getSingleResult();
+                    customer.setPantsMeasurement(null);
+                    createNewPantsMeasurement(pantsMeasurementEntity, customer.getCustomerId());
+                }
+            } else {
                 throw new PantsMeasurementNotFoundException("PantsMeasurement ID not provided for pantsMeasurement to be updated");
             }
         }
