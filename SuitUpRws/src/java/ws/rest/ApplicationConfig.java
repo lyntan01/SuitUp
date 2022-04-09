@@ -32,7 +32,6 @@ public class ApplicationConfig extends Application {
         resources.add(ws.rest.AddressResource.class);
         resources.add(ws.rest.AppointmentResource.class);
         resources.add(ws.rest.CorsFilter.class);
-        resources.add(ws.rest.CreditCardResource.class);
         resources.add(ws.rest.CustomizationResource.class);
         resources.add(ws.rest.PromotionResource.class);
         resources.add(ws.rest.StandardProductResource.class);
