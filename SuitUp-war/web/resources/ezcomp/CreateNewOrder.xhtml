@@ -13,21 +13,20 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <p:dialog id="dialogCreateNewOrder" width="100em" height="40em" widgetVar="dialogCreateNewOrder" header="Create New Order" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
-
-            <p:messages id="messages" redisplay="false" closable="true" />
-
-            <br/>
-            <p:separator/>
-            <br/>
-            <div style="width: auto">
-                <p:commandButton value="Add Standard Product" onclick="PF('dialogAddStandardProducts').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
-                <p:commandButton value="Add New Customized Jacket" onclick="PF('dialogCreateNewCustomizedJacket').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
-                <p:commandButton value="Add New Customized Pants" onclick="PF('dialogCreateNewCustomizedPants').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>
-            </div>
-
-            <br/>
-            <br/>
             <h:form id="formCreateNewOrder">
+                
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+
+                <div style="width: auto">
+                    <p:commandButton value="Add Standard Product" onclick="PF('dialogAddStandardProducts').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
+                    <p:commandButton value="Add New Customized Jacket" onclick="PF('dialogCreateNewCustomizedJacket').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
+                    <p:commandButton value="Add New Customized Pants" onclick="PF('dialogCreateNewCustomizedPants').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>
+                </div>
+
+                <br/>
+                <br/>
+
                 <p:dataTable id="dataTableMain" widgetVar="dataTableMain" value="#{createOrderManagedBean.orderLineItemEntities}" var="orderLineItemEntity" rowKey="#{orderLineItemEntity.orderLineItemId}" rowIndexVar="row" 
                              rows="10">
 
@@ -48,10 +47,10 @@
                     </p:column>
 
                     <p:column headerText="Action" >
-                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.incrementQuantity}" update="formCreateNewOrder:dataTableMain formCreateNewOrder:totalAmount formCreateNewOrder:totalLineItem formCreateNewOrder:totalQuantity" icon="ui-icon-plus" title="Increment Quantity">
+                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.incrementQuantity}" update="dataTableMain" icon="ui-icon-plus" title="Increment Quantity">
                             <f:attribute name="productToIncrement" value="#{orderLineItemEntity.product}" />
                         </p:commandButton>
-                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.decrementQuantity}" update="formCreateNewOrder:dataTableMain formCreateNewOrder:totalAmount formCreateNewOrder:totalLineItem formCreateNewOrder:totalQuantity" icon="ui-icon-minus" title="Decrement Quantity">
+                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.decrementQuantity}" update="dataTableMain" icon="ui-icon-minus" title="Decrement Quantity">
                             <f:attribute name="productToDecrement" value="#{orderLineItemEntity.product}" />
                         </p:commandButton>
                     </p:column>

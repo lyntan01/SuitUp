@@ -27,6 +27,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import util.exception.CustomizationNotFoundException;
 import util.exception.CustomizedProductIdExistsException;
+import util.exception.CustomizedProductNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.JacketMeasurementNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -98,7 +99,11 @@ public class CustomizedJacketManagedBean implements Serializable {
             
             Long productId = customizedJacketSessionBeanLocal.createNewCustomizedJacket(newCustomizedJacket, pocketStyleId, jacketStyleId, innerFabricId, outerFabricId, newCustomizedJacket.getJacketMeasurement().getJacketMeasurementId());
             
-            createOrderManagedBean.addItem(newCustomizedJacket, 1);
+            try {
+                createOrderManagedBean.addItem(customizedJacketSessionBeanLocal.retrieveCustomizedJacketById(productId), 1);
+            } catch (CustomizedProductNotFoundException ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when retrueving the new jacket: " + ex.getMessage(), null));
+            }
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Customized Jacket created successfully (Jacket ID: " + productId + ")", null));
             

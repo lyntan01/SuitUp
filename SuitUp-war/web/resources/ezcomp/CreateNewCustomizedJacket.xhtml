@@ -97,10 +97,10 @@
                     
                     <p:row>
                         <p:column colspan="2" style="text-align: center;">
-                            <p:commandButton type="reset" value="Back" oncomplete="PF('dialogCreateNewCustomizedJacket').hide() PF('dialogCreateNewOrder').show()">
+                            <p:commandButton value="Back" oncomplete="PF('dialogCreateNewCustomizedJacket').hide() PF('dialogCreateNewOrder').show()">
 
                             </p:commandButton>&nbsp;
-                            <p:commandButton value="Create New Customized Jacket" oncomplete="PF('dialogCreateNewCustomizedJacket').hide() PF('dialogCreateNewOrder').show()" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />
+                            <p:commandButton value="Create New Customized Jacket" process="@this" oncomplete="PF('PF('dialogCreateNewOrder').show()" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />
                         </p:column>
                     </p:row>
 
