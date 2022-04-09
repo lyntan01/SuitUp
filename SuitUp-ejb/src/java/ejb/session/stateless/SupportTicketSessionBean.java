@@ -68,7 +68,7 @@ public class SupportTicketSessionBean implements SupportTicketSessionBeanLocal {
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
-                        throw new SupportTicketIdExistException();
+                        throw new SupportTicketIdExistException("Support Ticket ID already exists.");
                     } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }

@@ -73,7 +73,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
                 {
                     if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                     {
-                        throw new CreditCardNumberExistException();
+                        throw new CreditCardNumberExistException("Credit card number already exists.");
                     }
                     else
                     {

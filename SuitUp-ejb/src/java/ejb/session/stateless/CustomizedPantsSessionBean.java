@@ -81,7 +81,7 @@ public class CustomizedPantsSessionBean implements CustomizedPantsSessionBeanLoc
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
-                        throw new CustomizedProductIdExistsException();
+                        throw new CustomizedProductIdExistsException("Customized Product ID already exists.");
                     } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }

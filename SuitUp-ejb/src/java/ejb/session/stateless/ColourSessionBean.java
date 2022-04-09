@@ -57,7 +57,7 @@ public class ColourSessionBean implements ColourSessionBeanLocal {
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
-                        throw new ColourIdExistException();
+                        throw new ColourIdExistException("Colour ID already exists.");
                     } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }

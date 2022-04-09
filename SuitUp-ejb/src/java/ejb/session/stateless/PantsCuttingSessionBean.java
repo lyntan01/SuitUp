@@ -56,7 +56,7 @@ public class PantsCuttingSessionBean implements PantsCuttingSessionBeanLocal {
             } catch (PersistenceException ex) {
                 if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
                     if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
-                        throw new CustomizationIdExistException();
+                        throw new CustomizationIdExistException("Customization ID already exists.");
                     } else {
                         throw new UnknownPersistenceException(ex.getMessage());
                     }
