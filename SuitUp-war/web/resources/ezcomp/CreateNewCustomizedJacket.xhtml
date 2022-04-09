@@ -5,7 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      template="/template/defaultTemplate.xhtml">
+      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -31,10 +31,19 @@
                     
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="width: 45%; font-weight: bold;" for="description" value="Description "/>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="description" value="Description: "/>
                         </p:column>
                         <p:column>
                             <p:inputText style="width: 55%" id="description" value="#{customizedJacketManagedBean.newCustomizedJacket.description}" placeholder="Description of Jacket" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="gender" value="Gender: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="gender" value="#{customizedJacketManagedBean.newCustomizedJacket.gender}" placeholder="Gender" required="true" requiredMessage="Gender is required" />
                         </p:column>
                     </p:row>
 
@@ -91,7 +100,7 @@
                             <p:commandButton type="reset" value="Back" oncomplete="PF('dialogCreateNewCustomizedJacket').hide() PF('dialogCreateNewOrder').show()">
 
                             </p:commandButton>&nbsp;
-                            <p:commandButton value="Create New Customized Jacket" oncomplete="PF('dialogCreateNewCustomizedJacket').show() PF('dialogCreateNewOrder').hide()" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />
+                            <p:commandButton value="Create New Customized Jacket" oncomplete="PF('dialogCreateNewCustomizedJacket').hide() PF('dialogCreateNewOrder').show()" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />
                         </p:column>
                     </p:row>
 

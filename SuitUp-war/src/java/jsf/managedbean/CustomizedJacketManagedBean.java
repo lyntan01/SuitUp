@@ -83,12 +83,18 @@ public class CustomizedJacketManagedBean implements Serializable {
     public void createNewCustomizedJacket(ActionEvent event) {
         try {
            
-            BigDecimal totalPrice = newCustomizedJacket.getBasePrice().add(newCustomizedJacket.getInnerFabric().getAdditionalPrice()
-                    .add(newCustomizedJacket.getOuterFabric().getAdditionalPrice().add(newCustomizedJacket.getJacketStyle().getAdditionalPrice()
-                            .add(newCustomizedJacket.getPocketStyle().getAdditionalPrice()))));
+            BigDecimal totalPrice = newCustomizedJacket.getBasePrice().add(fabricSessionBeanLocal.retrieveFabricById(outerFabricId).getAdditionalPrice()
+                    .add(fabricSessionBeanLocal.retrieveFabricById(innerFabricId).getAdditionalPrice()
+                            .add(jacketStyleSessionBeanLocal.retrieveJacketStyleById(jacketStyleId).getAdditionalPrice()
+                                .add(pocketStyleSessionBeanLocal.retrievePocketStyleById(pocketStyleId).getAdditionalPrice()))));
             
             newCustomizedJacket.setTotalPrice(totalPrice);
             newCustomizedJacket.setJacketMeasurement(createOrderManagedBean.getCurrentCustomer().getJacketMeasurement());
+            
+            newCustomizedJacket.setInnerFabric(fabricSessionBeanLocal.retrieveFabricById(innerFabricId));
+            newCustomizedJacket.setOuterFabric(fabricSessionBeanLocal.retrieveFabricById(outerFabricId));
+            newCustomizedJacket.setJacketStyle(jacketStyleSessionBeanLocal.retrieveJacketStyleById(jacketStyleId));
+            newCustomizedJacket.setPocketStyle(pocketStyleSessionBeanLocal.retrievePocketStyleById(pocketStyleId));
             
             Long productId = customizedJacketSessionBeanLocal.createNewCustomizedJacket(newCustomizedJacket, pocketStyleId, jacketStyleId, innerFabricId, outerFabricId, newCustomizedJacket.getJacketMeasurement().getJacketMeasurementId());
             
@@ -103,7 +109,7 @@ public class CustomizedJacketManagedBean implements Serializable {
             jacketStyleId = null;
             
         } catch (CustomizedProductIdExistsException | JacketMeasurementNotFoundException | CustomizationNotFoundException | UnknownPersistenceException | InputDataValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new staff: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new jacket: " + ex.getMessage(), null));
         }
     }
 
