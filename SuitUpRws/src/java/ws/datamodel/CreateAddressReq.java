@@ -1,24 +1,24 @@
 package ws.datamodel;
 
-import entity.SupportTicketEntity;
+import entity.AddressEntity;
 
 /**
  *
  * @author lyntan
  */
-public class CreateSupportTicketReq {
+public class CreateAddressReq {
     
     private String email;
     private String password;
-    private SupportTicketEntity supportTicket;
+    private AddressEntity address;
 
-    public CreateSupportTicketReq(String email, String password, SupportTicketEntity supportTicket) {
+    public CreateAddressReq(String email, String password, AddressEntity address) {
         this.email = email;
         this.password = password;
-        this.supportTicket = supportTicket;
+        this.address = address;
     }
 
-    public CreateSupportTicketReq() {
+    public CreateAddressReq() {
     }
 
     public String getEmail() {
@@ -37,12 +37,12 @@ public class CreateSupportTicketReq {
         this.password = password;
     }
 
-    public SupportTicketEntity getSupportTicket() {
-        return supportTicket;
+    public AddressEntity getAddress() {
+        return address;
     }
 
-    public void setSupportTicket(SupportTicketEntity supportTicket) {
-        this.supportTicket = supportTicket;
+    public void setAddress(AddressEntity address) {
+        this.address = address;
     }
     
     

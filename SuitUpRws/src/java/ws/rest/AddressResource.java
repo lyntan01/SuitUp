@@ -5,10 +5,10 @@
  */
 package ws.rest;
 
+import ejb.session.stateless.AddressSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
-import ejb.session.stateless.SupportTicketSessionBeanLocal;
+import entity.AddressEntity;
 import entity.CustomerEntity;
-import entity.SupportTicketEntity;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,62 +21,58 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.AddressNotFoundException;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
-import util.exception.SupportTicketIdExistException;
-import util.exception.SupportTicketNotFoundException;
 import util.exception.UnknownPersistenceException;
-import util.exception.UnsuccessfulTicketException;
-import ws.datamodel.CreateSupportTicketReq;
-import ws.datamodel.UpdateSupportTicketReq;
+import util.exception.UpdateEntityException;
+import ws.datamodel.CreateAddressReq;
+import ws.datamodel.UpdateAddressReq;
 
 /**
  * REST Web Service
  *
  * @author lyntan
  */
-@Path("SupportTicket")
-public class SupportTicketResource {
+@Path("Address")
+public class AddressResource {
 
     CustomerSessionBeanLocal customerSessionBeanLocal = lookupCustomerSessionBeanLocal();
-    
-    SupportTicketSessionBeanLocal supportTicketSessionBeanLocal = lookupSupportTicketSessionBeanLocal();
+
+    AddressSessionBeanLocal addressSessionBeanLocal = lookupAddressSessionBeanLocal();
 
     @Context
     private UriInfo context;
 
-    public SupportTicketResource() {
+    
+    public AddressResource() {
     }
     
-    @Path("retrieveAllSupportTicketsByCustomer")
+    @Path("retrieveAllAddressesByCustomer")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllSupportTicketsByCustomer(@QueryParam("email") String email, 
+    public Response retrieveAllAddressesByCustomer(@QueryParam("email") String email, 
                                         @QueryParam("password") String password)
     {
         try
         {
             CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
-            System.out.println("********** SupportTicketResource.retrieveAllSupportTickets(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+            System.out.println("********** AddressResource.retrieveAllAddresses(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
-            List<SupportTicketEntity> supportTicketEntities = supportTicketSessionBeanLocal.retrieveSupportTicketsByCustomerId(customerEntity.getCustomerId());
+            List<AddressEntity> addressEntities = customerEntity.getAddresses();
             
-            for(SupportTicketEntity supportTicketEntity:supportTicketEntities)
-            {
-                supportTicketEntity.setCustomer(null);
-            }
-            
-            GenericEntity<List<SupportTicketEntity>> genericEntity = new GenericEntity<List<SupportTicketEntity>>(supportTicketEntities) {
+            GenericEntity<List<AddressEntity>> genericEntity = new GenericEntity<List<AddressEntity>>(addressEntities) {
             };
             
             return Response.status(Status.OK).entity(genericEntity).build();
@@ -91,30 +87,28 @@ public class SupportTicketResource {
         }
     }
     
-    @Path("retrieveSupportTicket/{ticketId}")
+    @Path("retrieveAddress/{addressId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveSupportTicket(@QueryParam("email") String email, 
+    public Response retrieveAddress(@QueryParam("email") String email, 
                                         @QueryParam("password") String password,
-                                        @PathParam("ticketId") Long ticketId)
+                                        @PathParam("addressId") Long addressId)
     {
         try
         {
             CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
-            System.out.println("********** SupportTicketResource.retrieveSupportTicket(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+            System.out.println("********** AddressResource.retrieveAddress(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
-            SupportTicketEntity supportTicketEntity = supportTicketSessionBeanLocal.retrieveSupportTicketByTicketId(ticketId);
-            
-            supportTicketEntity.setCustomer(null);
-            
-            return Response.status(Status.OK).entity(supportTicketEntity).build();
+            AddressEntity addressEntity = addressSessionBeanLocal.retrieveAddressByAddressId(addressId);
+                        
+            return Response.status(Status.OK).entity(addressEntity).build();
         }
         catch(InvalidLoginCredentialException ex)
         {
             return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
         }
-        catch(SupportTicketNotFoundException ex)
+        catch(AddressNotFoundException ex)
         {
             return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
         }
@@ -127,24 +121,24 @@ public class SupportTicketResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createSupportTicket(CreateSupportTicketReq createSupportTicketReq)
+    public Response createAddress(CreateAddressReq createAddressReq)
     {
-        if(createSupportTicketReq != null)
+        if(createAddressReq != null)
         {
             try
             {
-                CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(createSupportTicketReq.getEmail(), createSupportTicketReq.getPassword());
-                System.out.println("********** SupportTicketResource.createSupportTicket(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+                CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(createAddressReq.getEmail(), createAddressReq.getPassword());
+                System.out.println("********** AddressResource.createAddress(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
-                Long supportTicketId  = supportTicketSessionBeanLocal.createNewSupportTicket(createSupportTicketReq.getSupportTicket(), customerEntity.getCustomerId());                
+                Long addressId  = addressSessionBeanLocal.createNewCustomerAddress(createAddressReq.getAddress(), customerEntity.getCustomerId());                
                 
-                return Response.status(Response.Status.OK).entity(supportTicketId).build();
+                return Response.status(Response.Status.OK).entity(addressId).build();
             }
             catch(InvalidLoginCredentialException ex)
             {
                 return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
             }
-            catch(SupportTicketIdExistException | UnsuccessfulTicketException | UnknownPersistenceException | InputDataValidationException ex)
+            catch(CustomerNotFoundException | UnknownPersistenceException | InputDataValidationException ex)
             {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
             }
@@ -155,7 +149,7 @@ public class SupportTicketResource {
         }
         else
         {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new support ticket request").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid create new address request").build();
         }
     }
     
@@ -164,16 +158,16 @@ public class SupportTicketResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSupportTicket(UpdateSupportTicketReq updateSupportTicketReq)
+    public Response updateAddress(UpdateAddressReq updateAddressReq)
     {
-        if(updateSupportTicketReq != null)
+        if(updateAddressReq != null)
         {
             try
             {                
-                CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(updateSupportTicketReq.getEmail(), updateSupportTicketReq.getPassword());
-                System.out.println("********** SupportTicketResource.updateSupportTicket(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+                CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(updateAddressReq.getEmail(), updateAddressReq.getPassword());
+                System.out.println("********** AddressResource.updateAddress(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
-                supportTicketSessionBeanLocal.updateSupportTicketDescription(updateSupportTicketReq.getSupportTicketEntity().getTicketId(), updateSupportTicketReq.getSupportTicketEntity().getDescription());
+                addressSessionBeanLocal.updateAddress(updateAddressReq.getAddressEntity());
                 
                 return Response.status(Response.Status.OK).build();
             }
@@ -181,7 +175,7 @@ public class SupportTicketResource {
             {
                 return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
             }
-            catch(SupportTicketNotFoundException ex)
+            catch(AddressNotFoundException | UpdateEntityException | InputDataValidationException ex)
             {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
             }
@@ -192,26 +186,26 @@ public class SupportTicketResource {
         }
         else
         {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update support ticket request").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update address request").build();
         }
     }
     
     
     
-    @Path("{supportTicketId}")
+    @Path("{addressId}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteSupportTicket(@QueryParam("email") String email, 
+    public Response deleteAddress(@QueryParam("email") String email, 
                                         @QueryParam("password") String password,
-                                        @PathParam("supportTicketId") Long supportTicketId)
+                                        @PathParam("addressId") Long addressId)
     {
         try
         {
             CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
-            System.out.println("********** SupportTicketResource.deleteSupportTicket(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+            System.out.println("********** AddressResource.deleteAddress(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
-            supportTicketSessionBeanLocal.deleteSupportTicket(supportTicketId);
+            addressSessionBeanLocal.deleteAddress(addressId);
             
             return Response.status(Status.OK).build();
         }
@@ -219,7 +213,7 @@ public class SupportTicketResource {
         {
             return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
         }
-        catch(SupportTicketNotFoundException | DeleteEntityException ex)
+        catch(AddressNotFoundException | DeleteEntityException ex)
         {
             return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
         }
@@ -228,12 +222,11 @@ public class SupportTicketResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
 
-    private SupportTicketSessionBeanLocal lookupSupportTicketSessionBeanLocal() {
+    private AddressSessionBeanLocal lookupAddressSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
-            return (SupportTicketSessionBeanLocal) c.lookup("java:global/SuitUp/SuitUp-ejb/SupportTicketSessionBean!ejb.session.stateless.SupportTicketSessionBeanLocal");
+            return (AddressSessionBeanLocal) c.lookup("java:global/SuitUp/SuitUp-ejb/AddressSessionBean!ejb.session.stateless.AddressSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
