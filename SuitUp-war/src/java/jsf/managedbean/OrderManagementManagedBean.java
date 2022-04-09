@@ -30,7 +30,6 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 import util.enumeration.OrderStatusEnum;
-import util.exception.AppointmentNotFoundException;
 import util.exception.CreateNewTransactionException;
 import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;

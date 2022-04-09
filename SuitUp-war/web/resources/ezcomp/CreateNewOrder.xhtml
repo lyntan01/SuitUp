@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"                
+      xmlns:p="http://primefaces.org/ui"
+      template="/template/defaultTemplate.xhtml">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:dialog id="dialogCreateNewOrder" width="100em" height="40em" widgetVar="dialogCreateNewOrder" header="Create New Order" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+
+            <p:messages id="messages" redisplay="false" closable="true" />
+
+            <br/>
+            <p:separator/>
+            <br/>
+            <div style="width: auto">
+                <p:commandButton value="Add Standard Product" onclick="PF('dialogAddStandardProducts').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
+                <p:commandButton value="Add New Customized Jacket" onclick="PF('dialogCreateNewCustomizedJacket').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
+                <p:commandButton value="Add New Customized Pants" onclick="PF('dialogCreateNewCustomizedPants').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>
+            </div>
+
+            <br/>
+            <!--                <p:separator/>-->
+            <br/>
+            <h:form id="formCreateNewOrder">
+                <p:dataTable id="dataTableMain" widgetVar="dataTableMain" value="#{createOrderManagedBean.orderLineItemEntities}" var="orderLineItemEntity" rowKey="#{orderLineItemEntity.orderLineItemId}" rowIndexVar="row" 
+                             rows="10">
+
+                    <p:column headerText="Name" sortBy="#{orderLineItemEntity.product.name}">
+                        <h:outputText value="#{orderLineItemEntity.product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Unit Price" sortBy="#{retrievePricePerItem(orderLineItemEntity.product)}">
+                        <h:outputText value="#{retrievePricePerItem(orderLineItemEntity.product)}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity" sortBy="#{orderLineItemEntity.quantity}">
+                        <h:outputText value="#{orderLineItemEntity.quantity}" />
+                    </p:column>
+
+                    <p:column headerText="Sub Total" sortBy="#{orderLineItemEntity.subTotal}">
+                        <h:outputText value="#{orderLineItemEntity.subTotal}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.incrementQuantity}" update="formMain:dataTableMain formMain:totalAmount formMain:totalLineItem formMain:totalQuantity" icon="ui-icon-plus" title="Increment Quantity">
+                            <f:attribute name="productToIncrement" value="#{orderLineItemEntity.product}" />
+                        </p:commandButton>
+                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.decrementQuantity}" update="formMain:dataTableMain formMain:totalAmount formMain:totalLineItem formMain:totalQuantity" icon="ui-icon-minus" title="Decrement Quantity">
+                            <f:attribute name="productToDecrement" value="#{orderLineItemEntity.product}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <br/>
+                <p:separator/>
+                <br/>
+
+                <p:panelGrid id="customerGrid" style="width: 70em" styleClass="noBorder">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold; width: 30em;" for="email" value="Customer Email "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: auto" id="email" value="#{createOrderManagedBean.email}" placeholder="Customer Email" required="true" requiredMessage="Customer Email is required" />
+                        </p:column>
+                        <p:column style="text-align: left;">
+                            <p:commandButton value="Retrieve Customer" update="@form createNewOrderGrid" actionListener="#{createOrderManagedBean.retrieveCustomer}" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+                <p:panelGrid id="createNewOrderGrid" style="width: 70em" styleClass="noBorder" rendered="#{createOrderManagedBean.currentCustomer != null}">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold; width: 30em;" for="collectionMethod" value="Collection Method: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="collectionMethod" value="#{createOrderManagedBean.collectionMethod}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Collection Method]" noSelectionOption="true" />
+                                <f:selectItem itemLabel="DELIVERY" itemValue="DELIVERY" />
+                                <f:selectItem itemLabel="PICKUP" itemValue="PICKUP" />
+                                <p:ajax event="change" update="createNewOrderGrid"/> 
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row rendered="#{createOrderManagedBean.collectionMethod eq 'DELIVERY'}">
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold; width: 30em;" for="deliveryAddress" value="Delivery Address: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width:20em;" id="deliveryAddress" value="#{createOrderManagedBean.deliveryAddress}" required="true" requiredMessage="Address is required">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Delivery Address]" noSelectionOption="true" itemDisabled="true" />
+                                <f:selectItems value="#{createOrderManagedBean.currentCustomer.addresses}" var="address" itemLabel="#{address.addressLineOne}" itemValue="#{address}" />
+
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold; width: 30em;" for="expressOrder" value="Express Order: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 20em" id="expressOrder" value="#{createOrderManagedBean.expressOrder}" required="true" requiredMessage="Express Order is required">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Express Order]" noSelectionOption="true" itemDisabled="true" />
+                                <f:selectItem itemLabel="True" itemValue="true" />
+                                <f:selectItem itemLabel="False" itemValue="false" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold;" for="promotion" value="Promotion Code: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="promotion" value="#{createOrderManagedBean.promotionCode}" placeholder="Promotion Code" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold;" value="Total Amount " />
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold" value="#{createOrderManagedBean.totalQuantity}" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+
+
+
+            </h:form>
+
+        </p:dialog>
+    </cc:implementation>
+</html>
