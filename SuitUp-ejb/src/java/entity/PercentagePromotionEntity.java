@@ -33,7 +33,7 @@ public class PercentagePromotionEntity extends PromotionEntity implements Serial
     }
 
     public PercentagePromotionEntity(Integer percentageDiscount, String promotionCode, Integer maxNumOfUsages, BigDecimal minimumSpending, Date expiryDate) {
-        super(promotionCode, maxNumOfUsages, minimumSpending, expiryDate);
+        super(promotionCode, maxNumOfUsages, minimumSpending, expiryDate, percentageDiscount + "%");
         this.percentageDiscount = percentageDiscount;
     }
 

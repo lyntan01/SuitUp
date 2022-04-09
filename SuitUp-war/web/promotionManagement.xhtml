@@ -3,12 +3,111 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./template/defaultTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
         <ezcomp:Breadcrumb pageName="promotionManagement"/>
-        
+
         <h3>Promotion Management</h3>
+
+        <h:form>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:menubar>
+                        <p:submenu label="Create Menu" icon="pi pi-fw pi-file">
+                            <p:menuitem value="Create New Absolute Promotion" onclick="PF('dialogCreateNewAbsolutePromotion').show()" icon="pi pi-plus" />
+                            <p:menuitem value="Create New Percentage Promotion" onclick="PF('dialogCreateNewPercentagePromotion').show()" icon="pi pi-plus" />
+                        </p:submenu>
+                    </p:menubar>     
+                </p:toolbarGroup>
+            </p:toolbar>
+        </h:form>
+
+        <ezcomp:CreateNewAbsolutePromotion id="CreateNewAbsolutePromotion" />
+        <ezcomp:CreateNewPercentagePromotion id="CreateNewPercentagePromotion" />
+
+        <br/>
+
+        <div>
+
+            <h:form id="formAllPromotion">
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllPromotion" widgetVar="dataTableAllPromotion" value="#{promotionManagementManagedBean.promotionEntities}"
+                             var="promotionEntity" rowKey="#{promotionEntity.promotionId}"
+                             rowIndexVar="row" filteredValue="#{promotionManagementManagedBean.filteredPromotionEntities}" rows="10"
+                             paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50,{ShowAll|'All'}">
+
+                    <f:facet name="header">
+                        <div style="text-align: right;">
+                            <h:outputText value="Search all fields: " />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllPromotion').filter()" style="width: 20em" placeholder="Enter keyword"/>
+                        </div>
+                    </f:facet>
+
+                    <p:column style="width: 5em;" headerText="ID" sortBy="#{promotionEntity.promotionId}" filterBy="#{promotionEntity.promotionId}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promotionId}" />
+                    </p:column>
+
+                    <p:column headerText="Promotion Code" sortBy="#{promotionEntity.promotionCode}" filterBy="#{promotionEntity.promotionCode}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promotionCode}" />
+                    </p:column>
+
+                    <p:column headerText="Maximum Number of Usages" sortBy="#{promotionEntity.maxNumOfUsages}" filterBy="#{promotionEntity.maxNumOfUsages}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.maxNumOfUsages}" />
+                    </p:column>
+
+                    <p:column headerText="Minimum Spending" sortBy="#{promotionEntity.minimumSpending}" filterBy="#{promotionEntity.minimumSpending}" filterMatchMode="contains">
+                        <h:outputText value="$#{promotionEntity.minimumSpending}" />
+                    </p:column>
+
+                    <p:column style="width: 20em;" headerText="Expiry Date" sortBy="#{promotionEntity.expiryDate}" filterBy="#{promotionEntity.expiryDate}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.expiryDate}">
+                            <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" timeZone="GMT+8" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Discount" sortBy="#{promotionEntity.discountString}" filterBy="#{promotionEntity.discountString}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.discountString}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Number of Redemptions" sortBy="#{promotionEntity.orders.size()}" filterBy="#{promotionEntity.orders.size()}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.orders.size()}"/>
+                    </p:column>
+
+                    <p:column style="width: 5em; text-align: center;" headerText="Action">
+
+                        <p:commandButton actionListener="#{promotionManagementManagedBean.doUpdatePromotion}" update="UpdatePromotion:dialogUpdatePromotion" oncomplete="PF('dialogUpdatePromotion').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="promotionEntityToUpdate" value="#{promotionEntity}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{promotionManagementManagedBean.deletePromotion}" update="@form">
+                            <f:attribute name="promotionToDelete" value="#{promotionEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{promotionEntity.promotionCode} (Promotion ID: #{promotionEntity.promotionId})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:columnGroup type="footer">   
+                        <p:row>
+                            <p:column colspan="8" footerText="#{promotionManagementManagedBean.promotionEntities.size()} promotions" />
+                        </p:row>
+                    </p:columnGroup>
+
+                </p:dataTable>
+            </h:form>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
+            <ezcomp:UpdatePromotion id="UpdatePromotion" />
+
+        </div>
     </ui:define>
 
 </ui:composition>

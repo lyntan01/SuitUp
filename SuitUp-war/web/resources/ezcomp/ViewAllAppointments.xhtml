@@ -41,7 +41,7 @@
 
                 <p:column headerText="Appointment Date Time" sortBy="#{appointmentEntity.appointmentDateTime}" filterBy="#{appointmentEntity.appointmentDateTime}" filterMatchMode="contains">
                     <h:outputText id="appointmentDateTime" value="#{appointmentEntity.appointmentDateTime}">
-                        <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" />
+                        <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" timeZone="GMT+8"/>
                     </h:outputText>
                     <p:tooltip for="appointmentDateTime" value="#{appointmentEntity.appointmentDateTime}">
 

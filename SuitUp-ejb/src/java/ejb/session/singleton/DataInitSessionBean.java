@@ -12,11 +12,13 @@ import ejb.session.stateless.CreditCardSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.EmailSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
+import ejb.session.stateless.PromotionSessionBeanLocal;
 import ejb.session.stateless.StaffSessionBeanLocal;
 import ejb.session.stateless.StandardProductSessionBeanLocal;
 import ejb.session.stateless.StoreSessionBeanLocal;
 import ejb.session.stateless.SupportTicketSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
+import entity.AbsolutePromotionEntity;
 import entity.AddressEntity;
 import entity.AppointmentEntity;
 import entity.CategoryEntity;
@@ -24,6 +26,7 @@ import entity.CreditCardEntity;
 import entity.CustomerEntity;
 import entity.OrderEntity;
 import entity.OrderLineItemEntity;
+import entity.PercentagePromotionEntity;
 import entity.ProductEntity;
 import entity.StaffEntity;
 import entity.StandardProductEntity;
@@ -34,6 +37,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -57,6 +61,7 @@ import util.exception.CreditCardNumberExistException;
 import util.exception.CustomerEmailExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.PromotionCodeExistException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
 import util.exception.StandardProductNotFoundException;
@@ -73,6 +78,9 @@ import util.exception.UnsuccessfulTicketException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private PromotionSessionBeanLocal promotionSessionBeanLocal;
 
     @EJB
     private TagSessionBeanLocal tagSessionBeanLocal;
@@ -175,6 +183,7 @@ public class DataInitSessionBean {
 
             initialiseAppointments();
             initialiseSupportTickets();
+            initialisePromotions();
 
         } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
                 | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException 
@@ -259,6 +268,27 @@ public class DataInitSessionBean {
             ex.printStackTrace();
         }
 
+    }
+    
+    private void initialisePromotions() 
+    {
+        try {
+            
+            // Promotion 1: $10 off min spend $50, first 50 customers
+            Date expiryDate = new GregorianCalendar(2022, Calendar.MARCH, 1).getTime();
+            promotionSessionBeanLocal.createNewPromotion(new AbsolutePromotionEntity(BigDecimal.valueOf(10), "CNY2022", 50, BigDecimal.valueOf(50), expiryDate));
+            
+            // Promotion 2: 20% off no min spend, for the whole of April
+            expiryDate = new GregorianCalendar(2022, Calendar.MAY, 1).getTime();
+            promotionSessionBeanLocal.createNewPromotion(new PercentagePromotionEntity(20, "APR20OFF", 10000000, BigDecimal.ZERO, expiryDate));
+            
+            // Promotion 3: $5 off min spend $100, for the whole 2022
+            expiryDate = new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime();
+            promotionSessionBeanLocal.createNewPromotion(new AbsolutePromotionEntity(BigDecimal.valueOf(5), "MEGAN5OFF100", 10000000, BigDecimal.valueOf(100), expiryDate));
+            
+        } catch (PromotionCodeExistException | UnknownPersistenceException | InputDataValidationException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

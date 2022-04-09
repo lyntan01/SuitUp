@@ -80,7 +80,7 @@ public class StoreManagementManagedBean implements Serializable {
             newAddressEntity = new AddressEntity();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New store created successfully (Store ID: " + storeId + ")", null));
         } catch (UnknownPersistenceException | InputDataValidationException | StoreNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new store: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new store: " + ex.getMessage(), null));
         }
 
     }

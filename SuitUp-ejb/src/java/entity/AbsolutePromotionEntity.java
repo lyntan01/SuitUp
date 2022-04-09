@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +34,7 @@ public class AbsolutePromotionEntity extends PromotionEntity implements Serializ
     }
     
     public AbsolutePromotionEntity(BigDecimal absoluteDiscount, String promotionCode, Integer maxNumOfUsages, BigDecimal minimumSpending, Date expiryDate) {
-        super(promotionCode, maxNumOfUsages, minimumSpending, expiryDate);
+        super(promotionCode, maxNumOfUsages, minimumSpending, expiryDate, NumberFormat.getCurrencyInstance().format(absoluteDiscount));
         this.absoluteDiscount = absoluteDiscount;
     }
 

@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -57,6 +59,9 @@ public abstract class PromotionEntity implements Serializable {
     @NotNull
     private Date expiryDate;
     
+    @Transient
+    private String discountString;
+    
     @OneToMany(mappedBy = "promotion")
     @JoinColumn(nullable = true)
     private List<OrderEntity> orders;
@@ -65,12 +70,13 @@ public abstract class PromotionEntity implements Serializable {
         this.orders = new ArrayList<>();
     }
 
-    public PromotionEntity(String promotionCode, Integer maxNumOfUsages, BigDecimal minimumSpending, Date expiryDate) {
+    public PromotionEntity(String promotionCode, Integer maxNumOfUsages, BigDecimal minimumSpending, Date expiryDate, String discountString) {
         this();
         this.promotionCode = promotionCode;
         this.maxNumOfUsages = maxNumOfUsages;
         this.minimumSpending = minimumSpending;
         this.expiryDate = expiryDate;
+        this.discountString = discountString;
     }
     
     
@@ -146,6 +152,23 @@ public abstract class PromotionEntity implements Serializable {
 
     public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
+    }
+
+    public String getDiscountString() {
+        if (this.discountString == null) {
+           if (this instanceof AbsolutePromotionEntity) {
+               AbsolutePromotionEntity absolutePromotion = (AbsolutePromotionEntity) this;
+               this.discountString = NumberFormat.getCurrencyInstance().format(absolutePromotion.getAbsoluteDiscount());
+           } else if (this instanceof PercentagePromotionEntity) {
+               PercentagePromotionEntity percentagePromotion = (PercentagePromotionEntity) this;
+               this.discountString = percentagePromotion.getPercentageDiscount() + "%";
+           }
+        }
+        return this.discountString;
+    }
+
+    public void setDiscountString(String discountString) {
+        this.discountString = discountString;
     }
     
 }

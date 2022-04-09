@@ -83,7 +83,7 @@ public class StaffManagementManagedBean implements Serializable {
             newStoreId = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New staff created successfully (Staff ID: " + staffId + ")", null));
         } catch (UnknownPersistenceException | InputDataValidationException | StaffNotFoundException | StaffUsernameExistException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error occurred when creating new staff: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new staff: " + ex.getMessage(), null));
         }
 
     }

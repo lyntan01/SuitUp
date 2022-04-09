@@ -49,7 +49,7 @@
 
                 <p:column headerText="Ticket Date Time" sortBy="#{supportTicketEntity.dateTime}" filterBy="#{supportTicketEntity.dateTime}" filterMatchMode="contains">
                     <h:outputText id="supportTicketDateTime" value="#{supportTicketEntity.dateTime}">
-                        <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" />
+                        <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" timeZone="GMT+8"/>
                     </h:outputText>
                 </p:column>
 
