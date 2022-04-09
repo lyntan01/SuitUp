@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.AddressNotFoundException;
+import util.exception.CancelOrderException;
 import util.exception.CreateNewOrderException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -42,7 +43,7 @@ public interface OrderSessionBeanLocal {
 
     public void voidRefundOrder(Long orderId) throws OrderNotFoundException, VoidTransactionException;
 
-    public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException;
+    public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException, CancelOrderException;
 
     public BigDecimal calculateTotalAmount(Long orderId) throws OrderNotFoundException;
 

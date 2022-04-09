@@ -12,6 +12,7 @@ import entity.OrderLineItemEntity;
 import entity.PromotionEntity;
 import entity.StandardProductEntity;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -27,6 +28,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
+import util.exception.CancelOrderException;
 import util.exception.CreateNewOrderException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -165,7 +167,7 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         entityManager.merge(orderEntity); //have to check if this does all the fetching traversing down all the relationships
     }
 
-    // Updated in v4.1
+    // ADMIN SIDE
     @Override
     public void voidRefundOrder(Long orderId) throws OrderNotFoundException, VoidTransactionException {
         OrderEntity orderEntity = retrieveOrderByOrderId(orderId);
@@ -181,12 +183,29 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         }
     }
 
+    // CUSTOMER SIDE
     @Override
-    public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException {
+    public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException, CancelOrderException {
         OrderEntity orderEntity = retrieveOrderByOrderId(orderId);
-
-        orderEntity.setOrderStatusEnum(OrderStatusEnum.CANCELLED);
-        entityManager.flush();
+        
+        // Check for time (12h)
+        Date orderDateTime = orderEntity.getOrderDateTime();
+        Date currentTime = new Date();
+        long differenceInTime = currentTime.getTime() - orderDateTime.getTime();
+        long differenceInHours = (differenceInTime / (1000 * 60 * 60)) % 24;
+        
+        if ((int)differenceInHours <= 12) {
+            try {
+                voidRefundOrder(orderId);
+                orderEntity.setOrderStatusEnum(OrderStatusEnum.CANCELLED);
+                entityManager.flush();
+            } catch (VoidTransactionException ex) {
+                throw new CancelOrderException(ex.getMessage());
+            }
+        } else {
+            throw new CancelOrderException("Order cannot be cancelled, as more than 12 hours have passed.");
+        }
+   
     }
 
     @Override
