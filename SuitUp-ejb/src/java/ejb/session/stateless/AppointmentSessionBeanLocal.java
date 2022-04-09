@@ -31,7 +31,7 @@ public interface AppointmentSessionBeanLocal {
 
     public AppointmentEntity retrieveAppointmentByAppointmentId(Long appointmentId) throws AppointmentNotFoundException;
 
-    public void updateAppointment(AppointmentEntity appointmentEntity) throws AppointmentNotFoundException, UpdateEntityException, InputDataValidationException;
+    public void updateAppointment(AppointmentEntity appointmentEntity, Long storeId) throws AppointmentNotFoundException, StoreNotFoundException, UpdateEntityException, InputDataValidationException;
 
     public void deleteAppointment(Long appointmentId) throws AppointmentNotFoundException, DeleteEntityException;
 
