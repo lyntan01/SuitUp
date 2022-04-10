@@ -14,16 +14,16 @@ public class UpdateProfileReq {
     private String email;
     private String password;
     private String firstName;
-    private String LastName;
+    private String lastName;
 
     public UpdateProfileReq() {
     }
 
-    public UpdateProfileReq(String email, String password, String firstName, String LastName) {
+    public UpdateProfileReq(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
-        this.LastName = LastName;
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -51,13 +51,11 @@ public class UpdateProfileReq {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
-    public void setLastName(String LastName) {
-        this.LastName = LastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
-    
-    
 
 }

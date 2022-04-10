@@ -11,25 +11,25 @@ package ws.datamodel;
  */
 public class CustomerChangePasswordReq {
 
-    private String username;
+    private String email;
     private String oldPassword;
     private String newPassword;
 
     public CustomerChangePasswordReq() {
     }
 
-    public CustomerChangePasswordReq(String username, String oldPassword, String newPassword) {
-        this.username = username;
+    public CustomerChangePasswordReq(String email, String oldPassword, String newPassword) {
+        this.email = email;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getOldPassword() {
