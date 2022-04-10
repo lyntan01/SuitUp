@@ -130,7 +130,7 @@ public class CustomerResource {
     public Response customerChangePassword(CustomerChangePasswordReq customerChangePasswordReq) {
         if (customerChangePasswordReq != null) {
             try {
-                customerSessionBeanLocal.customerChangePassword(customerChangePasswordReq.getUsername(), customerChangePasswordReq.getOldPassword(), customerChangePasswordReq.getNewPassword());
+                customerSessionBeanLocal.customerChangePassword(customerChangePasswordReq.getEmail(), customerChangePasswordReq.getOldPassword(), customerChangePasswordReq.getNewPassword());
 
                 return Response.status(Response.Status.OK).build();
             } catch (InvalidLoginCredentialException ex) {

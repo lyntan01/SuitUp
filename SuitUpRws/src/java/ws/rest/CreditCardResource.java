@@ -9,7 +9,6 @@ import ejb.session.stateless.CreditCardSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.CreditCardEntity;
 import entity.CustomerEntity;
-import entity.StaffEntity;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -93,7 +92,7 @@ public class CreditCardResource {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteProduct(@QueryParam("email") String email,
+    public Response deleteCreditCard(@QueryParam("email") String email,
             @QueryParam("password") String password,
             @PathParam("creditCardId") Long creditCardId) {
 
