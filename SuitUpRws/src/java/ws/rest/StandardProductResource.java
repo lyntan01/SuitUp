@@ -55,6 +55,7 @@ public class StandardProductResource {
 
     @Path("retrieveAllStandardProduct")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllStandardProduct() {
         try {
@@ -110,6 +111,7 @@ public class StandardProductResource {
     
     @Path("retrieveAllCategories")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllCategories() {
         try {
@@ -148,6 +150,10 @@ public class StandardProductResource {
             for (StandardProductEntity standardProduct : standardProductEntities)
             {
                 standardProduct.setCategory(null);
+                List<TagEntity> tags = standardProduct.getTags();
+                for(TagEntity tag: tags) {
+                    tag.getStandardProducts().clear();
+                }
             }
             
             GenericEntity<List<StandardProductEntity>> genericEntity = new GenericEntity<List<StandardProductEntity>>(standardProductEntities) {

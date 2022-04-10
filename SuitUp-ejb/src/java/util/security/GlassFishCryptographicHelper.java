@@ -15,8 +15,9 @@ public class GlassFishCryptographicHelper
     //private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = System.getProperty("user.dir");
     // On client side, easier to hardcode the path for demonstration purpose
 //    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/keithcharleschan/glassfish-5.1.0/glassfish/domains/domain1/config";
-    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/lyntan/glassfish-5.1.0/glassfish/domains/domain1/config";
-
+//    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/lyntan/glassfish-5.1.0/glassfish/domains/domain1/config";
+    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/xianhui/glassfish-5.1.0/glassfish/domains/domain1/config";
+    
     
     
     private static final String GLASSFISH_DEFAULT_KEYSTORE_NAME = "keystore.jks";
