@@ -97,16 +97,18 @@ public class AddressResource {
     {
         try
         {
-            CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
-            System.out.println("********** AddressResource.retrieveAddress(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
-
+            if (!addressSessionBeanLocal.isStoreAddress(addressId)) {
+                CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
+                System.out.println("********** AddressResource.retrieveAddress(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+            }
+            
             AddressEntity addressEntity = addressSessionBeanLocal.retrieveAddressByAddressId(addressId);
                         
             return Response.status(Status.OK).entity(addressEntity).build();
         }
         catch(InvalidLoginCredentialException ex)
         {
-            return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+            return Response.status(Status.UNAUTHORIZED).entity("You must be logged in to view this address. " + ex.getMessage()).build();
         }
         catch(AddressNotFoundException ex)
         {

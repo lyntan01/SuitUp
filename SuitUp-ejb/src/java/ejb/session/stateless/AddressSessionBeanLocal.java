@@ -34,5 +34,7 @@ public interface AddressSessionBeanLocal {
     public void updateAddress(AddressEntity addressEntity) throws AddressNotFoundException, UpdateEntityException, InputDataValidationException;
 
     public void deleteAddress(Long addressId) throws AddressNotFoundException, DeleteEntityException;
+
+    public boolean isStoreAddress(Long addressId) throws AddressNotFoundException;
     
 }

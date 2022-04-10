@@ -283,6 +283,7 @@ public class OrderResource {
         }
     }
 
+    @Path("applyPromotionCode")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -333,7 +334,7 @@ public class OrderResource {
 
             orderSessionBeanLocal.updateOrderToBeCancelled(orderId);
             
-            return Response.status(Status.OK).build();
+            return Response.status(Response.Status.OK).entity("Order cancelled successfully.").build();
         }
         catch(InvalidLoginCredentialException ex)
         {
