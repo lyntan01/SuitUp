@@ -38,7 +38,7 @@ import util.exception.CustomizationNotFoundException;
  *
  * @author xianhui
  */
-@Path("Resource")
+@Path("Customization")
 public class CustomizationResource {
 
     PantsCuttingSessionBeanLocal pantsCuttingSessionBean = lookupPantsCuttingSessionBeanLocal();
@@ -65,6 +65,7 @@ public class CustomizationResource {
 //    <-----------------------PANTS CUTTING -------------------->
     @Path("retrieveAllPantsCutting")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllPantsCutting() {
         try {
@@ -105,6 +106,7 @@ public class CustomizationResource {
 //    <-----------------------JACKET STYLE-------------------->
     @Path("retrieveAllJacketStyle")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllJacketStyle() {
         try {
@@ -144,6 +146,7 @@ public class CustomizationResource {
 //    <-----------------------POCKET STYLE -------------------->
     @Path("retrieveAllPocketStyle")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllPocketStyle() {
         try {
@@ -183,6 +186,7 @@ public class CustomizationResource {
     //    <-----------------------COLOUR-------------------->
     @Path("retrieveAllColour")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllColour() {
         try {
@@ -227,6 +231,7 @@ public class CustomizationResource {
 //    <-----------------------FABRIC-------------------->
     @Path("retrieveAllFabric")
     @GET
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllFabric() {
         try {
@@ -254,6 +259,7 @@ public class CustomizationResource {
         try
         {
             FabricEntity fabricEntity = fabricSessionBean.retrieveFabricById(customizationId);
+            fabricEntity.getColour().getFabrics().clear();
             return Response.status(Response.Status.OK).entity(fabricEntity).build();
 
         }
