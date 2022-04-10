@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -110,6 +111,18 @@ public class AddressSessionBean implements AddressSessionBeanLocal {
         } else {
             throw new AddressNotFoundException("Address ID " + addressId + " does not exist!");
         }
+    }
+    
+    @Override
+    public boolean isStoreAddress(Long addressId) throws AddressNotFoundException {
+        Query query = em.createQuery("SELECT s FROM StoreEntity s WHERE s.address.addressId = :inAddressId");
+        query.setParameter("inAddressId", addressId);
+        try {
+            StoreEntity storeEntity = (StoreEntity) query.getSingleResult();
+            return true;
+        } catch (NoResultException ex) {
+            return false;
+        }  
     }
 
     @Override

@@ -27,6 +27,7 @@ import ejb.session.stateless.StandardProductSessionBeanLocal;
 import ejb.session.stateless.StoreSessionBeanLocal;
 import ejb.session.stateless.SupportTicketSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
+import ejb.session.stateless.TransactionSessionBeanLocal;
 import entity.AbsolutePromotionEntity;
 import entity.AddressEntity;
 import entity.AppointmentEntity;
@@ -51,6 +52,7 @@ import entity.StandardProductEntity;
 import entity.StoreEntity;
 import entity.SupportTicketEntity;
 import entity.TagEntity;
+import entity.TransactionEntity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +72,7 @@ import util.enumeration.AppointmentTypeEnum;
 import util.enumeration.CollectionMethodEnum;
 import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
+import util.exception.AppointmentNotFoundException;
 import util.exception.CategoryNotFoundException;
 import util.exception.ColourIdExistException;
 import util.exception.ColourNotFoundException;
@@ -77,6 +80,7 @@ import util.exception.CreateNewAppointmentException;
 import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewOrderException;
 import util.exception.CreateNewTagException;
+import util.exception.CreateNewTransactionException;
 import util.exception.CreateStandardProductException;
 import util.exception.CreditCardNumberExistException;
 import util.exception.CustomerEmailExistException;
@@ -88,6 +92,7 @@ import util.exception.CustomizedProductNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.PromotionCodeExistException;
 import util.exception.JacketMeasurementNotFoundException;
+import util.exception.OrderNotFoundException;
 import util.exception.PantsMeasurementNotFoundException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
@@ -105,6 +110,9 @@ import util.exception.UnsuccessfulTicketException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private PromotionSessionBeanLocal promotionSessionBeanLocal;
@@ -251,7 +259,9 @@ public class DataInitSessionBean {
 
             //Uses Bobby Tan and Bobby's Tan Address
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
-            orderSessionBeanLocal.createNewOrder(1L, 1L, testOrder);
+            testOrder = orderSessionBeanLocal.createNewOrder(1L, 2L, testOrder);
+            transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(testOrder.getTotalAmount(), new Date(), null, testOrder), null, 1L);
+            
             //<--------------Order 2, Containing Customised Jacket---------->//
             initialiseCustomisedOrder();
 
@@ -263,7 +273,7 @@ public class DataInitSessionBean {
 
         } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
                 | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException 
-                | StoreNotFoundException ex) {
+                | StoreNotFoundException | AppointmentNotFoundException | OrderNotFoundException | CreateNewTransactionException ex) {
             ex.printStackTrace();
         }
     }
