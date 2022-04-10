@@ -63,7 +63,7 @@ public class CustomizationResource {
     }
     
 //    <-----------------------PANTS CUTTING -------------------->
-    @Path("retrieveAllPantsCutting")
+    @Path("retrieveAllPantsCuttings")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -104,7 +104,7 @@ public class CustomizationResource {
     }
     
 //    <-----------------------JACKET STYLE-------------------->
-    @Path("retrieveAllJacketStyle")
+    @Path("retrieveAllJacketStyles")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -144,7 +144,7 @@ public class CustomizationResource {
     }
     
 //    <-----------------------POCKET STYLE -------------------->
-    @Path("retrieveAllPocketStyle")
+    @Path("retrieveAllPocketStyles")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -184,7 +184,7 @@ public class CustomizationResource {
     }
     
     //    <-----------------------COLOUR-------------------->
-    @Path("retrieveAllColour")
+    @Path("retrieveAllColours")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)

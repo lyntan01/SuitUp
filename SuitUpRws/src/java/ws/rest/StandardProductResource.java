@@ -53,7 +53,7 @@ public class StandardProductResource {
     public StandardProductResource() {
     }
 
-    @Path("retrieveAllStandardProduct")
+    @Path("retrieveAllStandardProducts")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,7 +84,7 @@ public class StandardProductResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveProduct(@PathParam("productId") Long productId)
+    public Response retrieveStandardProduct(@PathParam("productId") Long productId)
     {
         try
         {

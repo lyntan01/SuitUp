@@ -53,8 +53,8 @@ import ws.datamodel.CreateCustomizedPantsReq;
  *
  * @author xianhui
  */
-@Path("CustomizedProducts")
-public class CustomizedProductsResource {
+@Path("CustomizedProduct")
+public class CustomizedProductResource {
 
     CustomizedPantsSessionBeanLocal customizedPantsSessionBean = lookupCustomizedPantsSessionBeanLocal();
 
@@ -68,7 +68,7 @@ public class CustomizedProductsResource {
     private UriInfo context;
 
     
-    public CustomizedProductsResource() {
+    public CustomizedProductResource() {
     }
 
     @Path("retrieveCustomizedJacketByOrder/{orderId}")
