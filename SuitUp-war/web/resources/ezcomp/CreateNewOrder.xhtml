@@ -14,51 +14,6 @@
     <cc:implementation>
         <p:dialog id="dialogCreateNewOrder" width="100em" height="40em" widgetVar="dialogCreateNewOrder" header="Create New Order" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
             <h:form id="formCreateNewOrder">
-                
-                <p:messages id="messages" redisplay="false" closable="true" />
-
-
-                <div style="width: auto">
-                    <p:commandButton value="Add Standard Product" onclick="PF('dialogAddStandardProducts').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
-                    <p:commandButton value="Add New Customized Jacket" onclick="PF('dialogCreateNewCustomizedJacket').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>&nbsp;
-                    <p:commandButton value="Add New Customized Pants" onclick="PF('dialogCreateNewCustomizedPants').show(); PF('dialogCreateNewOrder').hide()" style="float: left"/>
-                </div>
-
-                <br/>
-                <br/>
-
-                <p:dataTable id="dataTableMain" widgetVar="dataTableMain" value="#{createOrderManagedBean.orderLineItemEntities}" var="orderLineItemEntity" rowKey="#{orderLineItemEntity.orderLineItemId}" rowIndexVar="row" 
-                             rows="10">
-
-                    <p:column headerText="Name" sortBy="#{orderLineItemEntity.product.name}">
-                        <h:outputText value="#{orderLineItemEntity.product.name}" />
-                    </p:column>
-
-                    <p:column headerText="Unit Price" sortBy="#{createOrderManagedBean.retrievePricePerItem(orderLineItemEntity.product)}">
-                        <h:outputText value="#{createOrderManagedBean.retrievePricePerItem(orderLineItemEntity.product)}" />
-                    </p:column>
-
-                    <p:column headerText="Quantity" sortBy="#{orderLineItemEntity.quantity}">
-                        <h:outputText value="#{orderLineItemEntity.quantity}" />
-                    </p:column>
-
-                    <p:column headerText="Sub Total" sortBy="#{orderLineItemEntity.subTotal}">
-                        <h:outputText value="#{orderLineItemEntity.subTotal}" />
-                    </p:column>
-
-                    <p:column headerText="Action" >
-                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.incrementQuantity}" update="dataTableMain" icon="ui-icon-plus" title="Increment Quantity">
-                            <f:attribute name="productToIncrement" value="#{orderLineItemEntity.product}" />
-                        </p:commandButton>
-                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.decrementQuantity}" update="dataTableMain" icon="ui-icon-minus" title="Decrement Quantity">
-                            <f:attribute name="productToDecrement" value="#{orderLineItemEntity.product}" />
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable>
-
-                <br/>
-                <p:separator/>
-                <br/>
 
                 <p:panelGrid id="customerGrid" style="width: 70em" styleClass="noBorder">
                     <p:row>
@@ -74,6 +29,10 @@
                     </p:row>
 
                 </p:panelGrid>
+
+                <br/>
+                <p:separator/>
+                <br/>
 
                 <p:panelGrid id="createNewOrderGrid" style="width: 70em" styleClass="noBorder" rendered="#{createOrderManagedBean.currentCustomer != null}">
                     <p:row>
@@ -95,9 +54,9 @@
                             <p:outputLabel style="font-weight: bold; width: 30em;" for="deliveryAddress" value="Delivery Address: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu style="width:20em;" id="deliveryAddress" value="#{createOrderManagedBean.deliveryAddress}" required="true" requiredMessage="Address is required">
+                            <p:selectOneMenu style="width:20em;" id="deliveryAddress" value="#{createOrderManagedBean.selectedDeliveryAddress}" required="true" requiredMessage="Address is required">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select Delivery Address]" noSelectionOption="true" itemDisabled="true" />
-                                <f:selectItems value="#{createOrderManagedBean.currentCustomer.addresses}" var="address" itemLabel="#{address.addressLineOne}" itemValue="#{address}" />
+                                <f:selectItems value="#{createOrderManagedBean.currentCustomer.addresses}" var="address" itemLabel="#{address.addressLineOne}" itemValue="#{address.addressId}" />
 
                             </p:selectOneMenu>
                         </p:column>
@@ -136,8 +95,231 @@
 
                 </p:panelGrid>
 
+                <br/>
+                <p:separator/>
+                <br/>
+
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+
+                <div style="width: auto">
+                    <p:commandButton value="Add Standard Product" onclick="PF('dialogAddStandardProducts').show(); PF('dialogCreateNewOrder').hide();" style="float: left"/>&nbsp;
+                    <p:commandButton value="Add New Customized Jacket" onclick="PF('dialogCreateNewCustomizedJacket').show(); PF('dialogCreateNewOrder').hide();" actionListener="#{customizedJacketManagedBean.initialiseState}" style="float: left"/>&nbsp;
+                    <p:commandButton value="Add New Customized Pants" onclick="PF('dialogCreateNewCustomizedPants').show(); PF('dialogCreateNewOrder').hide();" style="float: left"/>
+                </div>
+
+                <br/>
+                <br/>
+
+                <p:dataTable id="dataTableMain" widgetVar="dataTableMain" value="#{createOrderManagedBean.orderLineItemEntities}" var="orderLineItemEntity" rowKey="#{orderLineItemEntity.orderLineItemId}" rowIndexVar="row" 
+                             rows="10">
+
+                    <p:column headerText="Name" sortBy="#{orderLineItemEntity.product.name}">
+                        <h:outputText value="#{orderLineItemEntity.product.name}" />
+                    </p:column>
+
+                    <p:column headerText="Unit Price" sortBy="#{createOrderManagedBean.retrievePricePerItem(orderLineItemEntity.product)}">
+                        <h:outputText value="#{createOrderManagedBean.retrievePricePerItem(orderLineItemEntity.product)}" />
+                    </p:column>
+
+                    <p:column headerText="Quantity" sortBy="#{orderLineItemEntity.quantity}">
+                        <h:outputText value="#{orderLineItemEntity.quantity}" />
+                    </p:column>
+
+                    <p:column headerText="Sub Total" sortBy="#{orderLineItemEntity.subTotal}">
+                        <h:outputText value="#{orderLineItemEntity.subTotal}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.incrementQuantity}" update="dataTableMain" icon="ui-icon-plus" title="Increment Quantity">
+                            <f:attribute name="productToIncrement" value="#{orderLineItemEntity.product}" />
+                        </p:commandButton>
+                        <p:commandButton style="font-size:0.9rem; margin-left:10px;" actionListener="#{createOrderManagedBean.decrementQuantity}" update="dataTableMain" icon="ui-icon-minus" title="Decrement Quantity">
+                            <f:attribute name="productToDecrement" value="#{orderLineItemEntity.product}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <br/>
+                <p:separator/>
+                <br/>
+                
+                <p:panelGrid id="submitOrderGrid" style="width: 30em;" styleClass="noBorder">
+                    <p:commandButton actionListener="#{createOrderManagedBean.createNewOrder}" value="Create New Order" />
+                </p:panelGrid>
+                
+
             </h:form>
 
+        </p:dialog>
+
+        <p:dialog id="dialogCreateNewCustomizedJacket" width="100em" height="40em" widgetVar="dialogCreateNewCustomizedJacket" header="Create New Order" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+            <h:form id="formCreateNewCustomizedJacket">
+
+                <p:messages id="jacketMessages" redisplay="false" />
+
+                <p:panelGrid id="createNewJacketGrid" style="width: 30em;" styleClass="noBorder">
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="jacketName" value="Name: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="jacketName" value="#{customizedJacketManagedBean.newCustomizedJacket.name}" placeholder="Name of Jacket" required="true" requiredMessage="Name is required" />
+                        </p:column>
+                    </p:row> 
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="jacketDescription" value="Description: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="jacketDescription" value="#{customizedJacketManagedBean.newCustomizedJacket.description}" placeholder="Description of Jacket" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="jacketGender" value="Gender: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="jacketGender" value="#{customizedJacketManagedBean.newCustomizedJacket.gender}" placeholder="Gender" required="true" requiredMessage="Gender is required" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="innerFabric" value="Inner Fabric"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="innerFabric" value="#{customizedJacketManagedBean.innerFabricId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Inner Fabric]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.fabrics}" var="innerFabric" itemLabel="#{innerFabric.name}" itemValue="#{innerFabric.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="outerFabric" value="Outer Fabric"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="outerFabric" value="#{customizedJacketManagedBean.outerFabricId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Outer Fabric]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.fabrics}" var="outerFabric" itemLabel="#{outerFabric.name}" itemValue="#{outerFabric.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="pocketStyle" value="Pocket Style"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="pocketStyle" value="#{customizedJacketManagedBean.pocketStyleId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Pocket Style]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.pocketStyles}" var="pocketStyle" itemLabel="#{pocketStyle.name}" itemValue="#{pocketStyle.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="jacketStyle" value="Jacket Style"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="jacketStyle" value="#{customizedJacketManagedBean.jacketStyleId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Jacket Style]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedJacketManagedBean.jacketStyles}" var="jacketStyle" itemLabel="#{jacketStyle.name}" itemValue="#{jacketStyle.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center;">
+                            <p:commandButton value="Back" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide()">
+
+                            </p:commandButton>&nbsp;
+                            <!--<p:commandButton value="Create New Customized Jacket" update="@composite:dialogCreateNewOrder" process="@this" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />-->
+                            <p:commandButton value="Create New Customized Jacket" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>             
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog id="dialogCreateNewCustomizedPants" widgetVar="dialogCreateNewCustomizedPants" header="Add New Customized Pants" width="100em;" height="25em" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+            <h:form id="formCreateNewCustomizedPants">
+
+                <p:messages id="pantsMessages" redisplay="false" />
+
+                <p:panelGrid id="createNewPantsGrid" style="width: 30em;" styleClass="noBorder">
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="pantsName" value="Name: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="pantsName" value="#{customizedPantsManagedBean.newCustomizedPants.name}" placeholder="Name of Pants" required="true" requiredMessage="Name is required" />
+                        </p:column>
+                    </p:row> 
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="pantsDescription" value="Description: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="pantsDescription" value="#{customizedPantsManagedBean.newCustomizedPants.description}" placeholder="Description of Pants" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%; font-weight: bold;" for="pantsGender" value="Gender: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText style="width: 55%" id="pantsGender" value="#{customizedPantsManagedBean.newCustomizedPants.gender}" placeholder="Gender" required="true" requiredMessage="Gender is required" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="fabric" value="Fabric"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="fabric" value="#{customizedPantsManagedBean.fabricId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Fabric]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedPantsManagedBean.fabrics}" var="fabric" itemLabel="#{fabric.name}" itemValue="#{fabric.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="width: 45%;" for="pantsCutting" value="Pants Cutting"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu style="width: 55%" id="pantsCutting" value="#{customizedPantsManagedBean.pantsCuttingId}">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select Pants Cutting]" noSelectionOption="true" />
+                                <f:selectItems value="#{customizedPantsManagedBean.pantsCutting}" var="pantsCutting" itemLabel="#{pantsCutting.name}" itemValue="#{pantsCutting.customizationId}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="2" style="text-align: center;">
+                            <p:commandButton value="Back" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();">
+
+                            </p:commandButton>&nbsp;
+                            <p:commandButton value="Create New Customized Pants" actionListener="#{customizedPantsManagedBean.createNewCustomizedPants}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </h:form>
         </p:dialog>
     </cc:implementation>
 </html>

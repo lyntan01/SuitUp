@@ -68,30 +68,40 @@ public class CustomizedPantsManagedBean implements Serializable {
     public void postConstruct() {
         fabrics = fabricSessionBeanLocal.retrieveAllFabrics();
         pantsCutting = pantsCuttingSessionBeanLocal.retrieveAllPantsCutting();
-        System.out.println(fabrics);
-        System.out.println(pantsCutting);
     }
     
     public void createNewCustomizedPants(ActionEvent event) {
         try {
+            System.out.println("fabricId == null: " + fabricId == null);
+            System.out.println("pantsCuttingId == null: " + pantsCuttingId == null);
+            
+            FabricEntity frabic = fabricSessionBeanLocal.retrieveFabricById(fabricId);
+            PantsCuttingEntity pantsCutting = pantsCuttingSessionBeanLocal.retrievePantsCuttingById(pantsCuttingId);
+            
+            System.out.println(frabic.getName());
+            System.out.println(pantsCutting.getName());
             
             BigDecimal totalPrice = newCustomizedPants.getBasePrice()
                     .add(fabricSessionBeanLocal.retrieveFabricById(fabricId).getAdditionalPrice()
                             .add(pantsCuttingSessionBeanLocal.retrievePantsCuttingById(pantsCuttingId).getAdditionalPrice()));
             
             newCustomizedPants.setTotalPrice(totalPrice);
+            newCustomizedPants.setPantsMeasurement(createOrderManagedBean.getCurrentCustomer().getPantsMeasurement());
             
-            Long productId = customizedPantsSessionBeanLocal.createNewCustomizedPants(newCustomizedPants, fabricId, pantsCuttingId, createOrderManagedBean.getCurrentCustomer().getPantsMeasurement().getPantsMeasurementId());
+            newCustomizedPants.setFabric(frabic);
+            newCustomizedPants.setPantsCutting(pantsCutting);
+            
+            Long productId = customizedPantsSessionBeanLocal.createNewCustomizedPants(newCustomizedPants, fabricId, pantsCuttingId, newCustomizedPants.getPantsMeasurement().getPantsMeasurementId());
             
             try {
                 createOrderManagedBean.addItem(customizedPantsSessionBeanLocal.retrieveCustomizedPantsById(productId), 1);
             } catch (CustomizedProductNotFoundException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when retrueving the new pants: " + ex.getMessage(), null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when retrieving the new pants: " + ex.getMessage(), null));
             }
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Customized Pants created successfully (Pants ID: " + productId + ")", null));
             
-            newCustomizedPants = null;
+            newCustomizedPants = new CustomizedPantsEntity();
             fabricId = null;
             pantsCuttingId = null;
             
