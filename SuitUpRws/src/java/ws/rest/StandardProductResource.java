@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import util.exception.CategoryNotFoundException;
 import util.exception.StandardProductNotFoundException;
+import util.exception.TagNotFoundException;
 
 /**
  * REST Web Service
@@ -163,6 +164,67 @@ public class StandardProductResource {
 
         }
         catch (CategoryNotFoundException ex)
+        {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+        }
+        catch (Exception ex)
+        {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("retrieveAllTags")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllTags() {
+        try {
+            List<TagEntity> tags = tagSessionBean.retrieveAllTags();
+            
+            // Disassociate bidirectional relationships
+            for(TagEntity tag : tags) {
+                List<StandardProductEntity> standardProducts = tag.getStandardProducts();
+                
+                for(StandardProductEntity standardProduct: standardProducts) {
+                    standardProduct.getTags().clear();
+                    standardProduct.getCategory().getStandardProducts().clear();
+                }
+                
+            }
+
+            GenericEntity<List<TagEntity>> genericEntity = new GenericEntity<List<TagEntity>>(tags) {
+            };
+
+            return Response.status(Response.Status.OK).entity(genericEntity).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+        }
+    }
+    
+    @Path("retrieveStandardProductsByTag/{TagId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveStadardProductsByTag(@PathParam("TagId") Long tagId)
+    {
+        try
+        {
+            TagEntity tagEntity = tagSessionBean.retrieveTagByTagId(tagId);
+            List<StandardProductEntity> standardProductEntities = tagEntity.getStandardProducts();
+
+            for (StandardProductEntity standardProduct : standardProductEntities)
+            {
+                standardProduct.setCategory(null);
+                standardProduct.getTags().clear();
+            }
+            
+            GenericEntity<List<StandardProductEntity>> genericEntity = new GenericEntity<List<StandardProductEntity>>(standardProductEntities) {
+            };
+
+            return Response.status(Response.Status.OK).entity(genericEntity).build();
+
+        }
+        catch (TagNotFoundException ex)
         {
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
         }
