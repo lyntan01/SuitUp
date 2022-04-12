@@ -27,6 +27,7 @@ dist/
 SuitUp-ejb/nbproject/private/
 SuitUp-ejb/build/
 SuitUp-ejb/dist/
+SuitUp-ejb/src/java/util/security/GlassFishCryptographicHelper.java
 
 SuitUp-war/nbproject/private/
 SuitUp-war/build/
