@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -145,13 +145,20 @@ public class ReportManagedBean implements Serializable {
     {        
             try
             {
+                
+                    
                     Timestamp startTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
                     Timestamp endTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
 
+                    
+                    GregorianCalendar endDate = new GregorianCalendar();  
+                    endDate.add(GregorianCalendar.DAY_OF_MONTH, -2);
+
                     Map<String, Object> parameters = new HashMap<>();
 
-                    parameters.put("StartDate", startTimestamp);
-                    parameters.put("EndDate", endTimestamp);
+                    
+                    parameters.put("EndDate", endDate);
+                    parameters.put("StartDate", endDate.getTime());
 
 //                    parameters.put("StartDate", new Date());
 //                    parameters.put("EndDate", new Date());
