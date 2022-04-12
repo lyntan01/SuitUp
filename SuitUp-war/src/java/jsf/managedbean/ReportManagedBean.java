@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +37,12 @@ public class ReportManagedBean implements Serializable {
 
     @Resource(name = "suitUpDataSource")
     private DataSource suitUpDataSource;
-    
+
     private final LocalDate today = LocalDate.now();
-    
+
     public ReportManagedBean() {
     }
-    
+
 //    public void generateStaffReport()
 //    {        
 //        
@@ -106,7 +107,6 @@ public class ReportManagedBean implements Serializable {
 //        outputStream.close();
 //
 //    }
-    
 //    public void generateReport(ActionEvent event)
 //    {        
 //        try
@@ -140,47 +140,35 @@ public class ReportManagedBean implements Serializable {
 //        {
 //        }
 //    }
-    
-    public void generateReport(ActionEvent event)
-    {        
-            try
-            {
-                
-                    
-                    Timestamp startTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
-                    Timestamp endTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
+    public void generateReport(ActionEvent event) {
+        try {
 
-                    
-                    GregorianCalendar endDate = new GregorianCalendar();  
-                    endDate.add(GregorianCalendar.DAY_OF_MONTH, -2);
+            Timestamp startTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
+            Timestamp endTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
 
-                    Map<String, Object> parameters = new HashMap<>();
+            Map<String, Object> parameters = new HashMap<>();
+            
+            Date endDate = GregorianCalendar.getInstance().getTime();
+            
+            GregorianCalendar start = new GregorianCalendar();
+            start.setTime(new Date());
+            start.add(GregorianCalendar.DAY_OF_MONTH, -2);
+            
+            parameters.put("EndDate", endDate);
+            parameters.put("StartDate", start.getTime());
 
-                    
-                    parameters.put("EndDate", endDate);
-                    parameters.put("StartDate", endDate.getTime());
+            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreport/ordersreport.jasper");
+            OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
 
-//                    parameters.put("StartDate", new Date());
-//                    parameters.put("EndDate", new Date());
+            JasperRunManager.runReportToPdfStream(reportStream, outputStream, parameters, suitUpDataSource.getConnection());
 
-                    InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreport/ordersreport.jasper");                
-                    OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
-
-                    JasperRunManager.runReportToPdfStream(reportStream, outputStream, parameters, suitUpDataSource.getConnection());
-                    
-                    FacesContext.getCurrentInstance().responseComplete();
-            }
-            catch(JRException ex)
-            {
-                    ex.printStackTrace();
-            }
-            catch(SQLException ex)
-            {   
-                    ex.printStackTrace();
-            }
-            catch(IOException ex)
-            {
-            }
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (JRException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+        }
     }
-    
+
 }
