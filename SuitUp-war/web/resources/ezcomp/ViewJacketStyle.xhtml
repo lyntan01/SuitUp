@@ -15,12 +15,13 @@
             
             <p:dialog id="dialogViewJacketStyle" widgetVar="dialogViewJacketStyle" header="View Jacket Style" closable="true">
 
-                <p:panelGrid>
-                    
+                 <p:panelGrid style="width: #{viewCustomizationProductManagedBean.jacketStyleToView.image == null ? '30em' : '30em'};" styleClass="noBorder">
+
                     <p:row>
-                        <p:column style="width: 12em;"></p:column>
-                        <p:column>
-                            <p:graphicImage style="width: 30em;" value="/uploadedFiles/productImages/#{viewCustomizationProductManagedBean.jacketStyleToView.image}" alt="image" rendered="#{viewCustomizationProductManagedBean.jacketStyleToView.image != null}" />                            
+                        <p:column style="width: 10em;"></p:column>
+                        <p:column style="width: 10em;"></p:column>
+                        <p:column rowspan="6" style="width: 10em;">
+                            <p:graphicImage style="width: 10em;" value="/uploadedFiles/productImages/#{viewCustomizationProductManagedBean.jacketStyleToView.image}" alt="image" rendered="#{viewCustomizationProductManagedBean.jacketStyleToView.image != null}" />                            
                         </p:column>                        
                     </p:row>
                     
@@ -44,7 +45,7 @@
                     
                     <p:row>
                         <p:column>
-                            <h:outputLabel value="Additional Price " />
+                            <h:outputLabel value="Additional Price: " />
                         </p:column>
                         <p:column>
                             <h:outputText value="#{viewCustomizationProductManagedBean.jacketStyleToView.additionalPrice}" />

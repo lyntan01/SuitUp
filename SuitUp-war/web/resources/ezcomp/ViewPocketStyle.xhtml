@@ -15,12 +15,13 @@
             
             <p:dialog id="dialogViewPocketStyle" widgetVar="dialogViewPocketStyle" header="View Pocket Style" closable="true">
 
-                <p:panelGrid>
-                    
+                <p:panelGrid style="width: #{viewCustomizationProductManagedBean.fabricToView.image == null ? '15em' : '20em'};" styleClass="noBorder">
+
                     <p:row>
-                        <p:column style="width: 12em;"></p:column>
-                        <p:column>
-                            <p:graphicImage style="width: 30em;" value="/uploadedFiles/productImages/#{viewCustomizationProductManagedBean.pocketStyleToView.image}" alt="image" rendered="#{viewCustomizationProductManagedBean.pocketStyleToView.image != null}" />                            
+                        <p:column style="width: 5em;"></p:column>
+                        <p:column style="width: 5em;"></p:column>
+                        <p:column rowspan="6" style="width: 10em;">
+                            <p:graphicImage style="width: 10em;" value="/uploadedFiles/productImages/#{viewCustomizationProductManagedBean.pocketStyleToView.image}" alt="image" rendered="#{viewCustomizationProductManagedBean.pocketStyleToView.image != null}" />                            
                         </p:column>                        
                     </p:row>
                     
