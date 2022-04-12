@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.AddressEntity;
 import entity.CustomerEntity;
+import entity.CustomizedProductEntity;
 import entity.OrderEntity;
 import entity.OrderLineItemEntity;
 import entity.PromotionEntity;
@@ -86,8 +87,10 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 
             if (newOrderEntity != null) {
                 try {
-                    AddressEntity addressEntity = addressSessionBeanLocal.retrieveAddressByAddressId(addressId);
-                    newOrderEntity.setDeliveryAddress(addressEntity);
+                    if (addressId != null) {
+                        AddressEntity addressEntity = addressSessionBeanLocal.retrieveAddressByAddressId(addressId);
+                        newOrderEntity.setDeliveryAddress(addressEntity);
+                    }
 
                     CustomerEntity customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
                     newOrderEntity.setCustomer(customerEntity);
@@ -99,7 +102,7 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                         if (orderLineItemEntity.getProduct() instanceof StandardProductEntity) {
                             standardProductSessionBeanLocal.debitQuantityOnHand(orderLineItemEntity.getProduct().getProductId(), orderLineItemEntity.getQuantity());
                         }
-
+                        
                         entityManager.persist(orderLineItemEntity);
                     }
 

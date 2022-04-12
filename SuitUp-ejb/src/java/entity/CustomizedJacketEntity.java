@@ -41,7 +41,7 @@ public class CustomizedJacketEntity extends CustomizedProductEntity implements S
     private JacketMeasurementEntity jacketMeasurement;
     
     public CustomizedJacketEntity() {
-        super();
+        super(new BigDecimal("200.00"));
     }
     
     public CustomizedJacketEntity(String name, String description, String image, BigDecimal totalPrice, String gender) {
