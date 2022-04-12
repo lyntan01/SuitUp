@@ -9,7 +9,6 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.EmailSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.TransactionSessionBeanLocal;
-import entity.AppointmentEntity;
 import entity.CreditCardEntity;
 import entity.CustomerEntity;
 import entity.OrderEntity;
@@ -18,7 +17,6 @@ import entity.TransactionEntity;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +28,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 import util.enumeration.OrderStatusEnum;
+import util.exception.AppointmentNotFoundException;
 import util.exception.CreateNewTransactionException;
 import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
@@ -264,7 +263,7 @@ public class OrderManagementManagedBean implements Serializable {
                     verificationCodeToVerifyAgainst = "";
                     //Add updating of payment status of the appointment to prevent further paying /extra checks
                 } catch (AppointmentNotFoundException | CreateNewTransactionException | OrderNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
-                    System.out.println(ex.getMessage() + "Error");
+                    System.out.println(ex.getMessage());
                 }
 
             }

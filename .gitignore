@@ -27,10 +27,14 @@ dist/
 SuitUp-ejb/nbproject/private/
 SuitUp-ejb/build/
 SuitUp-ejb/dist/
+SuitUp-ejb/src/java/util/security/GlassFishCryptographicHelper.java
+
 
 SuitUp-war/nbproject/private/
 SuitUp-war/build/
 SuitUp-war/dist/
+SuitUp-war/web/WEB-INF/glassfish-web.xml
+SuitUp-war/web/WEB-INF/web.xml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

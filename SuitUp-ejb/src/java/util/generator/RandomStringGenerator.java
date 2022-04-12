@@ -59,14 +59,6 @@ public class RandomStringGenerator {
         this.buf = new char[length];
     }
 
-    public String generateSerial() {
-        for (int idx = 0; idx < buf.length; ++idx) {
-            buf[idx] = symbols[random.nextInt(symbols.length)];
-        }
-        String value = new String(buf);
-        return "#" + value.toUpperCase();
-    }
-
     /**
      * Create an alphanumeric string generator.
      */

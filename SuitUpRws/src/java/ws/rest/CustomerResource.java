@@ -6,7 +6,9 @@
 package ws.rest;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import entity.CreditCardEntity;
 import entity.CustomerEntity;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -30,6 +32,8 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UpdateCustomerException;
+import util.security.CryptographicHelper;
+import util.security.GlassFishCryptographicHelper;
 import ws.datamodel.CreateCustomerReq;
 import ws.datamodel.CustomerChangePasswordReq;
 import ws.datamodel.UpdateProfileReq;
@@ -67,9 +71,19 @@ public class CustomerResource {
             customerEntity.getAppointments().clear();
             customerEntity.getSupportTickets().clear();
 
+            CryptographicHelper cryptographicHelper = CryptographicHelper.getInstance();
+            GlassFishCryptographicHelper glassFishCryptographicHelper = GlassFishCryptographicHelper.getInstanceOf();
+            List<CreditCardEntity> cards = customerEntity.getCreditCards();
+
+            for (CreditCardEntity creditCard : cards) {
+                String recoveredCardNumber = cryptographicHelper.doAESDecryption(creditCard.getCardNumber(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv());
+                creditCard.setCardNumber(recoveredCardNumber);
+            }
+            
+            customerEntity.setCreditCards(cards);
+
 //            customerEntity.setJacketMeasurement(null);
 //            customerEntity.setPantsMeasurement(null);
-
             return Response.status(Response.Status.OK).entity(customerEntity).build();
         } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
@@ -155,7 +169,7 @@ public class CustomerResource {
             try {
                 CustomerEntity customer = updateProfileReq.getCurrentCustomer();
                 customerSessionBeanLocal.updateCustomer(customer);
-        
+
                 return Response.status(Response.Status.OK).build();
             } catch (CustomerNotFoundException | UpdateCustomerException | InputDataValidationException ex) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
