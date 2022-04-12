@@ -146,6 +146,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 if (customerEntityToUpdate.getEmail().equals(customerEntity.getEmail())) {
                     customerEntityToUpdate.setFirstName(customerEntity.getFirstName());
                     customerEntityToUpdate.setLastName(customerEntity.getLastName());
+                    customerEntityToUpdate.setContactNumber(customerEntity.getContactNumber());
                 } else {
                     throw new UpdateCustomerException("Email of customer record to be updated does not match the existing record");
                 }

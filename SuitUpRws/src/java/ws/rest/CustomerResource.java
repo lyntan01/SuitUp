@@ -111,6 +111,7 @@ public class CustomerResource {
 
             customerEntity.setPassword(null);
             customerEntity.setSalt(null);
+            customerEntity.getOrders().clear();
             //customerEntity.getAddresses().clear();
             customerEntity.getAppointments().clear();
             customerEntity.getSupportTickets().clear();
@@ -152,11 +153,9 @@ public class CustomerResource {
     public Response updateProfile(UpdateProfileReq updateProfileReq) {
         if (updateProfileReq != null) {
             try {
-                CustomerEntity customer = customerSessionBeanLocal.customerLogin(updateProfileReq.getEmail(), updateProfileReq.getPassword());
-                customer.setFirstName(updateProfileReq.getFirstName());
-                customer.setLastName(updateProfileReq.getLastName());
+                CustomerEntity customer = updateProfileReq.getCurrentCustomer();
                 customerSessionBeanLocal.updateCustomer(customer);
-
+        
                 return Response.status(Response.Status.OK).build();
             } catch (CustomerNotFoundException | UpdateCustomerException | InputDataValidationException ex) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
