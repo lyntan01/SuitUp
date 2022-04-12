@@ -40,7 +40,7 @@ div.ui-layout-unit, div.ui-menubar {
 
 ul.ui-menu-child {
     white-space: nowrap;
-    /*width: auto !important;*/
+/*    width: auto !important;*/
 }
 
 .navBar {
@@ -50,6 +50,7 @@ ul.ui-menu-child {
 
 .ui-menu .ui-menu-parent .ui-menu-child {
     position: fixed !important;
+    width: 17em !important;
 }
 
 div.ui-layout-north {

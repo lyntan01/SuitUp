@@ -15,12 +15,13 @@
             
             <p:dialog id="dialogViewStandardProduct" widgetVar="dialogViewStandardProduct" header="View Standard Product" closable="true">
 
-                <p:panelGrid>
-                    
+                <p:panelGrid style="width: #{viewStandardProductManagedBean.standardProductToView.image == null ? '15em' : '20em'};" styleClass="noBorder">
+
                     <p:row>
-                        <p:column style="width: 12em;"></p:column>
-                        <p:column>
-                            <p:graphicImage style="width: 30em;" value="/uploadedFiles/productImages/#{viewStandardProductManagedBean.standardProductToView.image}" alt="image" rendered="#{viewStandardProductManagedBean.standardProductToView.image != null}" />                            
+                        <p:column style="width: 5em;"></p:column>
+                        <p:column style="width: 8em;"></p:column>
+                        <p:column rowspan="10" style="width: 10em;">
+                            <p:graphicImage style="width: 10em;" value="/uploadedFiles/productImages/#{viewStandardProductManagedBean.standardProductToView.image}" alt="image" rendered="#{viewStandardProductManagedBean.standardProductToView.image != null}" />                            
                         </p:column>                        
                     </p:row>
                     
