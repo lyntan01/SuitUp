@@ -90,8 +90,8 @@ public class OrderEntity implements Serializable {
     @JoinColumn(nullable = false)
     private CustomerEntity customer;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
     private AddressEntity deliveryAddress;
 
     @ManyToOne(optional = true)
