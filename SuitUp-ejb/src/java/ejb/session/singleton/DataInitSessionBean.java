@@ -116,7 +116,7 @@ public class DataInitSessionBean {
 
     @EJB
     private PromotionSessionBeanLocal promotionSessionBeanLocal;
-    
+
     @EJB
     private CustomizedPantsSessionBeanLocal customizedPantsSessionBean;
 
@@ -176,11 +176,9 @@ public class DataInitSessionBean {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
-    
+
     @EJB
     private SupportTicketSessionBeanLocal supportTicketSessionBeanLocal;
-    
-    
 
     @PersistenceContext(unitName = "SuitUp-ejbPU")
     private EntityManager em;
@@ -203,7 +201,7 @@ public class DataInitSessionBean {
 
     private void initializeData() {
         try {
-            
+
 //          <------------------------------STORE INIT ------------------------->
             Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best Suit Store", "09:00", "22:00", "62313264"));
             addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Store Address", "62313264", "10 Orchard Road", "Far East Plaza", "228213"), storeId);
@@ -223,10 +221,10 @@ public class DataInitSessionBean {
             Calendar calendar = new Calendar.Builder()
                     .setDate(2022, Calendar.JUNE, 1)
                     .setTimeOfDay(0, 0, 0)
-                    .build(); 
+                    .build();
             creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "1111222233334444", "910", calendar.getTime()), 1L);
             creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby Home", "2222333344445555", "320", calendar.getTime()), 1L);
-            
+
 //          <------------------------------CUSTOMER 2 INIT ------------------------->
 //            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Charles", "Chan", "charlesChan@gmail.com", "password", "99999999")); //Customer - 1L
 //            addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Charles Home", "91425342", "Thomson Ave 3", "Private House 3", "210309"), 1L); //Tagged to above customer
@@ -237,7 +235,6 @@ public class DataInitSessionBean {
 //                    .build();
 //            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "5555223333221111", "910", anotherCalendar.getTime()), 1L);
 //            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "2222113344223356", "320", anotherCalendar.getTime()), 1L);
-
 //          <------------------------------STANDARD AND CUSTOMIZED PRODUCTS NEED FIX IMAGE------------------------->
             initialiseCategories();
             initialiseTags();
@@ -261,7 +258,8 @@ public class DataInitSessionBean {
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
             testOrder = orderSessionBeanLocal.createNewOrder(1L, 2L, testOrder);
             transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(testOrder.getTotalAmount(), new Date(), null, testOrder), null, 1L);
-            
+           
+
             //<--------------Order 2, Containing Customised Jacket---------->//
             initialiseCustomisedOrder();
 
@@ -270,9 +268,8 @@ public class DataInitSessionBean {
             initialiseSupportTickets();
             initialisePromotions();
 
-
         } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
-                | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException 
+                | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException
                 | StoreNotFoundException | AppointmentNotFoundException | OrderNotFoundException | CreateNewTransactionException ex) {
             ex.printStackTrace();
         }
@@ -329,14 +326,14 @@ public class DataInitSessionBean {
             standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Leaf Moonstone Brooch", "Leaf Moonstone Brooch", "LeafBrooche.png", "SKU005", new BigDecimal("15.50"), 1000, 50, catFive, new ArrayList<>()), 5L, new ArrayList<>(Arrays.asList(3L)));
             //6L
             standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Black Leather Belt", "Black Leather Belt", "BlackLeatherBelt.png", "SKU006", new BigDecimal("50.00"), 1000, 50, catSix, new ArrayList<>()), 6L, new ArrayList<>(Arrays.asList(4L)));
-            
+
             //standardProductSessionBeanLocal.createNewStandardProduct(newStandardProductEntity, Long.MAX_VALUE, tagsId)
             //new StandardProductEntity(name, description, image, skuCode, BigDecimal.ONE, Integer.BYTES, Integer.MIN_VALUE, category, tags)
         } catch (CategoryNotFoundException | CreateStandardProductException | InputDataValidationException | UnknownPersistenceException ex) {
             ex.printStackTrace();
         }
     }
-    
+
     private void initialiseCustomisationProducts() {
 
         try {
@@ -362,7 +359,7 @@ public class DataInitSessionBean {
             colourSessionBean.createNewColour(new ColourEntity("Hurley", "#FFFFED")); //2L
             //8L
             fabricSessionBean.createNewFabric(new FabricEntity("Hurley Linen", new BigDecimal("0.00"), "Hurley, Linen", "Hurley Linen.jpg"), 1L); //7L
-  
+
             //PocketStyleEntity(String name, BigDecimal additionalPrice, String description, String image)
             //new pocketStyleEntity(String name, BigDecimal additionalPrice, String description, String image)
         } catch (CustomizationIdExistException | ColourIdExistException | ColourNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
@@ -377,13 +374,13 @@ public class DataInitSessionBean {
             jacketMeasurementSessionBean.createNewJacketMeasurement(jacketMeasurement, 1L);
             //createNewJacketMeasurement(JacketMeasurementEntity newJacketMeasurementEntity, Long customerId)
             //JacketMeasurementEntity(BigDecimal neck, BigDecimal frontLength, BigDecimal chestGrith, BigDecimal frontChestWidth, BigDecimal upperWaistGrith, BigDecimal hipGrith, BigDecimal armhole, BigDecimal shoulderWidth, BigDecimal sleeveLength, BigDecimal backwidth, BigDecimal bicepGrith, BigDecimal forearmGrith, BigDecimal wristGrith)
-            
+
             //CREATE PANTS MEASUREMENT FOR CUSTOMER ID1 
             PantsMeasurementEntity pantsMeasurement = new PantsMeasurementEntity(new BigDecimal("3.4"), new BigDecimal("4.5"), new BigDecimal("5.6"), new BigDecimal("15.2"), new BigDecimal("4.2"), new BigDecimal("18.4"), new BigDecimal("6.0"), new BigDecimal("3.8"));
             pantsMeasurementSessionBean.createNewPantsMeasurement(pantsMeasurement, 1L);
             //createNewPantsMeasurement(PantsMeasurementEntity newPantsMeasurementEntity, Long customerId)
             //PantsMeasurementEntity(Long pantsMeasurementId, BigDecimal legsLength, BigDecimal lowerWaistGirth, BigDecimal hipGirth, BigDecimal crotch, BigDecimal thighGrith, BigDecimal kneeGrith, BigDecimal calfGrith, BigDecimal pantsOpeningWidth) {
-            
+
             //CREATE CUSTOMISED JACKET (Bobby)
             CustomizedJacketEntity customisedJacket = new CustomizedJacketEntity("Formal Suit", "New Formal Suit", new BigDecimal("0.00"), "Male");
             //CustomizedJacketEntity(String name, String description, BigDecimal totalPrice, String gender) 
@@ -401,20 +398,21 @@ public class DataInitSessionBean {
             customisedPants.setPantsMeasurement(pantsMeasurement);
             customisedPants.setFabric(fabricSessionBean.retrieveFabricById(7L));
             customizedPantsSessionBean.createNewCustomizedPants(customisedPants, 7L, 5L, 1L);
-            
+
             List<OrderLineItemEntity> items = new ArrayList<>();
             items.add(new OrderLineItemEntity(1, customisedJacket.getTotalPrice(), customisedJacket));
             items.add(new OrderLineItemEntity(1, customisedPants.getTotalPrice(), customisedPants));
             BigDecimal totalAmount = customisedJacket.getTotalPrice().add(customisedPants.getTotalPrice());
             //OrderLineItemEntity(Integer quantity, BigDecimal subTotal, ProductEntity product)
-            
+
             //SerialNumber, TotalLineItems, TotalQuantity, TotalAmount, OrderDateTime, expressOrder, orderStatus, collectionMethod, List of OrderLineItems
-            OrderEntity testOrder = new OrderEntity("KQJS", 2, 2, totalAmount, new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
-            
+            OrderEntity testOrder = new OrderEntity("KQJSKE", 2, 2, totalAmount, new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
+
             //Uses Bobby Tan and Bobby's Tan Address
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
-            OrderEntity order = orderSessionBeanLocal.createNewOrder(1L, 1L, testOrder);
-            System.out.println(order.getOrderId());
+            OrderEntity order1 = orderSessionBeanLocal.createNewOrder(1L, 1L, testOrder);
+
+            System.out.println(order1.getOrderId());
         } catch (UnknownPersistenceException | CustomerNotFoundException | CustomizedProductNotFoundException | PantsMeasurementNotFoundException | CustomizedProductIdExistsException | JacketMeasurementNotFoundException | CustomizationNotFoundException | InputDataValidationException | AddressNotFoundException | CreateNewOrderException ex) {
             ex.printStackTrace();
         }
@@ -438,13 +436,13 @@ public class DataInitSessionBean {
             ex.printStackTrace();
         }
     }
-    
+
     private void initialiseSupportTickets() {
 
         try {
             supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Suit came in the wrong colour", "Hi, I ordered a suit in navy but it came in grey. It also doesn't seem to fit me well. By any chance, was the wrong suit delivered to me?", new Date()), 1L);
             supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("When will my suit come?", "Hello I ordered my suit 2 days ago but it still has not arrived. When is it coming?", new Date(), "Hello Mr Bobby, thank you for reaching out to us. Since you opted for normal delivery, the expected delivery time is 3-7 days. Thank you for your understanding and do reach out to us should you require any assistance. Cheers, The SuitUp Team."), 1L);
-        
+
             customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Suzy", "Bae", "suzy@hotmail.com", "password", "88888888")); //Customer - 3L
             supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Seeking colour recommendation", "Which colour will suit my skin tone more? I can't decide between navy and grey.", new Date()), 2L);
             supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Female Suits", "Do you also customise female suits?", new Date(), "Hello Ms Suzy, we do offer customisation services for female suits, with a wide range of fabrics and customisations to choose from. Do let us know if there is any way we can help should you require further assistance. Cheers, The SuitUp Team."), 2L);
@@ -453,23 +451,22 @@ public class DataInitSessionBean {
         }
 
     }
-    
-    private void initialisePromotions() 
-    {
+
+    private void initialisePromotions() {
         try {
-            
+
             // Promotion 1: $10 off min spend $50, first 50 customers
             Date expiryDate = new GregorianCalendar(2022, Calendar.MARCH, 1).getTime();
             promotionSessionBeanLocal.createNewPromotion(new AbsolutePromotionEntity(BigDecimal.valueOf(10), "CNY2022", 50, BigDecimal.valueOf(50), expiryDate));
-            
+
             // Promotion 2: 20% off no min spend, for the whole of April
             expiryDate = new GregorianCalendar(2022, Calendar.MAY, 1).getTime();
             promotionSessionBeanLocal.createNewPromotion(new PercentagePromotionEntity(20, "APR20OFF", 10000000, BigDecimal.ZERO, expiryDate));
-            
+
             // Promotion 3: $5 off min spend $100, for the whole 2022
             expiryDate = new GregorianCalendar(2023, Calendar.JANUARY, 1).getTime();
             promotionSessionBeanLocal.createNewPromotion(new AbsolutePromotionEntity(BigDecimal.valueOf(5), "MEGAN5OFF100", 10000000, BigDecimal.valueOf(100), expiryDate));
-            
+
         } catch (PromotionCodeExistException | UnknownPersistenceException | InputDataValidationException ex) {
             ex.printStackTrace();
         }
