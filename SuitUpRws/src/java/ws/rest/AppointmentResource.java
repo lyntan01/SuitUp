@@ -74,7 +74,7 @@ public class AppointmentResource {
             List<AppointmentEntity> appointmentEntities = customerEntity.getAppointments();
             
             for (AppointmentEntity appointment : appointmentEntities) {
-                appointment.getStore().getAppointments().clear();
+                appointment.setStore(null);
                 appointment.setCustomer(null);
                 appointment.setTransaction(null);
             }
