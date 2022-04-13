@@ -12,10 +12,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -140,24 +137,46 @@ public class ReportManagedBean implements Serializable {
 //        {
 //        }
 //    }
-    public void generateReport(ActionEvent event) {
+    public void generateOrdersReport(ActionEvent event) {
         try {
 
-            Timestamp startTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
-            Timestamp endTimestamp = Timestamp.valueOf(LocalDateTime.of(today, LocalTime.MIN));
-
             Map<String, Object> parameters = new HashMap<>();
-            
-            Date endDate = GregorianCalendar.getInstance().getTime();
-            
-            GregorianCalendar start = new GregorianCalendar();
-            start.setTime(new Date());
-            start.add(GregorianCalendar.DAY_OF_MONTH, -2);
+
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(new Date());
+            Date startDate = cal.getTime();
+            cal.add(GregorianCalendar.DAY_OF_MONTH, 1);
+            Date endDate = cal.getTime();
             
             parameters.put("EndDate", endDate);
-            parameters.put("StartDate", start.getTime());
+            parameters.put("StartDate", startDate);
 
             InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreport/ordersreport.jasper");
+            OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
+
+            JasperRunManager.runReportToPdfStream(reportStream, outputStream, parameters, suitUpDataSource.getConnection());
+
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (JRException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+        }
+    }
+    
+    public void generateStaffReport(ActionEvent event) {
+        try {
+
+            Map<String, Object> parameters = new HashMap<>();
+
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(new Date());
+            Date date = cal.getTime();
+            
+            parameters.put("Date", date);
+
+            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreport/salesreport.jasper");
             OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
 
             JasperRunManager.runReportToPdfStream(reportStream, outputStream, parameters, suitUpDataSource.getConnection());
