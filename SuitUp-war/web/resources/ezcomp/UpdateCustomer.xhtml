@@ -15,7 +15,7 @@
     <cc:implementation>
         <h:form id="formUpdateCustomer">
 
-                <p:dialog id="dialogUpdateCustomer" widgetVar="dialogUpdateCustomer" header="Update Standard Product" closable="true">
+                <p:dialog id="dialogUpdateCustomer" widgetVar="dialogUpdateCustomer" header="Update Customer" closable="true">
 
                     <p:messages id="messagesUpdateCustomer" redisplay="false" />
 
@@ -71,7 +71,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="contactNumber" value="Quantity In Stock " />
+                                <p:outputLabel for="contactNumber" value="Contact Number " />
                             </p:column>
                             <p:column>
                                 <p:inputText id="contactNumber" value="#{customerManagementManagedBean.selectedCustomerEntityToUpdate.contactNumber}" placeholder="91234567" required="true" requiredMessage="Contact Number is required" />
@@ -83,7 +83,7 @@
 
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Standard Product" update="@form ViewAllCustomers:formAllCustomers:dataTableAllCustomers" actionListener="#{customerManagementManagedBean.updateCustomer}" oncomplete="PF('dialogUpdateCustomer').show();" />
+                                <p:commandButton value="Update Customer" update="@form ViewAllCustomers:formAllCustomers:dataTableAllCustomers" actionListener="#{customerManagementManagedBean.updateCustomer}" oncomplete="PF('dialogUpdateCustomer').show();" />
                             </p:column>
                         </p:row>
 

@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      template="/template/defaultTemplate.xhtml"
+      xmlns:p="http://primefaces.org/ui">>
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formUpdateJacketMeasurement">
+
+            <p:dialog id="dialogUpdateJacketMeasurement" widgetVar="dialogUpdateJacketMeasurement" header="Customer Jacket Measurement" closable="true">
+
+                <p:messages id="messagesUpdateJacketMeasurement" redisplay="false" />
+
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Customer ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{customerManagementManagedBean.selectedCustomerToUpdateMeasurement.customerId}" />
+                        </p:column>
+                        <p:column>
+                            &nbsp;
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="neck" value="Neck: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="neck" value="#{customerManagementManagedBean.jacketMeasurement.neck}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Neck Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="neck" />
+                        </p:column>
+                        <!--                        </p:row>
+                        
+                                                <p:row>-->
+                        <p:column>
+                            <p:outputLabel for="frontLength" value="Front Length: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="frontLength" value="#{customerManagementManagedBean.jacketMeasurement.frontLength}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Front Length Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="frontLength" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="chestGirth" value="Chest Girth: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="chestGirth" value="#{customerManagementManagedBean.jacketMeasurement.chestGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Chest Girth Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="chestGirth" />
+                        </p:column>
+                        <!--                        </p:row>
+                                                
+                                                <p:row>-->
+                        <p:column>
+                            <p:outputLabel for="frontChestWidth" value="Front Chest Width: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="frontChestWidth" value="#{customerManagementManagedBean.jacketMeasurement.frontChestWidth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Front Chest Width Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="frontChestWidth" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="upperWaistGirth" value="Upper Waist Girth: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="upperWaistGirth" value="#{customerManagementManagedBean.jacketMeasurement.upperWaistGrith}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Upper Waist Girth Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="upperWaistGirth" />
+                        </p:column>
+                        <!--                        </p:row>
+                                                
+                                                <p:row>-->
+                        <p:column>
+                            <p:outputLabel for="hipGirth" value="Hip Girth: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="hipGirth" value="#{customerManagementManagedBean.jacketMeasurement.hipGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Hip Girth Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="hipGirth" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="armhole" value="Armhole: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="armhole" value="#{customerManagementManagedBean.jacketMeasurement.armhole}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Armhole Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="armhole" />
+                        </p:column>
+                        <!--                        </p:row>
+                        
+                                                <p:row>-->
+                        <p:column>
+                            <p:outputLabel for="shoulderWidth" value="Shoulder Width: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="shoulderWidth" value="#{customerManagementManagedBean.jacketMeasurement.shoulderWidth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Shoulder Width Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="shoulderWidth" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="sleeveLength" value="Sleeve Length: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="sleeveLength" value="#{customerManagementManagedBean.jacketMeasurement.sleeveLength}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Sleeve Length Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="sleeveLength" />
+                        </p:column>
+                        <!--                        </p:row>
+                        
+                                                <p:row>-->
+                        <p:column>
+                            <p:outputLabel for="backwidth" value="Back Width: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="backwidth" value="#{customerManagementManagedBean.jacketMeasurement.backwidth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Back Width Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="backwidth" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="bicepGirth" value="Bicep Girth: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="bicepGirth" value="#{customerManagementManagedBean.jacketMeasurement.bicepGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Bicep Girth Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="bicepGirth" />
+                        </p:column>
+                        <!--                        </p:row>
+                                                <p:row>-->
+                        <p:column>
+                            <p:outputLabel for="forearmGirth" value="Forearm Girth: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="forearmGirth" value="#{customerManagementManagedBean.jacketMeasurement.forearmGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Forearm Girth Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="forearmGirth" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="wristGirth" value="Wrist Girth: " />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="wristGirth" value="#{customerManagementManagedBean.jacketMeasurement.wristGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Wrist Girth Measurement is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="wristGirth" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="6">
+                            <p:commandButton value="Update Jacket Measurement" update="@form ViewAllCustomers:formAllCustomers:dataTableAllCustomers" actionListener="#{customerManagementManagedBean.updateJacketMeasurement}" oncomplete="PF('dialogUpdateJacketMeasurement').show();" rendered="#{customerManagementManagedBean.selectedCustomerToUpdateMeasurement.jacketMeasurement!=null}" />
+                            <p:commandButton value="Create Jacket Measurement" update="@form ViewAllCustomers:formAllCustomers:dataTableAllCustomers" actionListener="#{customerManagementManagedBean.updateJacketMeasurement}" oncomplete="PF('dialogUpdateJacketMeasurement').show();" rendered="#{customerManagementManagedBean.selectedCustomerToUpdateMeasurement.jacketMeasurement==null}" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+        </h:form>
+
+    </cc:implementation>
+</html>
