@@ -9,7 +9,8 @@
         <div>
             <h:outputText value="Access Right Error" style="color: red"/> <!-- id="errorHeadMessage"  -->
             <br/><br/>
-            <h:outputText value="Please login to view this page." rendered="#{sessionScope.isLogin == true}" /> <!-- id="errorAccessMessage" -->
+            <h:outputText value="Please login to view this page." rendered="#{sessionScope.isLogin == false}" /> <!-- id="errorAccessMessage" -->
+            <br/><br/>
             <h:link outcome="index.html" value="Back to login page" rendered="#{sessionScope.isLogin == false}" />
             <h:outputText value="You are logged in as a #{sessionScope.currentStaffEntity.accessRightEnum.name}. It looks like you do not have access rights to view this page." rendered="#{sessionScope.isLogin == true}" /> <!-- id="errorAccessMessage" -->
         </div>
