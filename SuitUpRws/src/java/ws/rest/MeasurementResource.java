@@ -19,18 +19,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import util.exception.AppointmentNotFoundException;
 import util.exception.CustomerNotFoundException;
-import util.exception.DeleteEntityException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.JacketMeasurementNotFoundException;
@@ -139,7 +135,9 @@ public class MeasurementResource {
 
                 Long jacketMeasurementId  = jacketMeasurementSessionBean.createNewJacketMeasurement(createJacketMeasurementReq.getJacketMeasurement(), customerEntity.getCustomerId());                
                 
-                return Response.status(Response.Status.OK).entity(jacketMeasurementId).build();
+                JacketMeasurementEntity jacketMeasurement = jacketMeasurementSessionBean.retrieveJacketMeasurementByJacketMeasurementId(jacketMeasurementId);
+                
+                return Response.status(Response.Status.OK).entity(jacketMeasurement).build();
             }
             catch(InvalidLoginCredentialException ex)
             {
@@ -174,8 +172,10 @@ public class MeasurementResource {
                 System.out.println("********** MeasurementResource.createPantsMeasurement(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
                 Long pantsMeasurementId  = pantsMeasurementSessionBean.createNewPantsMeasurement(createPantsMeasurementReq.getPantsMeasurement(), customerEntity.getCustomerId());                
+               
+                PantsMeasurementEntity pants = pantsMeasurementSessionBean.retrievePantsMeasurementByPantsMeasurementId(pantsMeasurementId);
                 
-                return Response.status(Response.Status.OK).entity(pantsMeasurementId).build();
+                return Response.status(Response.Status.OK).entity(pants).build();
             }
             catch(InvalidLoginCredentialException ex)
             {
