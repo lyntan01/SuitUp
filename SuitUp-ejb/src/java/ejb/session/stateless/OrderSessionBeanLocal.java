@@ -45,8 +45,6 @@ public interface OrderSessionBeanLocal {
 
     public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException, CancelOrderException;
 
-    public BigDecimal calculateTotalAmount(Long orderId) throws OrderNotFoundException;
-
     public BigDecimal applyPromotionCode(Long orderId, String promotionCode) throws OrderNotFoundException, PromotionNotFoundException, PromotionCodeExpiredException, PromotionMinimumAmountNotHitException, PromotionFullyRedeemedException;
 
 }
