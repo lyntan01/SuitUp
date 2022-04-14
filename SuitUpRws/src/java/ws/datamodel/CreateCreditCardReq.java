@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ws.datamodel;
 
 import entity.CreditCardEntity;
@@ -13,20 +12,18 @@ import entity.CreditCardEntity;
  * @author keithcharleschan
  */
 public class CreateCreditCardReq {
-    
-   private String email;
-   private String password;
-   private CreditCardEntity newCreditCard;
-   private Long expiryDate;
+
+    private String email;
+    private String password;
+    private CreditCardEntity newCreditCard;
 
     public CreateCreditCardReq() {
     }
 
-    public CreateCreditCardReq(String email, String password, CreditCardEntity newCreditCard, Long expiryDate) {
+    public CreateCreditCardReq(String email, String password, CreditCardEntity newCreditCard) {
         this.email = email;
         this.password = password;
         this.newCreditCard = newCreditCard;
-        this.expiryDate = expiryDate;
     }
 
     public String getEmail() {
@@ -52,16 +49,5 @@ public class CreateCreditCardReq {
     public void setNewCreditCard(CreditCardEntity newCreditCard) {
         this.newCreditCard = newCreditCard;
     }
-
-    public Long getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Long expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-   
-   
-    
 
 }

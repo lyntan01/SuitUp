@@ -138,10 +138,14 @@ public class AppointmentResource {
         {
             try
             {
-                CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(createAppointmentReq.getEmail(), createAppointmentReq.getPassword());
+                System.out.println(createAppointmentReq.getAppointment().getAppointmentTypeEnum());
+//                System.out.println(createAppointmentReq.getCustomer().getEmail());
+//                System.out.println(createAppointmentReq.getCustomer().getPassword());
+//                System.out.println(createAppointmentReq.getCustomer().getCustomerId());
+                CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(createAppointmentReq.getCustomer().getEmail(), createAppointmentReq.getPassword());
                 System.out.println("********** AppointmentResource.createAppointment(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
-                Long appointmentId  = appointmentSessionBeanLocal.createNewAppointment(createAppointmentReq.getAppointment(), createAppointmentReq.getStoreId(), customerEntity.getCustomerId());                
+                Long appointmentId  = appointmentSessionBeanLocal.createNewAppointment(createAppointmentReq.getAppointment(), createAppointmentReq.getStore().getStoreId(), customerEntity.getCustomerId());                
                 
                 return Response.status(Response.Status.OK).entity(appointmentId).build();
             }
@@ -149,7 +153,7 @@ public class AppointmentResource {
             {
                 return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
             }
-            catch(CreateNewAppointmentException | StoreNotFoundException | CustomerNotFoundException | UnknownPersistenceException | InputDataValidationException ex)
+            catch(CreateNewAppointmentException | CustomerNotFoundException | InputDataValidationException | StoreNotFoundException | UnknownPersistenceException ex)
             {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
             }
