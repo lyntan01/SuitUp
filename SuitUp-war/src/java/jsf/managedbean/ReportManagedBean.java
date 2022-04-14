@@ -176,7 +176,7 @@ public class ReportManagedBean implements Serializable {
             
             parameters.put("Date", date);
 
-            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreport/staffreport.jasper");
+            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreport/AllStaff.jasper");
             OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
 
             JasperRunManager.runReportToPdfStream(reportStream, outputStream, parameters, suitUpDataSource.getConnection());

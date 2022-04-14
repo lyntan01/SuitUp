@@ -58,12 +58,14 @@
   
              <div class="flexBox">
                 <h:form id="formAllReports">
-                   <p:panel header="Staff Report">
-                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateStaffReport}" ajax="false" />
-                    </p:panel>
+                   
 
                     <p:panel header="Orders Report">
                         <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateOrdersReport}" ajax="false" />
+                    </p:panel>
+                    
+                    <p:panel header="Staff Report">
+                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateStaffReport}" ajax="false" />
                     </p:panel>
 
                 </h:form>
