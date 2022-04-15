@@ -74,21 +74,21 @@ public class OrderResource {
 
     public OrderResource() {
     }
-    
+
     @Path("retrieveOrdersByCustomer")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveOrdersByCustomer(@QueryParam("email") String email, 
-                                        @QueryParam("password") String password) {
+    public Response retrieveOrdersByCustomer(@QueryParam("email") String email,
+            @QueryParam("password") String password) {
         try {
             CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
             System.out.println("********** OrderResource.retrieveOrdersByCustomer(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
-            
+
             List<OrderEntity> orderEntities = orderSessionBeanLocal.retrieveOrderbyCustomerId(customerEntity.getCustomerId());
 
             for (OrderEntity orderEntity : orderEntities) {
-                if (orderEntity.getPromotion()!= null) {
+                if (orderEntity.getPromotion() != null) {
                     orderEntity.getPromotion().getOrders().clear();
                 }
 
@@ -101,7 +101,7 @@ public class OrderResource {
                         StandardProductEntity standardProduct = (StandardProductEntity) productEntity;
                         standardProduct.getCategory().getStandardProducts().clear();
                         List<TagEntity> tags = standardProduct.getTags();
-                        for(TagEntity tag: tags) {
+                        for (TagEntity tag : tags) {
                             tag.getStandardProducts().clear();
                         }
 
@@ -133,51 +133,47 @@ public class OrderResource {
             };
 
             return Response.status(Response.Status.OK).entity(genericEntity).build();
-        } 
-        catch(InvalidLoginCredentialException ex)
-        {
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     @Path("retrieveOrder/{orderId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveOrder(@QueryParam("email") String email, 
-                                        @QueryParam("password") String password,
-                                        @PathParam("orderId") Long orderId) {
+    public Response retrieveOrder(@QueryParam("email") String email,
+            @QueryParam("password") String password,
+            @PathParam("orderId") Long orderId) {
         try {
             CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
             System.out.println("********** OrderResource.retrieveOrder(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
             OrderEntity orderEntity = orderSessionBeanLocal.retrieveOrderByOrderId(orderId);
 
-            if (orderEntity.getPromotion()!= null) {
+            if (orderEntity.getPromotion() != null) {
                 orderEntity.getPromotion().getOrders().clear();
             }
 
             for (OrderLineItemEntity orderLineItemEntity : orderEntity.getOrderLineItems()) {
-                
+
                 ProductEntity productEntity = orderLineItemEntity.getProduct();
 
                 if (productEntity instanceof StandardProductEntity) {
-                    
+
                     StandardProductEntity standardProduct = (StandardProductEntity) productEntity;
                     standardProduct.getCategory().getStandardProducts().clear();
                     List<TagEntity> tags = standardProduct.getTags();
-                    for(TagEntity tag: tags) {
+                    for (TagEntity tag : tags) {
                         tag.getStandardProducts().clear();
                     }
-                    
+
                 } else if (productEntity instanceof CustomizedProductEntity) {
-                    
+
                     CustomizedProductEntity customizedProduct = (CustomizedProductEntity) productEntity;
-                    
+
                     if (customizedProduct instanceof CustomizedJacketEntity) {
                         CustomizedJacketEntity customizedJacket = (CustomizedJacketEntity) customizedProduct;
                         customizedJacket.getInnerFabric().getColour().getFabrics().clear();
@@ -186,36 +182,31 @@ public class OrderResource {
                         CustomizedPantsEntity customizedPants = (CustomizedPantsEntity) customizedProduct;
                         customizedPants.getFabric().getColour().getFabrics().clear();
                     }
-                    
+
                 }
             }
-            
+
             orderEntity.getCustomer().getOrders().clear();
             orderEntity.getCustomer().getSupportTickets().clear();
             orderEntity.getCustomer().getAppointments().clear();
-            
-            orderEntity.getTransaction().setAppointment(null);
-            orderEntity.getTransaction().setOrder(null);
+
+            if (orderEntity.getTransaction() != null) {
+                orderEntity.getTransaction().setAppointment(null);
+                orderEntity.getTransaction().setOrder(null);
+            }
 
             return Response.status(Response.Status.OK).entity(orderEntity).build();
-        } 
-        catch(InvalidLoginCredentialException ex)
-        {
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(OrderNotFoundException ex)
-        {
+        } catch (OrderNotFoundException ex) {
             return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
-        }
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     // Order is created first before promotion is applied
-    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -233,21 +224,21 @@ public class OrderResource {
                 newOrder.setOrderStatusEnum(OrderStatusEnum.PROCESSING);
 
                 OrderEntity orderEntity = orderSessionBeanLocal.createNewOrder(customerEntity.getCustomerId(), createOrderReq.getAddressId(), newOrder);
-                                
-                if (orderEntity.getPromotion()!= null) {
+
+                if (orderEntity.getPromotion() != null) {
                     orderEntity.getPromotion().getOrders().clear();
                 }
-                
+
                 for (OrderLineItemEntity orderLineItemEntity : orderEntity.getOrderLineItems()) {
 
                     ProductEntity productEntity = orderLineItemEntity.getProduct();
-                    
+
                     if (productEntity instanceof StandardProductEntity) {
 
                         StandardProductEntity standardProduct = (StandardProductEntity) productEntity;
                         standardProduct.getCategory().getStandardProducts().clear();
                         List<TagEntity> tags = standardProduct.getTags();
-                        for(TagEntity tag: tags) {
+                        for (TagEntity tag : tags) {
                             tag.getStandardProducts().clear();
                         }
 
@@ -266,28 +257,22 @@ public class OrderResource {
 
                     }
                 }
-                
+
                 orderEntity.getCustomer().getOrders().clear();
                 orderEntity.getCustomer().getSupportTickets().clear();
                 orderEntity.getCustomer().getAppointments().clear();
-                
+
                 if (orderEntity.getTransaction() != null) {
                     orderEntity.getTransaction().setAppointment(null);
                     orderEntity.getTransaction().setOrder(null);
                 }
 
                 return Response.status(Response.Status.OK).entity(orderEntity.getOrderId()).build();
-            } 
-            catch(InvalidLoginCredentialException ex)
-            {
+            } catch (InvalidLoginCredentialException ex) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            }
-            catch (CustomerNotFoundException | CreateNewOrderException | InputDataValidationException | AddressNotFoundException ex)
-            {
+            } catch (CustomerNotFoundException | CreateNewOrderException | InputDataValidationException | AddressNotFoundException ex) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
-            }
-            catch (Exception ex) 
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
             }
@@ -299,72 +284,53 @@ public class OrderResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response applyPromotionCode(ApplyPromotionCodeReq applyPromotionCodeReq)
-    {
-        if(applyPromotionCodeReq != null)
-        {
-            try
-            {                
+    public Response applyPromotionCode(ApplyPromotionCodeReq applyPromotionCodeReq) {
+        if (applyPromotionCodeReq != null) {
+            try {
                 CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(applyPromotionCodeReq.getEmail(), applyPromotionCodeReq.getPassword());
                 System.out.println("********** OrderResource.applyPromotionCode(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
                 orderSessionBeanLocal.applyPromotionCode(applyPromotionCodeReq.getOrder().getOrderId(), applyPromotionCodeReq.getPromotionCode());
-                
+
                 // Create transaction for order, as last step of order creation
                 transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(applyPromotionCodeReq.getOrder().getTotalAmount(), new Date(), null, applyPromotionCodeReq.getOrder()), null, applyPromotionCodeReq.getOrder().getOrderId());
-                
+
                 return Response.status(Response.Status.OK).entity(applyPromotionCodeReq.getOrder().getOrderId()).build();
-            }
-            catch(InvalidLoginCredentialException ex)
-            {
+            } catch (InvalidLoginCredentialException ex) {
                 return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            }
-            catch(OrderNotFoundException | PromotionNotFoundException | PromotionCodeExpiredException | PromotionMinimumAmountNotHitException | PromotionFullyRedeemedException ex)
-            {
+            } catch (OrderNotFoundException | PromotionNotFoundException | PromotionCodeExpiredException | PromotionMinimumAmountNotHitException | PromotionFullyRedeemedException ex) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
             }
-        }
-        else
-        {
+        } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update order request").build();
         }
     }
-    
+
     @Path("{orderId}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cancelOrder(@QueryParam("email") String email, 
-                                        @QueryParam("password") String password,
-                                        @PathParam("orderId") Long orderId) 
-    {
-        try
-        {
+    public Response cancelOrder(@QueryParam("email") String email,
+            @QueryParam("password") String password,
+            @PathParam("orderId") Long orderId) {
+        try {
             CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
             System.out.println("********** OrderResource.cancelOrder(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
             orderSessionBeanLocal.updateOrderToBeCancelled(orderId);
-            
+
             return Response.status(Response.Status.OK).entity("Order cancelled successfully.").build();
-        }
-        catch(InvalidLoginCredentialException ex)
-        {
+        } catch (InvalidLoginCredentialException ex) {
             return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-        }
-        catch(OrderNotFoundException | CancelOrderException ex)
-        {
+        } catch (OrderNotFoundException | CancelOrderException ex) {
             return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
         }
     }
-    
+
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
         try {
             javax.naming.Context c = new InitialContext();
@@ -395,5 +361,4 @@ public class OrderResource {
         }
     }
 
-    
 }
