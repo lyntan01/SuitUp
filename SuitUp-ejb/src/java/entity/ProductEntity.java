@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Inheritance(strategy= InheritanceType.JOINED)
-public abstract class ProductEntity implements Serializable {
+public class ProductEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id

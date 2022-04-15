@@ -216,7 +216,6 @@ public class OrderResource {
     
     // Order is created first before promotion is applied
     
-    @Path("createOrder")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -234,21 +233,15 @@ public class OrderResource {
                 newOrder.setOrderStatusEnum(OrderStatusEnum.PROCESSING);
 
                 OrderEntity orderEntity = orderSessionBeanLocal.createNewOrder(customerEntity.getCustomerId(), createOrderReq.getAddressId(), newOrder);
-                
-                System.out.println("**************** PAST SESSION BEAN METHOD");
-                
+                                
                 if (orderEntity.getPromotion()!= null) {
                     orderEntity.getPromotion().getOrders().clear();
                 }
                 
-                System.out.println("**************** MARKER 1");
-
                 for (OrderLineItemEntity orderLineItemEntity : orderEntity.getOrderLineItems()) {
 
                     ProductEntity productEntity = orderLineItemEntity.getProduct();
                     
-                    System.out.println("**************** MARKER 2");
-
                     if (productEntity instanceof StandardProductEntity) {
 
                         StandardProductEntity standardProduct = (StandardProductEntity) productEntity;
@@ -274,17 +267,15 @@ public class OrderResource {
                     }
                 }
                 
-                System.out.println("**************** MARKER 3");
-
                 orderEntity.getCustomer().getOrders().clear();
                 orderEntity.getCustomer().getSupportTickets().clear();
                 orderEntity.getCustomer().getAppointments().clear();
                 
-                System.out.println("**************** MARKER 4");
+                if (orderEntity.getTransaction() != null) {
+                    orderEntity.getTransaction().setAppointment(null);
+                    orderEntity.getTransaction().setOrder(null);
+                }
 
-                orderEntity.getTransaction().setAppointment(null);
-                orderEntity.getTransaction().setOrder(null);
-                
                 return Response.status(Response.Status.OK).entity(orderEntity.getOrderId()).build();
             } 
             catch(InvalidLoginCredentialException ex)
@@ -322,7 +313,7 @@ public class OrderResource {
                 // Create transaction for order, as last step of order creation
                 transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(applyPromotionCodeReq.getOrder().getTotalAmount(), new Date(), null, applyPromotionCodeReq.getOrder()), null, applyPromotionCodeReq.getOrder().getOrderId());
                 
-                return Response.status(Response.Status.OK).build();
+                return Response.status(Response.Status.OK).entity(applyPromotionCodeReq.getOrder().getOrderId()).build();
             }
             catch(InvalidLoginCredentialException ex)
             {

@@ -12,15 +12,15 @@ public class CreateOrderReq {
     private String password;
     private OrderEntity order;
     private Long addressId;
+    
+    public CreateOrderReq() {
+    }
 
     public CreateOrderReq(String email, String password, OrderEntity order, Long addressId) {
         this.email = email;
         this.password = password;
         this.order = order;
         this.addressId = addressId;
-    }
-
-    public CreateOrderReq() {
     }
 
     public String getEmail() {
