@@ -7,6 +7,7 @@ package ws.rest;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
+import ejb.session.stateless.TransactionSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.CustomizedJacketEntity;
 import entity.CustomizedPantsEntity;
@@ -16,6 +17,7 @@ import entity.OrderLineItemEntity;
 import entity.ProductEntity;
 import entity.StandardProductEntity;
 import entity.TagEntity;
+import entity.TransactionEntity;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,6 +39,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
 import util.exception.CancelOrderException;
 import util.exception.CreateNewOrderException;
@@ -48,6 +51,7 @@ import util.exception.PromotionCodeExpiredException;
 import util.exception.PromotionFullyRedeemedException;
 import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
+import util.generator.RandomStringGenerator;
 import ws.datamodel.ApplyPromotionCodeReq;
 import ws.datamodel.CreateOrderReq;
 
@@ -58,6 +62,8 @@ import ws.datamodel.CreateOrderReq;
  */
 @Path("Order")
 public class OrderResource {
+
+    TransactionSessionBeanLocal transactionSessionBeanLocal = lookupTransactionSessionBeanLocal();
 
     OrderSessionBeanLocal orderSessionBeanLocal = lookupOrderSessionBeanLocal();
 
@@ -222,15 +228,26 @@ public class OrderResource {
 
                 OrderEntity newOrder = createOrderReq.getOrder();
                 newOrder.setOrderDateTime(new Date());
+                RandomStringGenerator generator = new RandomStringGenerator(5);
+                String orderSerialNumber = generator.generateSerial();
+                newOrder.setSerialNumber(orderSerialNumber);
+                newOrder.setOrderStatusEnum(OrderStatusEnum.PROCESSING);
 
                 OrderEntity orderEntity = orderSessionBeanLocal.createNewOrder(customerEntity.getCustomerId(), createOrderReq.getAddressId(), newOrder);
+                
+                System.out.println("**************** PAST SESSION BEAN METHOD");
+                
                 if (orderEntity.getPromotion()!= null) {
                     orderEntity.getPromotion().getOrders().clear();
                 }
+                
+                System.out.println("**************** MARKER 1");
 
                 for (OrderLineItemEntity orderLineItemEntity : orderEntity.getOrderLineItems()) {
 
                     ProductEntity productEntity = orderLineItemEntity.getProduct();
+                    
+                    System.out.println("**************** MARKER 2");
 
                     if (productEntity instanceof StandardProductEntity) {
 
@@ -256,10 +273,14 @@ public class OrderResource {
 
                     }
                 }
+                
+                System.out.println("**************** MARKER 3");
 
                 orderEntity.getCustomer().getOrders().clear();
                 orderEntity.getCustomer().getSupportTickets().clear();
                 orderEntity.getCustomer().getAppointments().clear();
+                
+                System.out.println("**************** MARKER 4");
 
                 orderEntity.getTransaction().setAppointment(null);
                 orderEntity.getTransaction().setOrder(null);
@@ -276,6 +297,7 @@ public class OrderResource {
             }
             catch (Exception ex) 
             {
+                ex.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
             }
         } else {
@@ -283,7 +305,6 @@ public class OrderResource {
         }
     }
 
-    @Path("applyPromotionCode")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -297,6 +318,9 @@ public class OrderResource {
                 System.out.println("********** OrderResource.applyPromotionCode(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
                 orderSessionBeanLocal.applyPromotionCode(applyPromotionCodeReq.getOrder().getOrderId(), applyPromotionCodeReq.getPromotionCode());
+                
+                // Create transaction for order, as last step of order creation
+                transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(applyPromotionCodeReq.getOrder().getTotalAmount(), new Date(), null, applyPromotionCodeReq.getOrder()), null, applyPromotionCodeReq.getOrder().getOrderId());
                 
                 return Response.status(Response.Status.OK).build();
             }
@@ -364,6 +388,16 @@ public class OrderResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (OrderSessionBeanLocal) c.lookup("java:global/SuitUp/SuitUp-ejb/OrderSessionBean!ejb.session.stateless.OrderSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private TransactionSessionBeanLocal lookupTransactionSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (TransactionSessionBeanLocal) c.lookup("java:global/SuitUp/SuitUp-ejb/TransactionSessionBean!ejb.session.stateless.TransactionSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
