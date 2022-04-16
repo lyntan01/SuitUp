@@ -28,6 +28,9 @@
                         <p:column style="width:60%;">
                             <p:inputText id="name" value="#{customizationManagementManagedBean.newFabric.name}" placeholder="Fabric 1" required="true" requiredMessage="Name is required" />
                         </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
                     </p:row>
 
                     <p:row>
@@ -35,7 +38,7 @@
                             <p:outputLabel style="font-weight: bold;" for="additionalPrice" value="Additional Price " />
                         </p:column>
                         <p:column>
-                            <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.newFabric.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" required="true" requiredMessage="Additional Price is required" />
+                            <p:spinner id="additionalPrice" value="#{customizationManagementManagedBean.newFabric.additionalPrice}" placeholder="100" min="0" stepFactor="0.01" style="width:12em" required="true" requiredMessage="Additional Price is required" />
                         </p:column>
                         <p:column>
                             <p:message for="additionalPrice" />
@@ -49,6 +52,9 @@
                         <p:column>
                             <p:inputText id="description" value="#{customizationManagementManagedBean.newFabric.description}" placeholder="Pocket Style 1" required="true" requiredMessage="Description is required" />
                         </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
                     </p:row>
 
                     <p:row>
@@ -56,10 +62,13 @@
                             <p:outputLabel style="font-weight: bold;" for="colour" value="Colour " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu style="width: 16em;" id="colour" value="#{customizationManagementManagedBean.newColourId}" required="true" requiredMessage="Colour is required">
+                            <p:selectOneMenu style="width: 12em;" id="colour" value="#{customizationManagementManagedBean.newColourId}" required="true" requiredMessage="Colour is required">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select Colour]" noSelectionOption="true" itemDisabled="true" />
                                 <f:selectItems value="#{customizationManagementManagedBean.colours}" var="colour" itemLabel="#{colour.name}" itemValue="#{colour.colourId}" />
                             </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="colour" />
                         </p:column>
                     </p:row>
 

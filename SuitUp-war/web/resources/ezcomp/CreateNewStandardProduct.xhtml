@@ -78,7 +78,7 @@
                     <br/>
 
                     <p:outputLabel style="font-weight: bold;" id="imageUploadLabel" for="imageUpload" value="Product Image: " rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
-                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.handleFileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" />
+                    <p:fileUpload id="imageUpload" update="@form" auto="true" listener="#{standardProductManagementManagedBean.handleFileUpload}" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image == null}" required="true"/>
                     <h:outputText style="font-weight: bold; font-size: 1.5em;" value="Image has been uploaded" rendered="#{standardProductManagementManagedBean.newStandardProductEntity.image != null}" />
 
                     <br/>
