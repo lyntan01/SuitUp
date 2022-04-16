@@ -188,7 +188,7 @@ public class CustomizationResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllColour() {
+    public Response retrieveAllColours() {
         try {
             List<ColourEntity> colours = colourSessionBean.retrieveAllColours();
             
