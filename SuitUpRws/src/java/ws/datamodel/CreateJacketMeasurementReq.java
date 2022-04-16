@@ -17,6 +17,10 @@ public class CreateJacketMeasurementReq {
     private String password;
     private JacketMeasurementEntity jacketMeasurement;
 
+    public CreateJacketMeasurementReq() {
+    }
+    
+
     public CreateJacketMeasurementReq(String email, String password, JacketMeasurementEntity jacketMeasurement) {
         this.email = email;
         this.password = password;
