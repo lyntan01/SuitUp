@@ -83,6 +83,7 @@ public class CustomizedPantsManagedBean implements Serializable {
             newCustomizedPants.setFabric(frabic);
             newCustomizedPants.setPantsCutting(pantsCutting);
             
+            
             createOrderManagedBean.addItem(newCustomizedPants, 1);
             
 //            Long productId = customizedPantsSessionBeanLocal.createNewCustomizedPants(newCustomizedPants, fabricId, pantsCuttingId, newCustomizedPants.getPantsMeasurement().getPantsMeasurementId());
