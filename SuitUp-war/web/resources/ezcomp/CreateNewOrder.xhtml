@@ -286,7 +286,7 @@
 
                             </p:commandButton>&nbsp;
                             <!--<p:commandButton value="Create New Customized Jacket" update="@composite:dialogCreateNewOrder" process="@this" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />-->
-                            <p:commandButton value="Create New Customized Jacket" actionListener="#{customizedJacketManagedBean.addNewCustomizedJacket}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();"/>
+                            <p:commandButton value="Create New Customized Jacket" actionListener="#{customizedJacketManagedBean.addNewCustomizedJacket}" update="@composite:dialogCreateNewOrder @composite:dialogCreateNewCustomizedJacket" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();"/>
                         </p:column>
                     </p:row>
 
@@ -359,7 +359,7 @@
                             <p:commandButton value="Back" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();">
 
                             </p:commandButton>&nbsp;
-                            <p:commandButton value="Create New Customized Pants" actionListener="#{customizedPantsManagedBean.addNewCustomizedPants}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();"/>
+                            <p:commandButton value="Create New Customized Pants" actionListener="#{customizedPantsManagedBean.addNewCustomizedPants}" update="@composite:dialogCreateNewOrder @composite:dialogCreateNewCustomizedPants" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();"/>
                         </p:column>
                     </p:row>
 
