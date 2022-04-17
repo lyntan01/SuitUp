@@ -52,14 +52,19 @@
                         <p:column><h:outputText id="customerNumber" value="#{viewAppointmentManagedBean.appointmentEntityToView.customer.contactNumber}" /></p:column>
                     </p:row>
 
-                    <!--                    <p:row>
-                                            <p:column><p:outputLabel for="totalAmount" value="Total Amount" /></p:column>
-                                            <p:column>
-                                                <h:outputText id="totalAmount" value="#{viewAppointmentManagedBean.appointmentEntityToView.totalAmount}">
-                                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
-                                                </h:outputText>
-                                            </p:column>
-                                        </p:row>-->
+                    <p:row rendered="${viewAppointmentManagedBean.appointmentEntityToView.transaction != null}">
+                        <p:column><p:outputLabel for="paymentDate" value="Payment Date" /></p:column>
+                        <p:column><h:outputText id="paymentDate" value="${viewAppointmentManagedBean.appointmentEntityToView.transaction.paymentDate}" >
+                                <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" timeZone="GMT+8"/>
+                            </h:outputText></p:column>
+                    </p:row>
+
+                    <p:row rendered="${viewAppointmentManagedBean.appointmentEntityToView.transaction != null}">
+                        <p:column><p:outputLabel for="paymentAmount" value="Payment Amount" /></p:column>
+                        <p:column><h:outputText id="paymentAmount" value="${viewAppointmentManagedBean.appointmentEntityToView.transaction.totalAmount}" >
+                                <f:convertNumber maxFractionDigits="2" minFractionDigits="2" type="currency" currencyCode="SGD" />
+                            </h:outputText></p:column>
+                    </p:row>
 
                 </p:panelGrid>
 

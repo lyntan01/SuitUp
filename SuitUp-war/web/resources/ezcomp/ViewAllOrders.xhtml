@@ -27,7 +27,7 @@
 
                 <f:facet name="header">
                     <p:commandButton value="Create New Order" onclick="PF('dialogCreateNewOrder').show()" icon="pi pi-plus" style="float: left; margin-top: -1px;"/>
-                    
+
                     <div style="text-align: right;">
                         <h:outputText value="Search all fields: " />
                         <p:inputText id="globalFilter" onkeyup="PF('dataTableAllOrders').filter()" style="width: 20em" placeholder="Enter keyword"/>
@@ -58,6 +58,7 @@
 
                 <p:column headerText="Order Date Time" sortBy="#{orderEntity.orderDateTime}" filterBy="#{orderEntity.orderDateTime}" filterMatchMode="contains">
                     <h:outputText id="orderDateTime" value="#{orderEntity.orderDateTime}">
+                        <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" timeZone="GMT+8"/>
                     </h:outputText>
                     <p:tooltip for="orderDateTime" value="#{orderEntity.orderDateTime}">
 
@@ -76,10 +77,10 @@
                     <p:commandButton actionListener="#{orderManagementManagedBean.doUpdateOrder}" update="@composite:@next:@next:dialogUpdateOrder1 @composite:@next:@next:dialogUpdateOrder2" oncomplete="PF('dialogUpdateOrder1').show()" icon="pi pi-pencil" title="Update">
                         <f:attribute name="orderEntityToUpdate" value="#{orderEntity}" />
                     </p:commandButton>
-<!--                     <p:commandButton actionListener="#{orderManagementManagedBean.doPaymentForOrder}" value="PAY" disabled="#{orderEntity.transaction != null}"
-                                    update="@composite:@next:@next:dialogPayOrder1 @composite:@next:@next:dialogPayOrder2" oncomplete="PF('dialogPayOrder').show()" title="Pay">
+                    <p:commandButton actionListener="#{orderManagementManagedBean.doPaymentForOrder}" value="PAY" disabled="#{orderEntity.transaction != null}"
+                                     update="@composite:@next:@next:@next:@next:dialogPayOrder1 @composite:@next:@next:@next:@next:dialogPayOrder2" oncomplete="PF('dialogPayOrder1').show()" title="Pay">
                         <f:attribute name="orderEntityToPayFor" value="#{orderEntity}" />
-                    </p:commandButton>-->
+                    </p:commandButton>
                 </p:column>
 
                 <p:columnGroup type="footer">   

@@ -42,23 +42,25 @@ public class EmailManager {
 
         emailBody += "You have completed the checkout successfully for Order ID: " + orderEntity.getOrderId() + "\n\n";
 
-//        emailBody += "You have completed the checkout successfully for Sale Transaction ID: " + saleTransactionEntity.getSaleTransactionId() + "\n\n";
-//        emailBody += "S/N     SKU Code     Product Name     Quantity     Unit Price     Sub-Total\n\n";
+        emailBody += String.format("%5s%20s%10s%20s\n\n", "S/N", "Product Name", "Quantity", "Sub-total");        
+        
+//        emailBody += "S/N     Product Name     Quantity     Sub-Total\n\n";
 //
-//        int count = 1;
-//        for (OrderLineItemEntity orderLineItem : orderEntity.getOrderLineItems()) {
-//            emailBody += count
-//                    + "     " + orderLineItem.getProduct().get()
-//                    + "     " + saleTransactionLineItemEntity.getProductEntity().getName()
-//                    + "     " + saleTransactionLineItemEntity.getQuantity()
-//                    + "     " + NumberFormat.getCurrencyInstance().format(saleTransactionLineItemEntity.getUnitPrice())
-//                    + "     " + NumberFormat.getCurrencyInstance().format(saleTransactionLineItemEntity.getSubTotal()) + "\n";
+        int count = 1;
+        for (OrderLineItemEntity orderLineItem : orderEntity.getOrderLineItems()) {
+            
+            emailBody += String.format("%5s%20s%10s%20s\n",
+                    count,
+                    orderLineItem.getProduct().getName(),
+                    orderLineItem.getQuantity(),
+                    NumberFormat.getCurrencyInstance().format(orderLineItem.getSubTotal())
+                    );
 //
-//            count++;
-//        }
+            count++;
+        }
 //
 //
-//        emailBody += "\nTotal Line Item: " + orderEntity.getTotalOrderItem() + ", Total Quantity: " + orderEntity.getTotalQuantity() + ", Total Amount: " + NumberFormat.getCurrencyInstance().format(orderEntity.getTotalAmount()) + "\n";
+        emailBody += "\nTotal Line Item: " + orderEntity.getTotalLineItem()+ ", Total Quantity: " + orderEntity.getTotalQuantity() + ", Total Amount: " + NumberFormat.getCurrencyInstance().format(orderEntity.getTotalAmount()) + "\n";
         try {
             Properties props = new Properties();
             props.put("mail.transport.protocol", "smtp");
@@ -76,7 +78,7 @@ public class EmailManager {
             if (msg != null) {
                 msg.setFrom(InternetAddress.parse(fromEmailAddress, false)[0]);
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress, false));
-                msg.setSubject("Receipt for Order #" + orderEntity.getSerialNumber());
+                msg.setSubject("Receipt for Order " + orderEntity.getSerialNumber());
                 msg.setText(emailBody);
                 msg.setHeader("X-Mailer", mailer);
 
@@ -146,7 +148,7 @@ public class EmailManager {
     public Boolean emailUpdatedOrderStatus(OrderEntity orderEntity, CustomerEntity customerEntity, String fromEmailAddress, String toEmailAddress) {
         String emailBody = "Dear " + customerEntity.getFirstName() + "," + "\n";
         emailBody += " \n";
-        emailBody += "Your order #" + orderEntity.getSerialNumber() + " has been updated to " + orderEntity.getOrderStatusEnum() + ".";
+        emailBody += "Your order " + orderEntity.getSerialNumber() + " has been updated to " + orderEntity.getOrderStatusEnum() + ".";
 
         try {
             Properties props = new Properties();
@@ -165,7 +167,7 @@ public class EmailManager {
             if (msg != null) {
                 msg.setFrom(InternetAddress.parse(fromEmailAddress, false)[0]);
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress, false));
-                msg.setSubject("Order #" + orderEntity.getSerialNumber() + " has been updated to " + orderEntity.getOrderStatusEnum());
+                msg.setSubject("Order " + orderEntity.getSerialNumber() + " has been updated to " + orderEntity.getOrderStatusEnum());
                 msg.setText(emailBody);
                 msg.setHeader("X-Mailer", mailer);
 

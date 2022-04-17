@@ -28,6 +28,7 @@
                         <p:column><p:outputLabel for="serialNumber" value="Serial Number" /></p:column>
                         <p:column><h:outputText id="serialNumber" value="#{viewOrderManagedBean.orderEntityToView.serialNumber}" /></p:column>
                     </p:row>
+                    
 
                     <p:row>                    
                         <p:column><p:outputLabel for="totalOrderLineItem" value="Total Order Line Item" /></p:column>
@@ -37,6 +38,14 @@
                     <p:row>
                         <p:column><p:outputLabel for="totalQuantity" value="Total Quantity" /></p:column>
                         <p:column><h:outputText id="totalQuantity" value="#{viewOrderManagedBean.orderEntityToView.totalQuantity}" /></p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column><p:outputLabel value="Items Bought" /></p:column>
+                        <p:column> <p:dataList value="#{viewOrderManagedBean.orderEntityToView.orderLineItems}" var="orderLineItem" type="ordered">
+                            #{orderLineItem}
+                        </p:dataList></p:column>
                     </p:row>
 
                     <p:row>
@@ -52,6 +61,7 @@
                         <p:column><p:outputLabel for="orderDateTime" value="Order Date Time" /></p:column>
                         <p:column>
                             <h:outputText id="orderDateTime" value="#{viewOrderManagedBean.orderEntityToView.orderDateTime}">
+                                <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" timeZone="GMT+8"/>
                             </h:outputText>
                         </p:column>
                     </p:row>
@@ -69,6 +79,14 @@
                     <p:row>
                         <p:column><p:outputLabel for="orderStatus" value="Order Status" /></p:column>
                         <p:column><h:outputText id="orderStatus" value="${viewOrderManagedBean.orderEntityToView.orderStatusEnum}" /></p:column>
+                    </p:row>
+
+
+                    <p:row rendered="${viewOrderManagedBean.orderEntityToView.transaction != null}">
+                        <p:column><p:outputLabel for="paymentDate" value="Payment Date" /></p:column>
+                        <p:column><h:outputText id="paymentDate" value="${viewOrderManagedBean.orderEntityToView.transaction.paymentDate}" >
+                                <f:convertDateTime pattern="EEE, d MMM yyyy h:mm a" timeZone="GMT+8"/>
+                            </h:outputText></p:column>
                     </p:row>
 
                 </p:panelGrid>
