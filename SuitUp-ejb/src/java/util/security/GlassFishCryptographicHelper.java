@@ -14,10 +14,10 @@ public class GlassFishCryptographicHelper
     // This works only if invoked on server side
     //private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = System.getProperty("user.dir");
     // On client side, easier to hardcode the path for demonstration purpose
-    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/keithcharleschan/glassfish-5.1.0/glassfish/domains/domain1/config";
+//    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/keithcharleschan/glassfish-5.1.0/glassfish/domains/domain1/config";
 //    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/lyntan/glassfish-5.1.0/glassfish/domains/domain1/config";
     // private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/meganyee/glassfish-5.1.0/glassfish/domains/domain1/config";
-//    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/xianhui/glassfish-5.1.0/glassfish/domains/domain1/config";
+    private static final String GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY = "/Users/xianhui/glassfish-5.1.0/glassfish/domains/domain1/config";
 
     private static final String GLASSFISH_DEFAULT_KEYSTORE_NAME = "keystore.jks";
     private static final String GLASSFISH_DEFAULT_KEYSTORE_PATH = GLASSFISH_DEFAULT_DOMAIN_CONFIG_DIRECTORY + System.getProperty("file.separator") + GLASSFISH_DEFAULT_KEYSTORE_NAME;

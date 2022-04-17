@@ -283,7 +283,7 @@ public class OrderEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderEntity{" + "orderId=" + orderId + ", serialNumber=" + serialNumber + ", totalLineItem=" + totalLineItem + ", totalQuantity=" + totalQuantity + ", totalAmount=" + totalAmount + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
+        return "OrderEntity{" + "orderId=" + orderId + ", serialNumber=" + serialNumber + ", totalLineItem=" + totalLineItem + ", totalQuantity=" + totalQuantity + ", totalAmount=" + totalAmount + ", orderDateTime=" + orderDateTime + ", expressOrder=" + expressOrder + ", orderStatusEnum=" + orderStatusEnum + ", collectionMethodEnum=" + collectionMethodEnum + ", customer=" + customer.getFullName() + ", deliveryAddress=" + deliveryAddress + ", promotion=" + promotion + ", transaction=" + transaction + ", orderLineItems=" + orderLineItems + '}';
     }
 
 }
