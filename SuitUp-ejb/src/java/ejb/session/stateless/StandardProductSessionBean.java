@@ -8,9 +8,12 @@ package ejb.session.stateless;
 import entity.CategoryEntity;
 import entity.StandardProductEntity;
 import entity.TagEntity;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -195,6 +198,25 @@ public class StandardProductSessionBean implements StandardProductSessionBeanLoc
             throw new DeleteEntityException("StandardProduct ID " + standardProductId + " is associated with existing order(s) and cannot be deleted!");
         }
         
+    }
+    
+
+    // Checks for reorder every hour
+    @Schedule(second = "0", minute = "0", hour = "*/1", info = "productEntityReorderQuantityCheckTimer")
+    public void productEntityReorderQuantityCheckTimer()
+    {
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        System.out.println("********** StandardProductEntitySessionBean.productEntityReorderQuantityCheckTimer(): Timeout at " + timeStamp);
+        
+        List<StandardProductEntity> productEntities = retrieveAllStandardProducts();
+        
+        for(StandardProductEntity productEntity:productEntities)
+        {
+            if(productEntity.getQuantityInStock().compareTo(productEntity.getReorderQuantity()) <= 0)
+            {
+                System.out.println("********** Product " + productEntity.getSkuCode() + " requires reordering: QOH = " + productEntity.getQuantityInStock()+ "; RQ = " + productEntity.getReorderQuantity());
+            }
+        }
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<StandardProductEntity>> constraintViolations) {
