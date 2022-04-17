@@ -186,7 +186,7 @@
                         </p:column>
                         <p:column>
                             <!--<p:commandButton value="Confirm Payment" update="@composite:dialogPayAppointment1 @form @composite:@previous:@previous:formAllAppointments:dataTableAllAppointments" process="@this" oncomplete="" actionListener="#{appointmentManagementManagedBean.doCompletePayment}" />-->
-                            <p:commandButton value="Confirm Payment" update="@composite:dialogPayAppointment1 @form @composite:@previous:@previous:formAllAppointments:dataTableAllAppointments" actionListener="#{appointmentManagementManagedBean.doCompletePayment}" oncomplete="PF('dialogPayAppointment2').show();" />
+                            <p:commandButton value="Confirm Payment" process="@form" update="@composite:dialogPayAppointment1 @form @composite:@previous:@previous:formAllAppointments:dataTableAllAppointments" actionListener="#{appointmentManagementManagedBean.doCompletePayment}" oncomplete="PF('dialogPayAppointment2').show();" />
                         </p:column>
 
                     </p:row>

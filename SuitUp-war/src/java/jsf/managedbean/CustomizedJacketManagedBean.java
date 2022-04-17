@@ -26,11 +26,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import util.exception.CustomizationNotFoundException;
-import util.exception.CustomizedProductIdExistsException;
-import util.exception.CustomizedProductNotFoundException;
-import util.exception.InputDataValidationException;
-import util.exception.JacketMeasurementNotFoundException;
-import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -39,7 +34,6 @@ import util.exception.UnknownPersistenceException;
 @Named(value = "customizedJacketManagedBean")
 @ViewScoped
 public class CustomizedJacketManagedBean implements Serializable {
-
 
     @EJB
     private CustomizedJacketSessionBeanLocal customizedJacketSessionBeanLocal;
@@ -61,7 +55,7 @@ public class CustomizedJacketManagedBean implements Serializable {
     private List<PocketStyleEntity> pocketStyles;
 
     private CustomizedJacketEntity newCustomizedJacket;
-    
+
     private Long innerFabricId;
     private Long outerFabricId;
     private Long jacketStyleId;
@@ -80,51 +74,55 @@ public class CustomizedJacketManagedBean implements Serializable {
         jacketStyles = jacketStyleSessionBeanLocal.retrieveAllJacketStyles();
         pocketStyles = pocketStyleSessionBeanLocal.retrieveAllPocketStyles();
     }
-    
+
     public void initialiseState() {
         fabrics = fabricSessionBeanLocal.retrieveAllFabrics();
         jacketStyles = jacketStyleSessionBeanLocal.retrieveAllJacketStyles();
         pocketStyles = pocketStyleSessionBeanLocal.retrieveAllPocketStyles();
     }
 
-    public void createNewCustomizedJacket(ActionEvent event) {
+    public void addNewCustomizedJacket(ActionEvent event) {
         try {
-            System.out.println("getJacketStyleId() == null: " + getJacketStyleId() == null);
-            System.out.println("getPocketStyleId() == null: " + getPocketStyleId() == null);
-            System.out.println("getInnerFabricId() == null: " + getInnerFabricId() == null);
-            System.out.println("getOuterFabricId() == null: " + getOuterFabricId() == null);
+//            System.out.println("getJacketStyleId() == null: " + getJacketStyleId() == null);
+//            System.out.println("getPocketStyleId() == null: " + getPocketStyleId() == null);
+//            System.out.println("getInnerFabricId() == null: " + getInnerFabricId() == null);
+//            System.out.println("getOuterFabricId() == null: " + getOuterFabricId() == null);
 
             BigDecimal totalPrice = newCustomizedJacket.getBasePrice().add(fabricSessionBeanLocal.retrieveFabricById(getOuterFabricId()).getAdditionalPrice()
                     .add(fabricSessionBeanLocal.retrieveFabricById(getInnerFabricId()).getAdditionalPrice()
                             .add(jacketStyleSessionBeanLocal.retrieveJacketStyleById(getJacketStyleId()).getAdditionalPrice()
-                                .add(pocketStyleSessionBeanLocal.retrievePocketStyleById(getPocketStyleId()).getAdditionalPrice()))));
-            
+                                    .add(pocketStyleSessionBeanLocal.retrievePocketStyleById(getPocketStyleId()).getAdditionalPrice()))));
+
             newCustomizedJacket.setTotalPrice(totalPrice);
             newCustomizedJacket.setJacketMeasurement(createOrderManagedBean.getCurrentCustomer().getJacketMeasurement());
-            
+
             newCustomizedJacket.setInnerFabric(fabricSessionBeanLocal.retrieveFabricById(getInnerFabricId()));
             newCustomizedJacket.setOuterFabric(fabricSessionBeanLocal.retrieveFabricById(getOuterFabricId()));
             newCustomizedJacket.setJacketStyle(jacketStyleSessionBeanLocal.retrieveJacketStyleById(getJacketStyleId()));
             newCustomizedJacket.setPocketStyle(pocketStyleSessionBeanLocal.retrievePocketStyleById(getPocketStyleId()));
-            
-            Long productId = customizedJacketSessionBeanLocal.createNewCustomizedJacket(newCustomizedJacket, getPocketStyleId(), getJacketStyleId(), getInnerFabricId(), getOuterFabricId(), newCustomizedJacket.getJacketMeasurement().getJacketMeasurementId());
-            
-            try {
-                createOrderManagedBean.addItem(customizedJacketSessionBeanLocal.retrieveCustomizedJacketById(productId), 1);
-            } catch (CustomizedProductNotFoundException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when retrueving the new jacket: " + ex.getMessage(), null));
-            }
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Customized Jacket created successfully (Jacket ID: " + productId + ")", null));
-            
+
+            createOrderManagedBean.addItem(newCustomizedJacket, 1);
+//            Long productId = customizedJacketSessionBeanLocal.createNewCustomizedJacket(newCustomizedJacket, getPocketStyleId(), getJacketStyleId(), getInnerFabricId(), getOuterFabricId(), newCustomizedJacket.getJacketMeasurement().getJacketMeasurementId());
+//            
+//            try {
+//                createOrderManagedBean.addItem(customizedJacketSessionBeanLocal.retrieveCustomizedJacketById(productId), 1);
+//            } catch (CustomizedProductNotFoundException ex) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when retrueving the new jacket: " + ex.getMessage(), null));
+//            }
+//            
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Customized Jacket created successfully (Jacket ID: " + productId + ")", null));
+
             newCustomizedJacket = new CustomizedJacketEntity();
             setInnerFabricId(null);
             setOuterFabricId(null);
             setPocketStyleId(null);
             setJacketStyleId(null);
-            
-        } catch (CustomizedProductIdExistsException | JacketMeasurementNotFoundException | CustomizationNotFoundException | UnknownPersistenceException | InputDataValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new jacket: " + ex.getMessage(), null));
+
+//        } catch (CustomizedProductIdExistsException | JacketMeasurementNotFoundException | CustomizationNotFoundException | UnknownPersistenceException | InputDataValidationException ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new jacket: " + ex.getMessage(), null));
+//        }
+        } catch (CustomizationNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating retrieving customization: " + ex.getMessage(), null));
         }
     }
 
@@ -193,5 +191,4 @@ public class CustomizedJacketManagedBean implements Serializable {
         this.pocketStyleId = pocketStyleId;
     }
 
- 
 }

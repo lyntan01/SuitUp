@@ -160,6 +160,7 @@ public class CreateOrderManagedBean implements Serializable {
 
     public void incrementQuantity(ActionEvent event) {
         ProductEntity product = (ProductEntity) event.getComponent().getAttributes().get("productToIncrement");
+        System.out.println(product);
         this.addItem(product, 1);
     }
 
@@ -169,6 +170,8 @@ public class CreateOrderManagedBean implements Serializable {
     }
 
     public void addItem(ProductEntity product, int quantity) {
+        
+        System.out.println(product);
 
         boolean hasItem = false;
 
@@ -182,14 +185,26 @@ public class CreateOrderManagedBean implements Serializable {
 
         if (orderLineItemsEntities.size() > 0) {
             for (OrderLineItemEntity orderItem : orderLineItemsEntities) {
-                if (orderItem.getProduct().getProductId().equals(product.getProductId())) {
-                    hasItem = true;
+                if (product instanceof StandardProductEntity) {
+                    if (orderItem.getProduct().getProductId().equals(product.getProductId())) {
+                        hasItem = true;
 
-                    orderItem.setQuantity(orderItem.getQuantity() + quantity);
-                    orderItem.setSubTotal(unitPrice.multiply(new BigDecimal(orderItem.getQuantity())));
+                        orderItem.setQuantity(orderItem.getQuantity() + quantity);
+                        orderItem.setSubTotal(unitPrice.multiply(new BigDecimal(orderItem.getQuantity())));
 
-                    totalAmount = totalAmount.add(unitPrice.multiply(new BigDecimal(quantity)));
-                    totalQuantity += quantity;
+                        totalAmount = totalAmount.add(unitPrice.multiply(new BigDecimal(quantity)));
+                        totalQuantity += quantity;
+                    }
+                } else if (product instanceof CustomizedProductEntity) {
+                    if (orderItem.getProduct().getName().equals(product.getName())) {
+                        hasItem = true;
+
+                        orderItem.setQuantity(orderItem.getQuantity() + quantity);
+                        orderItem.setSubTotal(unitPrice.multiply(new BigDecimal(orderItem.getQuantity())));
+
+                        totalAmount = totalAmount.add(unitPrice.multiply(new BigDecimal(quantity)));
+                        totalQuantity += quantity;
+                    }
                 }
             }
         }
