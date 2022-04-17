@@ -124,11 +124,11 @@ public class OrderResource {
                 orderEntity.getCustomer().getOrders().clear();
                 orderEntity.getCustomer().getSupportTickets().clear();
                 orderEntity.getCustomer().getAppointments().clear();
-                
                 if (orderEntity.getTransaction() != null) {
                     orderEntity.getTransaction().setAppointment(null);
                     orderEntity.getTransaction().setOrder(null);
-                }  
+
+                }
             }
 
             GenericEntity<List<OrderEntity>> genericEntity = new GenericEntity<List<OrderEntity>>(orderEntities) {
