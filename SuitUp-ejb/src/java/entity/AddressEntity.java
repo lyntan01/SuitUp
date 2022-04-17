@@ -35,7 +35,7 @@ public class AddressEntity implements Serializable {
     private String phoneNumber;
     @Column(nullable = false, length = 128)
     @NotNull
-    @Size(max = 138)
+    @Size(max = 128)
     private String addressLineOne;
     @Column(length = 128)
     @Size(max = 128)

@@ -24,6 +24,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.OrderStatusEnum;
 import util.exception.AppointmentNotFoundException;
 import util.exception.CreateNewTransactionException;
 import util.exception.InputDataValidationException;
@@ -66,6 +67,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 } else if (orderId != null) {
                     OrderEntity order = orderSessionBeanLocal.retrieveOrderByOrderId(orderId); //think this will need catch exception after method created
                     order.setTransaction(newTransactionEntity);
+                    order.setOrderStatusEnum(OrderStatusEnum.PAID);
                     newTransactionEntity.setOrder(order);
                 } else if (appointmentId != null) {
                     AppointmentEntity appointment = appointmentSessionBeanLocal.retrieveAppointmentByAppointmentId(appointmentId); //think this will need catch exception after method created

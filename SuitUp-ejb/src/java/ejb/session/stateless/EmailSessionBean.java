@@ -29,6 +29,7 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    @Override
     public Boolean emailCheckoutNotificationSync(OrderEntity orderEntity, String toEmailAddress) {
 
         EmailManager emailManager = new EmailManager(USERNAME, PASSWORD);
@@ -62,7 +63,7 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
     }
 
     @Override
-    public Boolean emailVerificationCodeSync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
+    public Boolean emailVerificationCodeApptSync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
 
         EmailManager emailManager = new EmailManager(USERNAME, PASSWORD);
         Boolean sentEmail = emailManager.emailVerificationCode(appointmentEntity, selectedCreditCard, verificationCode, customerEntity, FROM_EMAIL_ADDRESS, toEmailAddress);
@@ -79,7 +80,7 @@ public class EmailSessionBean implements EmailSessionBeanLocal {
 
     @Asynchronous
     @Override
-    public Future<Boolean> emailVerificationCodeAsync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
+    public Future<Boolean> emailVerificationCodeApptAsync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress) {
 
         EmailManager emailManager = new EmailManager(USERNAME, PASSWORD);
         Boolean sentEmail = emailManager.emailVerificationCode(appointmentEntity, selectedCreditCard, verificationCode, customerEntity, FROM_EMAIL_ADDRESS, toEmailAddress);

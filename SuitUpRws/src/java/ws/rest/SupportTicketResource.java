@@ -9,6 +9,7 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.SupportTicketSessionBeanLocal;
 import entity.CustomerEntity;
 import entity.SupportTicketEntity;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -133,6 +134,11 @@ public class SupportTicketResource {
         {
             try
             {
+                SupportTicketEntity ticket = createSupportTicketReq.getSupportTicket();
+                ticket.setDateTime(new Date());
+                ticket.setIsResolved(Boolean.FALSE);
+                createSupportTicketReq.setSupportTicket(ticket);
+                
                 CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(createSupportTicketReq.getEmail(), createSupportTicketReq.getPassword());
                 System.out.println("********** SupportTicketResource.createSupportTicket(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 

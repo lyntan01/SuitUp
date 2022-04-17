@@ -202,7 +202,7 @@ public class AppointmentManagementManagedBean implements Serializable {
         RandomStringGenerator generator = new RandomStringGenerator(6);
         this.verificationCodeToVerifyAgainst = generator.nextString();
 //        System.out.println("Test: " + verificationCodeToVerifyAgainst);
-        emailSessionBeanLocal.emailVerificationCodeSync(selectedAppointmentEntityToUpdate, selectedStringCreditCard, verificationCodeToVerifyAgainst, customerOfAppointmentToPayFor, "keithccys@gmail.com");
+        emailSessionBeanLocal.emailVerificationCodeApptSync(selectedAppointmentEntityToUpdate, selectedStringCreditCard, verificationCodeToVerifyAgainst, customerOfAppointmentToPayFor, customerOfAppointmentToPayFor.getEmail());
     }
 
     public String getProvidedVerificationCodeByCustomer() {

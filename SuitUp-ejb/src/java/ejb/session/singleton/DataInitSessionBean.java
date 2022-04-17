@@ -215,7 +215,7 @@ public class DataInitSessionBean {
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor Two", AccessRightEnum.TAILOR, "tailor2", "password", storeEntity));
 
 //          <------------------------------CUSTOMER 1 INIT ------------------------->
-            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobby@gmail.com", "password", "99999999")); //Customer - 1L
+            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobbytan086@gmail.com", "password", "99999999")); //Customer - 1L
             addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
 
             Calendar calendar = new Calendar.Builder()
@@ -252,7 +252,7 @@ public class DataInitSessionBean {
             items.add(new OrderLineItemEntity(2, new BigDecimal("60.00"), productThree));
 
             //SerialNumber, TotalLineItems, TotalQuantity, TotalAmount, OrderDateTime, expressOrder, orderStatus, collectionMethod, List of OrderLineItems
-            OrderEntity testOrder = new OrderEntity("ABCDEF", 3, 6, new BigDecimal("120.00"), new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
+            OrderEntity testOrder = new OrderEntity("#A1BDF", 3, 6, new BigDecimal("120.00"), new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
 
             //Uses Bobby Tan and Bobby's Tan Address
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
@@ -406,7 +406,7 @@ public class DataInitSessionBean {
             //OrderLineItemEntity(Integer quantity, BigDecimal subTotal, ProductEntity product)
 
             //SerialNumber, TotalLineItems, TotalQuantity, TotalAmount, OrderDateTime, expressOrder, orderStatus, collectionMethod, List of OrderLineItems
-            OrderEntity testOrder = new OrderEntity("KQJSKE", 2, 2, totalAmount, new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
+            OrderEntity testOrder = new OrderEntity("#A2CEF", 2, 2, totalAmount, new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
 
             //Uses Bobby Tan and Bobby's Tan Address
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)

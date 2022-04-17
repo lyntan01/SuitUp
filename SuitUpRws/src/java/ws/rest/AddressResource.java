@@ -166,6 +166,9 @@ public class AddressResource {
         {
             try
             {                
+                System.out.println("test");
+                System.out.println(updateAddressReq.getEmail());
+                System.out.println(updateAddressReq.getPassword());
                 CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(updateAddressReq.getEmail(), updateAddressReq.getPassword());
                 System.out.println("********** AddressResource.updateAddress(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 

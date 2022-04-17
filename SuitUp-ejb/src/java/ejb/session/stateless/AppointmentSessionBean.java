@@ -149,12 +149,12 @@ public class AppointmentSessionBean implements AppointmentSessionBeanLocal {
     @Override
     public void deleteAppointment(Long appointmentId) throws AppointmentNotFoundException, DeleteEntityException {
         AppointmentEntity appointmentEntityToRemove = retrieveAppointmentByAppointmentId(appointmentId);
+        
+        System.out.println(appointmentEntityToRemove);
 
         if (appointmentEntityToRemove.getTransaction() == null) {
             appointmentEntityToRemove.getCustomer().getAppointments().remove(appointmentEntityToRemove);
             appointmentEntityToRemove.getStore().getAppointments().remove(appointmentEntityToRemove);
-            appointmentEntityToRemove.setCustomer(null);
-            appointmentEntityToRemove.setStore(null);
         } else {
             throw new DeleteEntityException("You can't delete an appointment that has a transaction associated with it!");
         }

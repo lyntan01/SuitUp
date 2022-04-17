@@ -203,7 +203,7 @@
                             <p:commandButton value="Back" oncomplete="PF('dialogPayOrder1').show(); PF('dialogPayOrder2').hide()" />
                         </p:column>
                         <p:column>
-                            <p:commandButton value="Confirm Payment" update="@composite:dialogPayOrder1 @form @composite:@previous:@previous:formAllOrders:dataTableAllOrders" actionListener="#{orderManagementManagedBean.doCompletePayment}" oncomplete="PF('dialogPayOrder2').show();" />
+                            <p:commandButton value="Confirm Payment" update="@composite:dialogPayOrder1 @form @composite:@previous:@previous:@previous:@previous:formAllOrders:dataTableAllOrders" actionListener="#{orderManagementManagedBean.doCompletePayment}" oncomplete="PF('dialogPayOrder2').show();" />
                         </p:column>
 
                     </p:row>

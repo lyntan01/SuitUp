@@ -22,9 +22,9 @@ public interface EmailSessionBeanLocal {
 
     public Future<Boolean> emailCheckoutNotificationAsync(OrderEntity orderEntity, String toEmailAddress) throws InterruptedException;
 
-    public Boolean emailVerificationCodeSync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
+    public Boolean emailVerificationCodeApptSync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
 
-    public Future<Boolean> emailVerificationCodeAsync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
+    public Future<Boolean> emailVerificationCodeApptAsync(AppointmentEntity appointmentEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
 
     public Boolean emailUpdatedOrderStatusSync(OrderEntity orderEntity, CustomerEntity customerEntity, String toEmailAddress);
 
@@ -33,6 +33,7 @@ public interface EmailSessionBeanLocal {
     public Boolean emailVerificationCodeSync(OrderEntity orderEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
 
     public Future<Boolean> emailVerificationCodeAsync(OrderEntity orderEntity, String selectedCreditCard, String verificationCode, CustomerEntity customerEntity, String toEmailAddress);
+
 
 
 }

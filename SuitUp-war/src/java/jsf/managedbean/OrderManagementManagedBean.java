@@ -34,6 +34,8 @@ import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.generator.RandomStringGenerator;
+import util.security.CryptographicHelper;
+import util.security.GlassFishCryptographicHelper;
 
 /**
  *
@@ -153,10 +155,14 @@ public class OrderManagementManagedBean implements Serializable {
     }
 
     public void sendEmail(ActionEvent event) {
-        emailSessionBeanLocal.emailUpdatedOrderStatusAsync(selectedOrderEntityToUpdate, selectedOrderEntityToUpdate.getCustomer(), "keithccys@gmail.com");
+        emailSessionBeanLocal.emailUpdatedOrderStatusAsync(selectedOrderEntityToUpdate, selectedOrderEntityToUpdate.getCustomer(), selectedOrderEntityToUpdate.getCustomer().getEmail());
     }
 
     public void doPaymentForOrder(ActionEvent event) throws Exception {
+
+        CryptographicHelper cryptographicHelper = CryptographicHelper.getInstance();
+        GlassFishCryptographicHelper glassFishCryptographicHelper = GlassFishCryptographicHelper.getInstanceOf();
+
         censoredCreditCards = new ArrayList<>();
 
         orderEntityToPayFor = (OrderEntity) event.getComponent().getAttributes().get("orderEntityToPayFor");
@@ -165,7 +171,8 @@ public class OrderManagementManagedBean implements Serializable {
         creditCards = customerOfOrderToPayFor.getCreditCards();
 
         for (CreditCardEntity creditCard : creditCards) {
-            censoredCreditCards.add("**** **** **** " + creditCard.getCardNumber().substring(12, 16));
+            String recoveredCardNumber = cryptographicHelper.doAESDecryption(creditCard.getCardNumber(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv());
+            censoredCreditCards.add("**** **** **** " + recoveredCardNumber.substring(12, 16));
         }
 
     }
@@ -237,7 +244,7 @@ public class OrderManagementManagedBean implements Serializable {
     public void generateVerification(ActionEvent event) {
         RandomStringGenerator generator = new RandomStringGenerator(6);
         this.verificationCodeToVerifyAgainst = generator.nextString();
-        emailSessionBeanLocal.emailVerificationCodeSync(orderEntityToPayFor, selectedStringCreditCard, verificationCodeToVerifyAgainst, customerOfOrderToPayFor, "keithccys@gmail.com");
+        emailSessionBeanLocal.emailVerificationCodeSync(orderEntityToPayFor, selectedStringCreditCard, verificationCodeToVerifyAgainst, customerOfOrderToPayFor, customerOfOrderToPayFor.getEmail());
     }
 
     public String getProvidedVerificationCodeByCustomer() {
@@ -258,10 +265,13 @@ public class OrderManagementManagedBean implements Serializable {
                 try {
                     System.out.println("Verification successful");
                     transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(orderEntityToPayFor.getTotalAmount(), new Date(), null, orderEntityToPayFor), null, orderEntityToPayFor.getOrderId());
+                    emailSessionBeanLocal.emailCheckoutNotificationSync(orderEntityToPayFor, orderEntityToPayFor.getCustomer().getEmail());
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Verification successful. Payment completed! Please close this window.", null));
                     //Need update the order status to paid and boolenan variable.
+//                    orderEntityToPayFor.setOrderStatusEnum(OrderStatusEnum.PAID);
+//                    orderSessionBeanLocal.updateOrder(orderEntityToPayFor);
                     verificationCodeToVerifyAgainst = "";
-                    //Add updating of payment status of the appointment to prevent further paying /extra checks
+                    //Add updating of payment status of the order to prevent further paying /extra checks
                 } catch (AppointmentNotFoundException | CreateNewTransactionException | OrderNotFoundException | InputDataValidationException | UnknownPersistenceException ex) {
                     System.out.println(ex.getMessage());
                 }

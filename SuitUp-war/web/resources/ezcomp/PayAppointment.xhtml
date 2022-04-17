@@ -99,7 +99,7 @@
                     <p:columnGroup type="footer">
                         <p:row>
                             <p:column colspan="3" style="text-align: center;">
-                                <p:commandButton value="Next" oncomplete="PF('dialogPayAppointment2').show(); PF('dialogPayAppointment1').hide()" update="@composite:dialogPayAppointment2" actionListener="#{appointmentManagementManagedBean.generateVerification}"/>                                
+                                <p:commandButton value="Next" oncomplete="PF('dialogPayAppointment2').show(); PF('dialogPayAppointment1').hide()" update="@composite:dialogPayAppointment2 @form @composite:@previous:@previous:formAllAppointments:dataTableAllAppointments" process="@form" actionListener="#{appointmentManagementManagedBean.generateVerification}"/>                                
                             </p:column>
                         </p:row>
                     </p:columnGroup>
