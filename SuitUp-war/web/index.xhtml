@@ -8,13 +8,13 @@
                 template="/template/defaultTemplate.xhtml">
 
     <ui:define name="content">
-        
+
         <h:form style="padding-top: 5%">
             <p:messages globalOnly="true" redisplay="false" closable="true" style="width: 360px; margin: 0 auto"/>
             <br/>
 
             <h:outputText value="SuitUp Management System Login" rendered="#{sessionScope.isLogin == false}" style="font-weight: bold; font-size: large; margin-bottom: 1em; display: block"/>
-            
+
             <p:panelGrid rendered="#{sessionScope.isLogin == false}" style="margin: 0 auto">
 
                 <p:row>
@@ -51,31 +51,66 @@
             </p:panelGrid>
 
         </h:form>
-        
+
         <h:panelGroup rendered="${sessionScope.isLogin == true}" style="margin-top: 10%;">
             <h:outputText value="Welcome Back, #{sessionScope.currentStaffEntity.firstName} #{sessionScope.currentStaffEntity.lastName}." /><br />
             <h:outputText value="You are currently logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." />
-  
-             <div class="flexBox" style="width: 80%; margin: 30px auto;">
-                <h:form id="formAllReports">
-                   
 
-                    <p:panel header="Orders Report" style="width: 48%; float: left;">
-                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateOrdersReport}" ajax="false" />
-                    </p:panel>
-                    
-                    <p:panel header="Staff Report" style="width: 48%; float: right;">
-                        <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateStaffReport}" ajax="false" />
-                    </p:panel>
+            <h:panelGroup rendered="${sessionScope.currentStaffEntity.accessRightEnum.name == 'Manager'}">
+                <div style="width: 80%; margin: 30px auto;">
+                    <h:form id="formAllReports">
 
-                </h:form>
-            </div> 
-        
+
+                        <p:panel header="Orders Report" style="width: 48%; float: left;">
+                            <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateOrdersReport}" ajax="false" />
+                        </p:panel>
+
+                        <p:panel header="Staff Report" style="width: 48%; float: right;">
+                            <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateStaffReport}" ajax="false" />
+                        </p:panel>
+
+                    </h:form>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="${sessionScope.currentStaffEntity.accessRightEnum.name == 'Cashier'}">
+                <div style="width: 80%; margin: 30px auto;">
+                    <h:form>
+
+
+                        <p:panel header="Orders Management" style="width: 48%; float: left;">
+                            <p:commandButton value="Shortcut" actionListener="#{loginManagedBean.goToOrderManagement}" />
+                        </p:panel>
+
+                        <p:panel header="Appointments Management" style="width: 48%; float: right;">
+                            <p:commandButton value="Shortcut" actionListener="#{loginManagedBean.goToAppointmentManagement}"/>
+                        </p:panel>
+
+                    </h:form>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="${sessionScope.currentStaffEntity.accessRightEnum.name == 'Tailor'}">
+                <div style="width: 80%; margin: 30px auto;">
+                    <h:form>
+
+
+                        <p:panel header="Appoinments Management" style="width: 48%; float: left;">
+                            <p:commandButton value="Shortcut" actionListener="#{loginManagedBean.goToAppointmentManagement}" />
+                        </p:panel>
+
+                        <p:panel header="Customers Management" style="width: 48%; float: right;">
+                            <p:commandButton value="Shortcut" actionListener="#{loginManagedBean.goToCustomerManagement}"/>
+                        </p:panel>
+
+                    </h:form>
+                </div>
+            </h:panelGroup>
         </h:panelGroup>
 
-        
-            
-           
+
+
+
     </ui:define>
 
 </ui:composition>
