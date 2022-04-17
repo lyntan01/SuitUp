@@ -24,11 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import util.exception.CustomizationNotFoundException;
-import util.exception.CustomizedProductIdExistsException;
-import util.exception.CustomizedProductNotFoundException;
-import util.exception.InputDataValidationException;
-import util.exception.PantsMeasurementNotFoundException;
-import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -70,16 +65,13 @@ public class CustomizedPantsManagedBean implements Serializable {
         pantsCutting = pantsCuttingSessionBeanLocal.retrieveAllPantsCutting();
     }
     
-    public void createNewCustomizedPants(ActionEvent event) {
+    public void addNewCustomizedPants(ActionEvent event) {
         try {
             System.out.println("fabricId == null: " + fabricId == null);
             System.out.println("pantsCuttingId == null: " + pantsCuttingId == null);
             
             FabricEntity frabic = fabricSessionBeanLocal.retrieveFabricById(fabricId);
             PantsCuttingEntity pantsCutting = pantsCuttingSessionBeanLocal.retrievePantsCuttingById(pantsCuttingId);
-            
-            System.out.println(frabic.getName());
-            System.out.println(pantsCutting.getName());
             
             BigDecimal totalPrice = newCustomizedPants.getBasePrice()
                     .add(fabricSessionBeanLocal.retrieveFabricById(fabricId).getAdditionalPrice()
@@ -91,22 +83,30 @@ public class CustomizedPantsManagedBean implements Serializable {
             newCustomizedPants.setFabric(frabic);
             newCustomizedPants.setPantsCutting(pantsCutting);
             
-            Long productId = customizedPantsSessionBeanLocal.createNewCustomizedPants(newCustomizedPants, fabricId, pantsCuttingId, newCustomizedPants.getPantsMeasurement().getPantsMeasurementId());
+            createOrderManagedBean.addItem(newCustomizedPants, 1);
             
-            try {
-                createOrderManagedBean.addItem(customizedPantsSessionBeanLocal.retrieveCustomizedPantsById(productId), 1);
-            } catch (CustomizedProductNotFoundException ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when retrieving the new pants: " + ex.getMessage(), null));
-            }
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Customized Pants created successfully (Pants ID: " + productId + ")", null));
+//            Long productId = customizedPantsSessionBeanLocal.createNewCustomizedPants(newCustomizedPants, fabricId, pantsCuttingId, newCustomizedPants.getPantsMeasurement().getPantsMeasurementId());
             
             newCustomizedPants = new CustomizedPantsEntity();
             fabricId = null;
             pantsCuttingId = null;
             
-        } catch (CustomizedProductIdExistsException | PantsMeasurementNotFoundException | CustomizationNotFoundException | UnknownPersistenceException | InputDataValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new pants: " + ex.getMessage(), null));
+            
+//            try {
+//                createOrderManagedBean.addItem(customizedPantsSessionBeanLocal.retrieveCustomizedPantsById(productId), 1);
+//            } catch (CustomizedProductNotFoundException ex) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when retrieving the new pants: " + ex.getMessage(), null));
+//            }
+//            
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Customized Pants created successfully (Pants ID: " + productId + ")", null));
+            
+            
+            
+//        } catch (CustomizedProductIdExistsException | PantsMeasurementNotFoundException | CustomizationNotFoundException | UnknownPersistenceException | InputDataValidationException ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new pants: " + ex.getMessage(), null));
+//        }
+        } catch (CustomizationNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating retrieving customization: " + ex.getMessage(), null));
         }
     }
     
