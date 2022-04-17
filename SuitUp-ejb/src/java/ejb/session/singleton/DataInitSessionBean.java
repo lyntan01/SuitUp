@@ -203,8 +203,8 @@ public class DataInitSessionBean {
         try {
 
 //          <------------------------------STORE INIT ------------------------->
-            Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp", "Best Suit Store", "09:00", "22:00", "62313264"));
-            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Store Address", "62313264", "10 Orchard Road", "Far East Plaza", "228213"), storeId);
+            Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp Orchard", "Orchard Store", "09:00", "22:00", "62313264"));
+            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Orchard", "62313264", "10 Orchard Road", "Far East Plaza, #02-03", "228213"), storeId);
 
 //          <------------------------------STAFF INIT ------------------------->
             StoreEntity storeEntity = storeSessionBeanLocal.retrieveStoreByStoreId(storeId);

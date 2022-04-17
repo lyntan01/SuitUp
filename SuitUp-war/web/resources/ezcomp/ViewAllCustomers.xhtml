@@ -35,25 +35,31 @@
                     <h:outputText value="#{customerEntity.customerId}" />
                 </p:column>
 
-                <p:column style="width: 10em;" headerText="First Name" sortBy="#{customerEntity.firstName}" filterBy="#{customerEntity.firstName}" filterMatchMode="contains">
+                <p:column style="width: 8em;" headerText="First Name" sortBy="#{customerEntity.firstName}" filterBy="#{customerEntity.firstName}" filterMatchMode="contains">
                     <h:outputText value="#{customerEntity.firstName}" />
                 </p:column>
 
-                <p:column headerText="Last Name" sortBy="#{customerEntity.lastName}" filterBy="#{customerEntity.lastName}" filterMatchMode="contains">
+                <p:column style="width: 5em;" headerText="Last Name" sortBy="#{customerEntity.lastName}" filterBy="#{customerEntity.lastName}" filterMatchMode="contains">
                     <h:outputText value="#{customerEntity.lastName}" />
                 </p:column>
 
-                <p:column headerText="Email" sortBy="#{customerEntity.email}" filterBy="#{customerEntity.email}" filterMatchMode="contains">
+                <p:column style="width: 5em;" headerText="Email" sortBy="#{customerEntity.email}" filterBy="#{customerEntity.email}" filterMatchMode="contains">
                     <h:outputText value="#{customerEntity.email}" />
                 </p:column>
 
-                <p:column headerText="Contact Number" sortBy="#{customerEntity.contactNumber}" filterBy="#{customerEntity.contactNumber}" filterMatchMode="contains">
+                <p:column style="width: 3em;" headerText="Contact Number" sortBy="#{customerEntity.contactNumber}" filterBy="#{customerEntity.contactNumber}" filterMatchMode="contains">
                     <h:outputText value="#{customerEntity.contactNumber}"/>
                 </p:column>
 
-                <p:column style="width: 5em; text-align: center;" headerText="Action">
-                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" update="UpdateCustomer:formUpdateCustomer" oncomplete="PF('dialogUpdateCustomer').show()" icon="ui-icon-pencil" title="Update">
+                <p:column style="width: 14em; text-align: center;" headerText="Update">
+                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" update="UpdateCustomer:formUpdateCustomer" oncomplete="PF('dialogUpdateCustomer').show()" title="Customer">
                         <f:attribute name="customerEntityToUpdate" value="#{customerEntity}" />
+                    </p:commandButton>
+                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateJacketMeasurement}" update="UpdateJacketMeasurement:formUpdateJacketMeasurement" oncomplete="PF('dialogUpdateJacketMeasurement').show()" title="Jacket Measurement">
+                        <f:attribute name="selectedCustomerToUpdateMeasurement" value="#{customerEntity}" />
+                    </p:commandButton>
+                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdatePantsMeasurement}" update="UpdatePantsMeasurement:formUpdatePantsMeasurement" oncomplete="PF('dialogUpdatePantsMeasurement').show()" title="Pants Measurement">
+                        <f:attribute name="selectedCustomerToUpdateMeasurement" value="#{customerEntity}" />
                     </p:commandButton>
                 </p:column>
 

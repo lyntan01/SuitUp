@@ -35,6 +35,9 @@ public class CreateCustomizedJacketReq {
 
     }
 
+    public CreateCustomizedJacketReq() {
+    }
+
     public String getEmail() {
         return email;
     }

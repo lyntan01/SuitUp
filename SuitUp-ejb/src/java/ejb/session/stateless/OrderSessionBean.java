@@ -27,6 +27,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.CollectionMethodEnum;
 import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
 import util.exception.CancelOrderException;
@@ -73,6 +74,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
+    public static BigDecimal EXPRESS_DELIVERY_FEE = BigDecimal.valueOf(10.0);
+
     public OrderSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
@@ -96,13 +99,17 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                     newOrderEntity.setCustomer(customerEntity);
                     customerEntity.getOrders().add(newOrderEntity);
 
+                    if (newOrderEntity.getCollectionMethodEnum() == CollectionMethodEnum.DELIVERY && newOrderEntity.getExpressOrder()) {
+                        newOrderEntity.setTotalAmount(newOrderEntity.getTotalAmount().add(EXPRESS_DELIVERY_FEE));
+                    }
+
                     entityManager.persist(newOrderEntity);
 
                     for (OrderLineItemEntity orderLineItemEntity : newOrderEntity.getOrderLineItems()) {
                         if (orderLineItemEntity.getProduct() instanceof StandardProductEntity) {
                             standardProductSessionBeanLocal.debitQuantityOnHand(orderLineItemEntity.getProduct().getProductId(), orderLineItemEntity.getQuantity());
                         }
-                        
+
                         entityManager.persist(orderLineItemEntity);
                     }
 
@@ -190,14 +197,14 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     @Override
     public void updateOrderToBeCancelled(Long orderId) throws OrderNotFoundException, CancelOrderException {
         OrderEntity orderEntity = retrieveOrderByOrderId(orderId);
-        
+
         // Check for time (12h)
         Date orderDateTime = orderEntity.getOrderDateTime();
         Date currentTime = new Date();
         long differenceInTime = currentTime.getTime() - orderDateTime.getTime();
         long differenceInHours = (differenceInTime / (1000 * 60 * 60)) % 24;
-        
-        if ((int)differenceInHours <= 12) {
+
+        if ((int) differenceInHours <= 12) {
             try {
                 voidRefundOrder(orderId);
                 orderEntity.setOrderStatusEnum(OrderStatusEnum.CANCELLED);
@@ -207,25 +214,6 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             }
         } else {
             throw new CancelOrderException("Order cannot be cancelled, as more than 12 hours have passed.");
-        }
-   
-    }
-
-    @Override
-    public BigDecimal calculateTotalAmount(Long orderId) throws OrderNotFoundException {
-
-        try {
-            OrderEntity orderEntity = retrieveOrderByOrderId(orderId);
-            BigDecimal totalAmount = BigDecimal.ZERO;
-
-            for (OrderLineItemEntity orderLineItemEntity : orderEntity.getOrderLineItems()) {
-                totalAmount = totalAmount.add(orderLineItemEntity.getSubTotal());
-            }
-
-            return totalAmount;
-
-        } catch (OrderNotFoundException ex) {
-            throw new OrderNotFoundException("Order ID " + orderId + " does not exist!");
         }
 
     }

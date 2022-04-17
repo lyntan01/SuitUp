@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      template="/template/defaultTemplate.xhtml"
+      xmlns:p="http://primefaces.org/ui">>
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form id="formUpdatePantsMeasurement">
+
+                <p:dialog id="dialogUpdatePantsMeasurement" widgetVar="dialogUpdatePantsMeasurement" header="Update Customer Pants Measurement" closable="true">
+
+                    <p:messages id="messagesUpdatePantsMeasurement" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Customer ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerManagementManagedBean.selectedCustomerToUpdateMeasurement.customerId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="legsLength" value="Legs Length " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="legsLength" value="#{customerManagementManagedBean.pantsMeasurement.legsLength}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Legs Length Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="legsLength" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="lowerWaistGirth" value="Lower Waist Girth: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="lowerWaistGirth" value="#{customerManagementManagedBean.pantsMeasurement.lowerWaistGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Lower Waist Girth Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="lowerWaistGirth" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="hipGirth" value="Hip Girth: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="hipGirth" value="#{customerManagementManagedBean.pantsMeasurement.hipGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Hip Girth Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="hipGirth" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="crotch" value="Crotch Width: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="crotch" value="#{customerManagementManagedBean.pantsMeasurement.crotch}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Crotch Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="crotch" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="thighGirth" value="Thigh Girth: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="thighGirth" value="#{customerManagementManagedBean.pantsMeasurement.thighGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Thigh Girth Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="thighGirth" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="kneeGirth" value="Knee Girth: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="kneeGirth" value="#{customerManagementManagedBean.pantsMeasurement.kneeGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Knee Girth Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="kneeGirth" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="calfGirth" value="Calf Girth " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="calfGirth" value="#{customerManagementManagedBean.pantsMeasurement.calfGirth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Calf Girth Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="calfGirth" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="pantsOpeningWidth" value="Pants Opening Width: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="pantsOpeningWidth" value="#{customerManagementManagedBean.pantsMeasurement.pantsOpeningWidth}" placeholder="100" min="0" stepFactor="0.1" required="true" requiredMessage="Pants Opening Width Measurement is required" />
+                        </p:column>
+                            <p:column>
+                                <p:message for="pantsOpeningWidth" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton value="Update Pants Measurement" update="@form ViewAllCustomers:formAllCustomers:dataTableAllCustomers" actionListener="#{customerManagementManagedBean.updatePantsMeasurement}" oncomplete="PF('dialogUpdateJacketMeasurement').show();" rendered="#{customerManagementManagedBean.selectedCustomerToUpdateMeasurement.pantsMeasurement!=null}" />
+                                <p:commandButton value="Create Pants Measurement" update="@form ViewAllCustomers:formAllCustomers:dataTableAllCustomers" actionListener="#{customerManagementManagedBean.updatePantsMeasurement}" oncomplete="PF('dialogUpdateJacketMeasurement').show();" rendered="#{customerManagementManagedBean.selectedCustomerToUpdateMeasurement.pantsMeasurement==null}" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+        
+    </cc:implementation>
+</html>

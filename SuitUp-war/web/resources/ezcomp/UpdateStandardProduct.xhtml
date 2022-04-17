@@ -74,7 +74,7 @@
                                 <p:outputLabel for="quantityInStock" value="Quantity In Stock " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="quantityInStock" value="#{standardProductManagementManagedBean.selectedStandardProductToUpdate.quantityInStock}" placeholder="100" min="0" required="true" requiredMessage="Quantity On Hand is required" />
+                                <p:spinner id="quantityInStock" value="#{standardProductManagementManagedBean.selectedStandardProductToUpdate.quantityInStock}" style="width:12em" placeholder="100" min="0" required="true" requiredMessage="Quantity On Hand is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="quantityInStock" />
@@ -86,7 +86,7 @@
                                 <p:outputLabel for="reorderQuantity" value="Reorder Quantity " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="reorderQuantity" value="#{standardProductManagementManagedBean.selectedStandardProductToUpdate.reorderQuantity}" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" />
+                                <p:spinner id="reorderQuantity" value="#{standardProductManagementManagedBean.selectedStandardProductToUpdate.reorderQuantity}" style="width:12em" placeholder="10" min="0" max="1000000" stepFactor="10" required="true" requiredMessage="Reorder Quantity is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="reorderQuantity" />
@@ -98,7 +98,7 @@
                                 <p:outputLabel for="unitPrice" value="Unit Price " />
                             </p:column>
                             <p:column>
-                                <p:spinner id="unitPrice" value="#{standardProductManagementManagedBean.selectedStandardProductToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
+                                <p:spinner id="unitPrice" value="#{standardProductManagementManagedBean.selectedStandardProductToUpdate.unitPrice}" style="width:12em" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
                             </p:column>
                             <p:column>
                                 <p:message for="unitPrice" />
@@ -110,7 +110,7 @@
                                 <p:outputLabel for="category" value="Category " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="category" value="#{standardProductManagementManagedBean.categoryIdUpdate}">
+                                <p:selectOneMenu id="category" style="width:12em" value="#{standardProductManagementManagedBean.categoryIdUpdate}">
                                     <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
                                     <f:selectItems value="#{standardProductManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
                                 </p:selectOneMenu>

@@ -30,6 +30,9 @@ public class CreateCustomizedPantsReq {
 
     }
 
+    public CreateCustomizedPantsReq() {
+    }
+
     public String getEmail() {
         return email;
     }

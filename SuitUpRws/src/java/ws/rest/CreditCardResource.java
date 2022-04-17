@@ -38,6 +38,8 @@ import util.exception.CreditCardNumberExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UpdateEntityException;
+import util.security.CryptographicHelper;
+import util.security.GlassFishCryptographicHelper;
 import ws.datamodel.CreateCreditCardReq;
 import ws.datamodel.UpdateCreditCardReq;
 
@@ -68,10 +70,6 @@ public class CreditCardResource {
     public Response createCreditCard(CreateCreditCardReq createCreditCardReq) {
         if (createCreditCardReq != null) {
             try {
-                LocalDateTime date = Instant.ofEpochMilli(createCreditCardReq.getExpiryDate()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-                Date expiryDate = Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
-
-                createCreditCardReq.getNewCreditCard().setExpiryDate(expiryDate);
 
                 CustomerEntity customer = customerSessionBeanLocal.customerLogin(createCreditCardReq.getEmail(), createCreditCardReq.getPassword());
                 Long customerId = customer.getCustomerId();
@@ -111,18 +109,26 @@ public class CreditCardResource {
 
     }
 
-    @Path("retrieveAllCreditCards")
+    @Path("retrieveCreditCards")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllCreditCards(@QueryParam("email") String email,
+    public Response retrieveCreditCards(@QueryParam("email") String email,
             @QueryParam("password") String password) {
         try {
 
             CustomerEntity customer = customerSessionBeanLocal.customerLogin(email, password);
-            List<CreditCardEntity> creditCards = customer.getCreditCards();
 
-            GenericEntity<List<CreditCardEntity>> genericEntity = new GenericEntity<List<CreditCardEntity>>(creditCards) {
+            CryptographicHelper cryptographicHelper = CryptographicHelper.getInstance();
+            GlassFishCryptographicHelper glassFishCryptographicHelper = GlassFishCryptographicHelper.getInstanceOf();
+            List<CreditCardEntity> cards = customer.getCreditCards();
+
+            for (CreditCardEntity creditCard : cards) {
+                String recoveredCardNumber = cryptographicHelper.doAESDecryption(creditCard.getCardNumber(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionKey(), glassFishCryptographicHelper.getGlassFishDefaultSymmetricEncryptionIv());
+                creditCard.setCardNumber(recoveredCardNumber);
+            }
+
+            GenericEntity<List<CreditCardEntity>> genericEntity = new GenericEntity<List<CreditCardEntity>>(cards) {
             };
 
             return Response.status(Status.OK).entity(genericEntity).build();
@@ -154,38 +160,26 @@ public class CreditCardResource {
         }
 
     }
-    
-    
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCreditCard(UpdateCreditCardReq updateCreditCardReq)
-    {
-        if(updateCreditCardReq != null)
-        {
-            try
-            {                
-                 CustomerEntity customer = customerSessionBeanLocal.customerLogin(updateCreditCardReq.getEmail(), updateCreditCardReq.getPassword());
-                
+    public Response updateCreditCard(UpdateCreditCardReq updateCreditCardReq) {
+        if (updateCreditCardReq != null) {
+            try {
+                CustomerEntity customer = customerSessionBeanLocal.customerLogin(updateCreditCardReq.getEmail(), updateCreditCardReq.getPassword());
+
                 creditCardSessionBeanLocal.updateCreditCard(updateCreditCardReq.getCreditCardEntity());
-                
+
                 return Response.status(Response.Status.OK).build();
-            }
-            catch(InvalidLoginCredentialException ex)
-            {
+            } catch (InvalidLoginCredentialException ex) {
                 return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
-            }
-            catch(UpdateEntityException ex)
-            {
+            } catch (UpdateEntityException ex) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
             }
-        }
-        else
-        {
+        } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update product request").build();
         }
     }

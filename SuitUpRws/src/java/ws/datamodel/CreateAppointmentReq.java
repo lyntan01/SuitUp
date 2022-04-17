@@ -6,6 +6,8 @@
 package ws.datamodel;
 
 import entity.AppointmentEntity;
+import entity.CustomerEntity;
+import entity.StoreEntity;
 
 /**
  *
@@ -13,35 +15,27 @@ import entity.AppointmentEntity;
  */
 public class CreateAppointmentReq {
     
-    private String email;
-    private String password;
+    private CustomerEntity customer;
     private AppointmentEntity appointment;
-    private Long storeId;
+    private StoreEntity store;
+    private String password;
 
-    public CreateAppointmentReq(String email, String password, AppointmentEntity appointment, Long storeId) {
-        this.email = email;
-        this.password = password;
+    public CreateAppointmentReq(CustomerEntity customer, AppointmentEntity appointment, StoreEntity store, String password) {
+        this.customer = customer;
         this.appointment = appointment;
-        this.storeId = storeId;
+        this.store = store;
+        this.password = password;
     }
 
     public CreateAppointmentReq() {
     }
 
-    public String getEmail() {
-        return email;
+    public CustomerEntity getCustomer() {
+        return customer;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
     }
 
     public AppointmentEntity getAppointment() {
@@ -52,12 +46,20 @@ public class CreateAppointmentReq {
         this.appointment = appointment;
     }
 
-    public Long getStoreId() {
-        return storeId;
+    public StoreEntity getStore() {
+        return store;
     }
 
-    public void setStoreId(Long storeId) {
-        this.storeId = storeId;
+    public void setStore(StoreEntity store) {
+        this.store = store;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
     
 }

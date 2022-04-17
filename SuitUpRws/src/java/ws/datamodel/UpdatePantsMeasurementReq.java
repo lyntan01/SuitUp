@@ -12,9 +12,13 @@ import entity.PantsMeasurementEntity;
  * @author xianhui
  */
 public class UpdatePantsMeasurementReq {
+
     private String email;
     private String password;
     private PantsMeasurementEntity pantsMeasurement;
+
+    public UpdatePantsMeasurementReq() {
+    }
 
     public UpdatePantsMeasurementReq(String email, String password, PantsMeasurementEntity pantsMeasurement) {
         this.email = email;
