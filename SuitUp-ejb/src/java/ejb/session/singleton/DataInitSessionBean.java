@@ -358,7 +358,7 @@ public class DataInitSessionBean {
             //2L
             colourSessionBean.createNewColour(new ColourEntity("Hurley", "#FFFFED")); //2L
             //8L
-            fabricSessionBean.createNewFabric(new FabricEntity("Hurley Linen", new BigDecimal("0.00"), "Hurley, Linen", "Hurley Linen.jpg"), 1L); //7L
+            fabricSessionBean.createNewFabric(new FabricEntity("Hurley Linen", new BigDecimal("0.00"), "Hurley, Linen", "HurleyLinen.jpg"), 1L); //7L
 
             //PocketStyleEntity(String name, BigDecimal additionalPrice, String description, String image)
             //new pocketStyleEntity(String name, BigDecimal additionalPrice, String description, String image)
