@@ -143,12 +143,57 @@
                 <br/>
                 <p:separator/>
                 <br/>
-                
+
                 <p:panelGrid id="submitOrderGrid" style="width: 30em;" styleClass="noBorder">
                     <p:commandButton actionListener="#{createOrderManagedBean.createNewOrder}" value="Create New Order" />
                 </p:panelGrid>
-                
 
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog id="dialogAddStandardProducts" width="120em" height="40em" widgetVar="dialogAddStandardProducts" header="Create New Order" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+            <h:form id="formAddStandardProducts">
+                <p:messages id="standardProductMessages" redisplay="false" />
+                
+                <p:commandButton value="Back" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogAddStandardProducts').hide()"></p:commandButton>
+
+                <p:dataTable id="dataTableAllStandardProducts" widgetVar="dataTableAllStandardProducts" value="#{standardProductManagementManagedBean.standardProducts}"
+                             var="standardProductEntity" rowKey="#{standardProductEntity.productId}"
+                             rowIndexVar="row">
+
+                    <p:column style="width: 5em;" headerText="ID">
+                        <h:outputText value="#{standardProductEntity.productId}" />
+                    </p:column>
+
+                    <p:column style="width: 12em;" headerText="SKU Code">
+                        <h:outputText value="#{standardProductEntity.skuCode}" />
+                    </p:column>
+
+                    <p:column style="width: 12em;" headerText="name">
+                        <h:outputText value="#{standardProductEntity.name}" />
+                    </p:column>
+
+                    <p:column style="width: 12em;" headerText="Quantity In Stock">
+                        <h:outputText value="#{standardProductEntity.quantityInStock}" />
+                    </p:column>
+
+                    <p:column style="width: 12em;" headerText="Unit Price">
+                        <h:outputText value="#{standardProductEntity.unitPrice}" />
+                    </p:column>
+
+                    <p:column style="width: 12em;" headerText="Category">
+                        <h:outputText value="#{standardProductEntity.category.name}" />
+                    </p:column>
+
+                    <p:column style="width: 5em; text-align: center;" headerText="Action">
+                        <p:commandButton actionListener="#{standardProductManagementManagedBean.addToCart}" value="Add to Cart"
+                                         oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();" update="@composite:dialogCreateNewOrder" title="Add to Cart">
+                            <f:attribute name="standardProductToAdd" value="#{standardProductEntity}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
             </h:form>
 
         </p:dialog>
@@ -241,7 +286,7 @@
 
                             </p:commandButton>&nbsp;
                             <!--<p:commandButton value="Create New Customized Jacket" update="@composite:dialogCreateNewOrder" process="@this" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" />-->
-                            <p:commandButton value="Create New Customized Jacket" actionListener="#{customizedJacketManagedBean.createNewCustomizedJacket}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();"/>
+                            <p:commandButton value="Create New Customized Jacket" actionListener="#{customizedJacketManagedBean.addNewCustomizedJacket}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedJacket').hide();"/>
                         </p:column>
                     </p:row>
 
@@ -314,7 +359,7 @@
                             <p:commandButton value="Back" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();">
 
                             </p:commandButton>&nbsp;
-                            <p:commandButton value="Create New Customized Pants" actionListener="#{customizedPantsManagedBean.createNewCustomizedPants}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();"/>
+                            <p:commandButton value="Create New Customized Pants" actionListener="#{customizedPantsManagedBean.addNewCustomizedPants}" update="@composite:dialogCreateNewOrder" oncomplete="PF('dialogCreateNewOrder').show(); PF('dialogCreateNewCustomizedPants').hide();"/>
                         </p:column>
                     </p:row>
 

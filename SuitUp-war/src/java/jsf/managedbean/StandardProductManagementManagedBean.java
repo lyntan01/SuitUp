@@ -57,6 +57,9 @@ public class StandardProductManagementManagedBean implements Serializable {
     
     @Inject
     private ViewStandardProductManagedBean viewStandardProductManagedBean;
+    
+    @Inject
+    private CreateOrderManagedBean createOrderManagedBean;
 
     private List<TagEntity> tags;
     private List<StandardProductEntity> standardProducts;
@@ -89,6 +92,12 @@ public class StandardProductManagementManagedBean implements Serializable {
         tags = tagSessionBean.retrieveAllTags();
         standardProducts = standardProductSessionBean.retrieveAllStandardProducts();
         categories = categorySessionBean.retrieveAllCategories();
+    }
+    
+    //<----------------------------ADD TO CART--------------------------------------->
+    public void addToCart(ActionEvent event) {
+        StandardProductEntity standardProductToAdd = (StandardProductEntity)event.getComponent().getAttributes().get("standardProductToAdd");
+        createOrderManagedBean.addItem(standardProductToAdd, 1);
     }
     
     //<----------------------------CREATE--------------------------------------->

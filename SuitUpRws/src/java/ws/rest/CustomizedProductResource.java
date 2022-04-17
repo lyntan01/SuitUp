@@ -201,7 +201,7 @@ public class CustomizedProductResource {
             try
             {
                 CustomerEntity customerEntity = customerSessionBean.customerLogin(createCustomizedPantsReq.getEmail(), createCustomizedPantsReq.getPassword());
-                System.out.println("********** MeasurementResource.createJacketMeasurement(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+                System.out.println("********** MeasurementResource.createPantsMeasurement(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
                 Long customisedPantsId  = customizedPantsSessionBean.createNewCustomizedPants(createCustomizedPantsReq.getNewCustomizedPants(), createCustomizedPantsReq.getFabricId(), createCustomizedPantsReq.getPantsCuttingId(), createCustomizedPantsReq.getPantsMeasurementId());                
                 

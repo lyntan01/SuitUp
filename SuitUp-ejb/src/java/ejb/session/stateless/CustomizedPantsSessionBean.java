@@ -62,6 +62,11 @@ public class CustomizedPantsSessionBean implements CustomizedPantsSessionBeanLoc
     
     @Override
     public Long createNewCustomizedPants(CustomizedPantsEntity newCustomizedPants, Long fabricId, Long pantsCuttingId, Long pantsMeasurementId) throws CustomizedProductIdExistsException, PantsMeasurementNotFoundException, CustomizationNotFoundException, UnknownPersistenceException, InputDataValidationException {
+        System.out.println("**************" + newCustomizedPants);
+        System.out.println("**************" + fabricId);
+        System.out.println("**************" + pantsCuttingId);
+        System.out.println("**************" + pantsMeasurementId);
+        
         Set<ConstraintViolation<CustomizedPantsEntity>> constraintViolations = validator.validate(newCustomizedPants);
         
         if (constraintViolations.isEmpty()) {
