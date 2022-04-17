@@ -84,7 +84,7 @@ public class CustomizationResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveProduct(@PathParam("customizationId") Long customizationId)
+    public Response retrievePantsCutting(@PathParam("customizationId") Long customizationId)
     {
         try
         {
