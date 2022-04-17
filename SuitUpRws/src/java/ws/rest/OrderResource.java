@@ -124,13 +124,16 @@ public class OrderResource {
                 orderEntity.getCustomer().getOrders().clear();
                 orderEntity.getCustomer().getSupportTickets().clear();
                 orderEntity.getCustomer().getAppointments().clear();
-
-                orderEntity.getTransaction().setAppointment(null);
-                orderEntity.getTransaction().setOrder(null);
+                
+                if (orderEntity.getTransaction() != null) {
+                    orderEntity.getTransaction().setAppointment(null);
+                    orderEntity.getTransaction().setOrder(null);
+                }  
             }
 
             GenericEntity<List<OrderEntity>> genericEntity = new GenericEntity<List<OrderEntity>>(orderEntities) {
             };
+            System.out.println("***********" + genericEntity);
 
             return Response.status(Response.Status.OK).entity(genericEntity).build();
         } catch (InvalidLoginCredentialException ex) {
