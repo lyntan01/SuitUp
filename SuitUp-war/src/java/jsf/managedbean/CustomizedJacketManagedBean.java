@@ -83,10 +83,10 @@ public class CustomizedJacketManagedBean implements Serializable {
 
     public void addNewCustomizedJacket(ActionEvent event) {
         try {
-            System.out.println("getJacketStyleId() == null: " + getJacketStyleId() == null);
-            System.out.println("getPocketStyleId() == null: " + getPocketStyleId() == null);
-            System.out.println("getInnerFabricId() == null: " + getInnerFabricId() == null);
-            System.out.println("getOuterFabricId() == null: " + getOuterFabricId() == null);
+//            System.out.println("getJacketStyleId() == null: " + getJacketStyleId() == null);
+//            System.out.println("getPocketStyleId() == null: " + getPocketStyleId() == null);
+//            System.out.println("getInnerFabricId() == null: " + getInnerFabricId() == null);
+//            System.out.println("getOuterFabricId() == null: " + getOuterFabricId() == null);
 
             BigDecimal totalPrice = newCustomizedJacket.getBasePrice().add(fabricSessionBeanLocal.retrieveFabricById(getOuterFabricId()).getAdditionalPrice()
                     .add(fabricSessionBeanLocal.retrieveFabricById(getInnerFabricId()).getAdditionalPrice()

@@ -72,7 +72,8 @@ public class SecurityFilter implements Filter {
         if(accessRight.equals(AccessRightEnum.TAILOR))
         {            
             if(path.equals("/staffProfile.xhtml") ||
-                path.equals("/customerManagement.xhtml"))
+                path.equals("/customerManagement.xhtml") ||
+                path.equals("/appointmentManagement.xhtml"))
             {
                 return true;
             }
@@ -83,6 +84,7 @@ public class SecurityFilter implements Filter {
         } else if (accessRight.equals(AccessRightEnum.CASHIER)) {
             if (path.equals("/staffProfile.xhtml")
                     || path.equals("/orderManagement.xhtml")
+                    || path.equals("/customerManagement.xhtml")
                     || path.equals("/appointmentManagement.xhtml")) {
                 return true;
             } else {
