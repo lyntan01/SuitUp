@@ -442,9 +442,7 @@ public class CustomizationManagementManagedBean implements Serializable {
             fileOutputStream.close();
             inputStream.close();
 
-            newPocketStyle.setImage(FacesContext.getCurrentInstance().getExternalContext().getInitParameter("uploadedFilesPath") + "/" + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+            newPocketStyle.setImage(event.getFile().getFileName());
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
         }
