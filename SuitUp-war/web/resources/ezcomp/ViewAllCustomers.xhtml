@@ -52,9 +52,9 @@
                 </p:column>
 
                 <p:column style="width: 14em; text-align: center;" headerText="Update">
-                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" update="UpdateCustomer:formUpdateCustomer" oncomplete="PF('dialogUpdateCustomer').show()" title="Customer">
+<!--                    <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateCustomer}" update="UpdateCustomer:formUpdateCustomer" oncomplete="PF('dialogUpdateCustomer').show()" title="Customer">
                         <f:attribute name="customerEntityToUpdate" value="#{customerEntity}" />
-                    </p:commandButton>
+                    </p:commandButton>-->
                     <p:commandButton actionListener="#{customerManagementManagedBean.doUpdateJacketMeasurement}" update="UpdateJacketMeasurement:formUpdateJacketMeasurement" oncomplete="PF('dialogUpdateJacketMeasurement').show()" title="Jacket Measurement">
                         <f:attribute name="selectedCustomerToUpdateMeasurement" value="#{customerEntity}" />
                     </p:commandButton>

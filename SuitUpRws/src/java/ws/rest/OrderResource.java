@@ -293,7 +293,9 @@ public class OrderResource {
                 CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(applyPromotionCodeReq.getEmail(), applyPromotionCodeReq.getPassword());
                 System.out.println("********** OrderResource.applyPromotionCode(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
 
-                orderSessionBeanLocal.applyPromotionCode(applyPromotionCodeReq.getOrder().getOrderId(), applyPromotionCodeReq.getPromotionCode());
+                if (applyPromotionCodeReq.getPromotionCode().length() > 0) {
+                    orderSessionBeanLocal.applyPromotionCode(applyPromotionCodeReq.getOrder().getOrderId(), applyPromotionCodeReq.getPromotionCode());
+                }
 
                 // Create transaction for order, as last step of order creation
                 transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(applyPromotionCodeReq.getOrder().getTotalAmount(), new Date(), null, applyPromotionCodeReq.getOrder()), null, applyPromotionCodeReq.getOrder().getOrderId());
@@ -310,6 +312,32 @@ public class OrderResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("Invalid update order request").build();
         }
     }
+
+//    @POST
+//    @Consumes(MediaType.TEXT_PLAIN)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response createTransaction(@QueryParam("email") String email,
+//            @QueryParam("password") String password,
+//            @PathParam("orderId") Long orderId) {
+//        try {
+//            CustomerEntity customerEntity = customerSessionBeanLocal.customerLogin(email, password);
+//            System.out.println("********** OrderResource.createTransaction(): Customer " + customerEntity.getFirstName() + " " + customerEntity.getLastName() + " login remotely via web service");
+//
+//            OrderEntity order = orderSessionBeanLocal.retrieveOrderByOrderId(orderId);
+//            
+//            // Create transaction for order, as last step of order creation
+//            transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(order.getTotalAmount(), new Date(), null, order), null, order.getOrderId());
+//
+//            return Response.status(Response.Status.OK).entity(order.getOrderId()).build();
+//        } catch (InvalidLoginCredentialException ex) {
+//            return Response.status(Status.UNAUTHORIZED).entity(ex.getMessage()).build();
+//        } catch (OrderNotFoundException ex) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+//        } catch (Exception ex) {
+//            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+//        }
+//
+//    }
 
     @Path("{orderId}")
     @DELETE
