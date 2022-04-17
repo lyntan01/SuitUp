@@ -103,6 +103,40 @@ public class CustomizedPantsSessionBean implements CustomizedPantsSessionBeanLoc
         }
     }
     
+    
+    @Override
+    public Long createNewCustomizedPants(CustomizedPantsEntity newCustomizedPants) throws CustomizedProductIdExistsException, PantsMeasurementNotFoundException, CustomizationNotFoundException, UnknownPersistenceException, InputDataValidationException {
+
+        Set<ConstraintViolation<CustomizedPantsEntity>> constraintViolations = validator.validate(newCustomizedPants);
+        
+        if (constraintViolations.isEmpty()) {
+            try {
+       
+                
+                BigDecimal totalPrice = new BigDecimal("100.00").add(newCustomizedPants.getFabric().getAdditionalPrice()).add(newCustomizedPants.getPantsCutting().getAdditionalPrice());
+                newCustomizedPants.setTotalPrice(totalPrice);
+                
+                em.persist(newCustomizedPants);
+                em.flush();
+               
+                return newCustomizedPants.getProductId();
+            } catch (PersistenceException ex) {
+                if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
+                    if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
+                        throw new CustomizedProductIdExistsException("Customized Product ID already exists.");
+                    } else {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    }
+                } else {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }
+            } 
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    
     @Override
     public List<CustomizedPantsEntity> retrieveAllCustomizedPants() {
         Query query = em.createQuery("SELECT c FROM CustomizedPantsEntity c");

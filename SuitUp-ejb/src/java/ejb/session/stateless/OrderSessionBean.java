@@ -7,7 +7,8 @@ package ejb.session.stateless;
 
 import entity.AddressEntity;
 import entity.CustomerEntity;
-import entity.CustomizedProductEntity;
+import entity.CustomizedJacketEntity;
+import entity.CustomizedPantsEntity;
 import entity.OrderEntity;
 import entity.OrderLineItemEntity;
 import entity.PromotionEntity;
@@ -33,14 +34,19 @@ import util.exception.AddressNotFoundException;
 import util.exception.CancelOrderException;
 import util.exception.CreateNewOrderException;
 import util.exception.CustomerNotFoundException;
+import util.exception.CustomizationNotFoundException;
+import util.exception.CustomizedProductIdExistsException;
 import util.exception.InputDataValidationException;
+import util.exception.JacketMeasurementNotFoundException;
 import util.exception.OrderNotFoundException;
+import util.exception.PantsMeasurementNotFoundException;
 import util.exception.PromotionCodeExpiredException;
 import util.exception.PromotionFullyRedeemedException;
 import util.exception.PromotionMinimumAmountNotHitException;
 import util.exception.PromotionNotFoundException;
 import util.exception.StandardProductInsufficientQuantityOnHandException;
 import util.exception.StandardProductNotFoundException;
+import util.exception.UnknownPersistenceException;
 import util.exception.VoidTransactionException;
 
 /**
@@ -49,6 +55,12 @@ import util.exception.VoidTransactionException;
  */
 @Stateless
 public class OrderSessionBean implements OrderSessionBeanLocal {
+
+    @EJB
+    private CustomizedPantsSessionBeanLocal customizedPantsSessionBeanLocal;
+
+    @EJB
+    private CustomizedJacketSessionBeanLocal customizedJacketSessionBeanLocal;
 
     @Resource
     private EJBContext context;
@@ -85,6 +97,9 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     @Override
     public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException, StackOverflowError {
         Set<ConstraintViolation<OrderEntity>> constraintViolations = validator.validate(newOrderEntity);
+
+        System.out.println("TESTTT---");
+        System.out.println(newOrderEntity);
 
         if (constraintViolations.isEmpty()) {
 
@@ -134,6 +149,93 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
+    
+    
+    
+    // Updated in v4.1
+    @Override
+    public OrderEntity createNewOfflineOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException, StackOverflowError {
+        Set<ConstraintViolation<OrderEntity>> constraintViolations = validator.validate(newOrderEntity);
+
+        System.out.println("TESTTT---");
+        System.out.println(newOrderEntity);
+
+        if (constraintViolations.isEmpty()) {
+
+            if (newOrderEntity != null) {
+                try {
+                    if (addressId > 0) {
+                        AddressEntity addressEntity = addressSessionBeanLocal.retrieveAddressByAddressId(addressId);
+                        newOrderEntity.setDeliveryAddress(addressEntity);
+                    }
+
+                    CustomerEntity customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+                    newOrderEntity.setCustomer(customerEntity);
+                    customerEntity.getOrders().add(newOrderEntity);
+
+                    if (newOrderEntity.getCollectionMethodEnum() == CollectionMethodEnum.DELIVERY && newOrderEntity.getExpressOrder()) {
+                        newOrderEntity.setTotalAmount(newOrderEntity.getTotalAmount().add(EXPRESS_DELIVERY_FEE));
+                    }
+                    
+                         entityManager.persist(newOrderEntity);
+
+//                    if(newOrderEntity.getOrderStatusEnum() = null)
+                    for (OrderLineItemEntity orderLineItemEntity : newOrderEntity.getOrderLineItems()) {
+                        
+                        System.out.println("orderLineItemEntity" + orderLineItemEntity);
+                        System.out.println("orderLineItemEntity.getProduct()" + orderLineItemEntity.getProduct());
+                        
+                        
+                        entityManager.persist(orderLineItemEntity);
+                        
+                        if (orderLineItemEntity.getProduct() instanceof StandardProductEntity) {
+                            standardProductSessionBeanLocal.debitQuantityOnHand(orderLineItemEntity.getProduct().getProductId(), orderLineItemEntity.getQuantity());
+                        } 
+                        
+                        else if (orderLineItemEntity.getProduct() instanceof CustomizedJacketEntity) {
+                            CustomizedJacketEntity newJacket = (CustomizedJacketEntity) orderLineItemEntity.getProduct();
+                            System.out.println("how do you dooooooooo" + newJacket.getPocketStyle().getCustomizationId());
+//                            customizedJacketSessionBeanLocal.createNewCustomizedJacket(newJacket, newJacket.getPocketStyle().getCustomizationId(), newJacket.getJacketStyle().getCustomizationId(), newJacket.getInnerFabric().getCustomizationId(), newJacket.getOuterFabric().getCustomizationId(), customerEntity.getJacketMeasurement().getJacketMeasurementId());
+                            customizedJacketSessionBeanLocal.createNewCustomizedJacket(newJacket);
+                        } else if (orderLineItemEntity.getProduct() instanceof CustomizedPantsEntity) {
+                            System.out.println("suppp");
+                            CustomizedPantsEntity newPants = (CustomizedPantsEntity) orderLineItemEntity.getProduct();
+//                            customizedPantsSessionBeanLocal.createNewCustomizedPants(newPants, newPants.getFabric().getCustomizationId(), newPants.getPantsCutting().getCustomizationId(), customerEntity.getPantsMeasurement().getPantsMeasurementId());
+                            customizedPantsSessionBeanLocal.createNewCustomizedPants(newPants);
+                        }
+
+                        
+
+                    }
+
+               
+
+                    entityManager.flush();
+
+                    return newOrderEntity;
+                } catch (StandardProductNotFoundException | StandardProductInsufficientQuantityOnHandException | AddressNotFoundException | CustomerNotFoundException | CustomizationNotFoundException | CustomizedProductIdExistsException | InputDataValidationException | JacketMeasurementNotFoundException | PantsMeasurementNotFoundException | UnknownPersistenceException ex) {
+                    System.out.println("ERRORRR");
+                    System.out.println(ex.getMessage());
+                    // The line below rolls back all changes made to the database.
+                    context.setRollbackOnly();
+
+                    throw new CreateNewOrderException("Unable to create new order!");
+                }
+            } else {
+                throw new CreateNewOrderException("Sale transaction information not provided");
+            }
+
+        } else {
+            System.out.println("ERRORRR");
+            System.out.println(prepareInputDataValidationErrorsMessage(constraintViolations));
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    
+    
+    
+    
 
     @Override
     public List<OrderEntity> retrieveAllOrders() {

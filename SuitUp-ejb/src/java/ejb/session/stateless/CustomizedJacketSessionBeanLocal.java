@@ -33,5 +33,7 @@ public interface CustomizedJacketSessionBeanLocal {
     public void updateCustomizedJacket(CustomizedJacketEntity updatedJacket) throws CustomizedProductNotFoundException, UpdateEntityException, InputDataValidationException;
 
     public void deleteCustomizedJacket(Long productId) throws CustomizedProductNotFoundException, DeleteEntityException;
+
+    public Long createNewCustomizedJacket(CustomizedJacketEntity newCustomizedJacket) throws CustomizedProductIdExistsException, JacketMeasurementNotFoundException, CustomizationNotFoundException, UnknownPersistenceException, InputDataValidationException;
     
 }

@@ -100,6 +100,7 @@ public class CustomizedJacketManagedBean implements Serializable {
             newCustomizedJacket.setOuterFabric(fabricSessionBeanLocal.retrieveFabricById(getOuterFabricId()));
             newCustomizedJacket.setJacketStyle(jacketStyleSessionBeanLocal.retrieveJacketStyleById(getJacketStyleId()));
             newCustomizedJacket.setPocketStyle(pocketStyleSessionBeanLocal.retrievePocketStyleById(getPocketStyleId()));
+            System.out.println("newCustomizedJacket.getPocketStyle().getCustomizationId()" + newCustomizedJacket.getPocketStyle().getCustomizationId());
 
             createOrderManagedBean.addItem(newCustomizedJacket, 1);
 //            Long productId = customizedJacketSessionBeanLocal.createNewCustomizedJacket(newCustomizedJacket, getPocketStyleId(), getJacketStyleId(), getInnerFabricId(), getOuterFabricId(), newCustomizedJacket.getJacketMeasurement().getJacketMeasurementId());
