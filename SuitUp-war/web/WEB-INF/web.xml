@@ -41,7 +41,7 @@
         <param-name>primefaces.UPLOADER</param-name>
         <param-value>native</param-value>
     </context-param>
-    <context-param>
+     <context-param>
         <param-name>alternatedocroot_1</param-name>
         <param-value>/Users/keithcharleschan/glassfish-5.1.0-uploadedfiles/uploadedFiles</param-value>
     </context-param>

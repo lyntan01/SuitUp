@@ -26,12 +26,14 @@ import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import util.enumeration.CollectionMethodEnum;
+import util.enumeration.OrderStatusEnum;
 import util.exception.AddressNotFoundException;
 import util.exception.CreateNewOrderException;
 import util.exception.CustomerNotFoundException;
@@ -106,6 +108,36 @@ public class CreateOrderManagedBean implements Serializable {
         newOrder.setCustomer(currentCustomer);
         newOrder.setOrderLineItems(orderLineItemsEntities);
         newOrder.setExpressOrder(expressOrder);
+
+        newOrder.setOrderStatusEnum(OrderStatusEnum.UNPAID);
+        newOrder.setTotalLineItem(orderLineItemsEntities.size());
+        newOrder.setOrderDateTime(new Date());
+        RandomStringGenerator generator = new RandomStringGenerator(5);
+        newOrder.setSerialNumber(generator.generateSerial());
+        
+        double total = 0;
+        
+//        BigDecimal totalForOrder = BigDecimal.ZERO;
+        int totalQuantity = 0;
+        for(OrderLineItemEntity orderLine : orderLineItemsEntities) {
+            System.out.println("---ITERATING THRU orderLine--" + orderLine.getSubTotal());
+            double val = orderLine.getSubTotal().doubleValue();
+            total += val;
+            System.out.println(total);
+//            BigDecimal val = orderLine.getSubTotal();
+//            System.out.println("val" + val);
+//            totalForOrder.add(val);
+            totalQuantity += orderLine.getQuantity();
+        }
+        
+        BigDecimal totalForOrder = BigDecimal.valueOf(total);
+        
+        newOrder.setTotalAmount(totalForOrder);
+        System.out.println("totalForOrder : " + totalForOrder);
+        System.out.println(" newOrder.getTotalAmount: " + newOrder.getTotalAmount());
+        newOrder.setTotalQuantity(totalQuantity);
+        
+
         if (selectedDeliveryAddress != -1L) { //CHANGEEEE
             try {
                 AddressEntity address = addressSessionBeanLocal.retrieveAddressByAddressId(selectedDeliveryAddress);
@@ -115,9 +147,14 @@ public class CreateOrderManagedBean implements Serializable {
             }
         }
 
-        
+        System.out.println(newOrder.getOrderLineItems());
+
+        System.out.println("");
+
         try {
-            orderSessionBeanLocal.createNewOrder(currentCustomer.getCustomerId(), selectedDeliveryAddress, newOrder);
+//            System.out.println(newOrder);
+            orderSessionBeanLocal.createNewOfflineOrder(currentCustomer.getCustomerId(), selectedDeliveryAddress, newOrder);
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Order created succesfully!", null));
             System.out.println("********** CREATED AN ORDER");
         } catch (AddressNotFoundException | CreateNewOrderException | CustomerNotFoundException | InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred: " + ex.getMessage(), null));
@@ -170,7 +207,7 @@ public class CreateOrderManagedBean implements Serializable {
     }
 
     public void addItem(ProductEntity product, int quantity) {
-        
+
         System.out.println(product);
 
         boolean hasItem = false;
@@ -191,7 +228,8 @@ public class CreateOrderManagedBean implements Serializable {
 
                         orderItem.setQuantity(orderItem.getQuantity() + quantity);
                         orderItem.setSubTotal(unitPrice.multiply(new BigDecimal(orderItem.getQuantity())));
-
+                        System.out.println("orderItem.setSubTotal" + orderItem.getSubTotal());
+                        
                         totalAmount = totalAmount.add(unitPrice.multiply(new BigDecimal(quantity)));
                         totalQuantity += quantity;
                     }
@@ -201,6 +239,7 @@ public class CreateOrderManagedBean implements Serializable {
 
                         orderItem.setQuantity(orderItem.getQuantity() + quantity);
                         orderItem.setSubTotal(unitPrice.multiply(new BigDecimal(orderItem.getQuantity())));
+                        System.out.println("orderItem.setSubTotal" + orderItem.getSubTotal());
 
                         totalAmount = totalAmount.add(unitPrice.multiply(new BigDecimal(quantity)));
                         totalQuantity += quantity;
@@ -215,6 +254,7 @@ public class CreateOrderManagedBean implements Serializable {
             totalQuantity += quantity;
             totalAmount = totalAmount.add(subTotal);
 
+            System.out.println("subTotal--" + subTotal);
             orderLineItemsEntities.add(new OrderLineItemEntity(quantity, subTotal, product));
 
         }

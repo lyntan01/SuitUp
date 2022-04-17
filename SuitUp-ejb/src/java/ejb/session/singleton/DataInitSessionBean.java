@@ -200,48 +200,49 @@ public class DataInitSessionBean {
     }
 
     private void initializeData() {
-        try {
 
 //          <------------------------------STORE INIT ------------------------->
-            Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp Orchard", "Orchard Store", "09:00", "22:00", "62313264"));
-            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Orchard", "62313264", "10 Orchard Road", "Far East Plaza, #02-03", "228213"), storeId);
-
+        initialiseStores();
 //          <------------------------------STAFF INIT ------------------------->
-            StoreEntity storeEntity = storeSessionBeanLocal.retrieveStoreByStoreId(storeId);
+        initialiseStaffs();
+//            <------------------------------CUSTOMER------------------------->
+        initialiseCustomers();
+//          <------------------------------STANDARD AND CUSTOMIZED PRODUCTS------------------------->
+        initialiseCategories();
+        initialiseTags();
+        initialiseStandardProducts();
+        initialiseCustomisationProducts();
+
+        //<--------------STANDARD PRODUCT ORDERS---------->//
+        initialiseOrder1();
+        initialiseOrder2();
+        initialiseOrder3();
+
+        //<--------------Order 2, Containing Customised Jacket---------->//
+        initialiseCustomisedOrder();
+
+        //<--------------Appointment, support tickets and promotions---------->//
+        initialiseAppointments();
+        initialiseSupportTickets();
+        initialisePromotions();
+
+    }
+    
+    private void initialiseStaffs() {
+        try {
+            StoreEntity storeEntity = storeSessionBeanLocal.retrieveStoreByStoreId(1L);
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Manager", AccessRightEnum.MANAGER, "manager", "password"));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier One", AccessRightEnum.CASHIER, "cashier1", "password", storeEntity));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Cashier Two", AccessRightEnum.CASHIER, "cashier2", "password", storeEntity));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor One", AccessRightEnum.TAILOR, "tailor1", "password", storeEntity));
             staffSessionBeanLocal.createNewStaff(new StaffEntity("Default", "Tailor Two", AccessRightEnum.TAILOR, "tailor2", "password", storeEntity));
-
-//          <------------------------------CUSTOMER 1 INIT ------------------------->
-            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobbytan086@gmail.com", "password", "99999999")); //Customer - 1L
-            addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
-
-            Calendar calendar = new Calendar.Builder()
-                    .setDate(2022, Calendar.JUNE, 1)
-                    .setTimeOfDay(0, 0, 0)
-                    .build();
-            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "1111222233334444", "910", calendar.getTime()), 1L);
-            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby Home", "2222333344445555", "320", calendar.getTime()), 1L);
-
-//          <------------------------------CUSTOMER 2 INIT ------------------------->
-//            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Charles", "Chan", "charlesChan@gmail.com", "password", "99999999")); //Customer - 1L
-//            addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Charles Home", "91425342", "Thomson Ave 3", "Private House 3", "210309"), 1L); //Tagged to above customer
-//
-//            Calendar anotherCalendar = new Calendar.Builder()
-//                    .setDate(2022, Calendar.JUNE, 1)
-//                    .setTimeOfDay(0, 0, 0)
-//                    .build();
-//            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "5555223333221111", "910", anotherCalendar.getTime()), 1L);
-//            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "2222113344223356", "320", anotherCalendar.getTime()), 1L);
-//          <------------------------------STANDARD AND CUSTOMIZED PRODUCTS NEED FIX IMAGE------------------------->
-            initialiseCategories();
-            initialiseTags();
-            initialiseStandardProducts();
-            initialiseCustomisationProducts();
-
-            //<--------------Order 1, Containing Standard Products---------->//
+        } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | StoreNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void initialiseOrder1() {
+        try {
             ProductEntity productOne = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(1L);
             ProductEntity productTwo = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(2L);
             ProductEntity productThree = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(3L);
@@ -258,19 +259,103 @@ public class DataInitSessionBean {
             //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
             testOrder = orderSessionBeanLocal.createNewOrder(1L, 2L, testOrder);
             transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(testOrder.getTotalAmount(), new Date(), null, testOrder), null, 1L);
-           
+        } catch (UnknownPersistenceException | InputDataValidationException
+                | CustomerNotFoundException | CreateNewOrderException | StandardProductNotFoundException
+                | AddressNotFoundException | AppointmentNotFoundException | OrderNotFoundException | CreateNewTransactionException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void initialiseOrder2() {
+        try {
+            ProductEntity productOne = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(4L);
+            ProductEntity productTwo = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(6L);
+            ProductEntity productThree = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(3L);
 
-            //<--------------Order 2, Containing Customised Jacket---------->//
-            initialiseCustomisedOrder();
+            List<OrderLineItemEntity> items = new ArrayList<>();
+            items.add(new OrderLineItemEntity(2, new BigDecimal("20.00"), productOne));
+            items.add(new OrderLineItemEntity(2, new BigDecimal("40.00"), productTwo));
+            items.add(new OrderLineItemEntity(2, new BigDecimal("60.00"), productThree));
 
-            //<--------------Appointment, support tickets and promotions---------->//
-            initialiseAppointments();
-            initialiseSupportTickets();
-            initialisePromotions();
+            //SerialNumber, TotalLineItems, TotalQuantity, TotalAmount, OrderDateTime, expressOrder, orderStatus, collectionMethod, List of OrderLineItems
+            OrderEntity testOrder = new OrderEntity("#FJ4SG", 3, 6, new BigDecimal("120.00"), new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
 
-        } catch (StaffUsernameExistException | UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
-                | CustomerNotFoundException | CreateNewOrderException | AddressNotFoundException | StandardProductNotFoundException | CreditCardNumberExistException
-                | StoreNotFoundException | AppointmentNotFoundException | OrderNotFoundException | CreateNewTransactionException ex) {
+            //Uses Bobby Tan and Bobby's Tan Address
+            //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
+            testOrder = orderSessionBeanLocal.createNewOrder(1L, 2L, testOrder);
+            transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(testOrder.getTotalAmount(), new Date(), null, testOrder), null, 1L);
+        } catch (UnknownPersistenceException | InputDataValidationException
+                | CustomerNotFoundException | CreateNewOrderException | StandardProductNotFoundException
+                | AddressNotFoundException | AppointmentNotFoundException | OrderNotFoundException | CreateNewTransactionException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void initialiseOrder3() {
+        try {
+            ProductEntity productOne = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(3L);
+            ProductEntity productTwo = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(2L);
+            ProductEntity productThree = standardProductSessionBeanLocal.retrieveStandardProductByStandardProductId(4L);
+
+            List<OrderLineItemEntity> items = new ArrayList<>();
+            items.add(new OrderLineItemEntity(2, new BigDecimal("20.00"), productOne));
+            items.add(new OrderLineItemEntity(2, new BigDecimal("40.00"), productTwo));
+            items.add(new OrderLineItemEntity(2, new BigDecimal("60.00"), productThree));
+
+            //SerialNumber, TotalLineItems, TotalQuantity, TotalAmount, OrderDateTime, expressOrder, orderStatus, collectionMethod, List of OrderLineItems
+            OrderEntity testOrder = new OrderEntity("#HSGTW", 3, 6, new BigDecimal("120.00"), new Date(), false, OrderStatusEnum.PROCESSING, CollectionMethodEnum.DELIVERY, items);
+
+            //Uses Bobby Tan and Bobby's Tan Address
+            //orderSessionBeanLocal.createNewOrder(customerId, addressId, new OrderEntity)
+            testOrder = orderSessionBeanLocal.createNewOrder(2L, 3L, testOrder);
+            transactionSessionBeanLocal.createNewTransaction(new TransactionEntity(testOrder.getTotalAmount(), new Date(), null, testOrder), null, 1L);
+        } catch (UnknownPersistenceException | InputDataValidationException
+                | CustomerNotFoundException | CreateNewOrderException | StandardProductNotFoundException
+                | AddressNotFoundException | AppointmentNotFoundException | OrderNotFoundException | CreateNewTransactionException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void initialiseStores() {
+        try {
+            Long storeId = storeSessionBeanLocal.createNewStore(new StoreEntity("SuitUp Orchard", "Orchard Store", "09:00", "22:00", "62313264"));
+            addressSessionBeanLocal.createNewStoreAddress(new AddressEntity("SuitUp Orchard", "62313264", "10 Orchard Road", "Far East Plaza, #02-03", "228213"), storeId);
+        } catch ( UnknownPersistenceException | InputDataValidationException | StoreNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void initialiseCustomers() {
+        try {
+            //          <------------------------------CUSTOMER 1 INIT ------------------------->
+            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Bobby", "Tan", "bobbytan086@gmail.com", "password", "99999999")); //Customer - 1L
+            addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Bobby", "9999999", "5 Avenue", "Beepbop", "420420"), 1L); //Tagged to above customer
+
+            Calendar calendar = new Calendar.Builder()
+                    .setDate(2022, Calendar.JUNE, 1)
+                    .setTimeOfDay(0, 0, 0)
+                    .build();
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby", "1111222233334444", "910", calendar.getTime()), 1L);
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Bobby Home", "2222333344445555", "320", calendar.getTime()), 1L);
+
+//          <------------------------------CUSTOMER 2 INIT ------------------------->
+            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Charles", "Chan", "charlesChan@gmail.com", "password", "99999999")); //Customer - 2L
+            addressSessionBeanLocal.createNewCustomerAddress(new AddressEntity("Charles Home", "91425342", "Thomson Ave 3", "Private House 3", "210309"), 1L); //Tagged to above customer
+
+            Calendar anotherCalendar = new Calendar.Builder()
+                    .setDate(2022, Calendar.JUNE, 1)
+                    .setTimeOfDay(0, 0, 0)
+                    .build();
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Charles", "5555223333221111", "910", anotherCalendar.getTime()), 2L);
+            creditCardSessionBeanLocal.createNewCreditCard(new CreditCardEntity("Charles", "2222113344223356", "320", anotherCalendar.getTime()), 2L);
+//          <------------------------------CUSTOMER 3 INIT ------------------------->
+            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Suzy", "Bae", "suzy@hotmail.com", "password", "88888888")); //Customer - 3L
+            //          <------------------------------CUSTOMER 4 INIT ------------------------->
+            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Hosse", "Tan", "hossetan@gmail.com", "password", "23452191")); //Customer - 4L
+            //          <------------------------------CUSTOMER 5 INIT ------------------------->
+            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Adam", "Glazov", "adam@gmail.com", "password", "33245678")); //Customer - 5L
+        } catch (UnknownPersistenceException | InputDataValidationException | CustomerEmailExistException
+                | CustomerNotFoundException | CreditCardNumberExistException ex) {
             ex.printStackTrace();
         }
     }
@@ -279,7 +364,7 @@ public class DataInitSessionBean {
 
         try {
             categorySessionBeanLocal.createNewCategory(new CategoryEntity("Ties", "Different Ties that complete your suit!", new ArrayList<>())); // 1L
-            categorySessionBeanLocal.createNewCategory(new CategoryEntity("Shirts", "Complete your looks with these shirts", new ArrayList<>())); // 2L
+            categorySessionBeanLocal.createNewCategory(new CategoryEntity("Tie Clip", "Complete your ties with these clips", new ArrayList<>())); // 2L
             categorySessionBeanLocal.createNewCategory(new CategoryEntity("Cufflinks", "Add Cufflings to sleeves", new ArrayList<>())); // 3L
             categorySessionBeanLocal.createNewCategory(new CategoryEntity("Pocket Square", "Pocket Squares for Suit Pockets", new ArrayList<>())); // 4L
             categorySessionBeanLocal.createNewCategory(new CategoryEntity("Brooches", "For Females", new ArrayList<>())); // 5L
@@ -314,10 +399,13 @@ public class DataInitSessionBean {
             CategoryEntity catFive = categorySessionBeanLocal.retrieveCategoryByCategoryId(5L);
             CategoryEntity catSix = categorySessionBeanLocal.retrieveCategoryByCategoryId(6L);
 
-            //1L
-            standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Geometric Print Tie", "Geometric Print Tie", "GeometricPrintTie.png", "SKU001", new BigDecimal("10.00"), 1000, 50, catOne, new ArrayList<>()), 1L, new ArrayList<>(Arrays.asList(1L, 2L)));
+            //CATEGORY 1: TIES 
+            standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Geometric Print Tie", "Geometric Print Tie", "GeometricPrintTie.png", "SKU011", new BigDecimal("10.00"), 1000, 50, catOne, new ArrayList<>()), 1L, new ArrayList<>(Arrays.asList(1L, 2L)));
+            standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Red Square Tie", "Red Square Tie Made of Linen", "RedSquareTie.png", "SKU012", new BigDecimal("15.30"), 1000, 50, catOne, new ArrayList<>()), 1L, new ArrayList<>(Arrays.asList()));
+            standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Basic Purple Tie", "Basic Purple Tie", "PurpleTie.png", "SKU013", new BigDecimal("9.99"), 1000, 50, catOne, new ArrayList<>()), 1L, new ArrayList<>(Arrays.asList(1L, 2L)));
             //2L
-            standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("White Collar Tee", "White Collar Long Sleeve", "WhiteCollarLongSleeve.png", "SKU002", new BigDecimal("20.00"), 1000, 50, catTwo, new ArrayList<>()), 2L, new ArrayList<>(Arrays.asList(2L, 3L)));
+            standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Feather Tie Clip", "Silver-Tone Feather Tie Clip", "FeatherTieClip.png", "SKU021", new BigDecimal("20.00"), 1000, 50, catTwo, new ArrayList<>()), 2L, new ArrayList<>(Arrays.asList()));
+            standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("Silver Check Tie Clip", "Silver Check Tie Clip", "SilverCheckTieClip.png", "SKU022", new BigDecimal("32.30"), 1000, 50, catTwo, new ArrayList<>()), 2L, new ArrayList<>(Arrays.asList(2L, 3L)));
             //3L
             standardProductSessionBeanLocal.createNewStandardProduct(new StandardProductEntity("StarWalker Cufflinks", "StarWalker Cufflinks", "Cufflinks.png", "SKU003", new BigDecimal("5.00"), 1000, 50, catThree, new ArrayList<>()), 3L, new ArrayList<>(Arrays.asList(4L, 5L)));
             //4L
@@ -354,11 +442,21 @@ public class DataInitSessionBean {
             //1L
             colourSessionBean.createNewColour(new ColourEntity("Glacier Grey", "#C6CBCC")); //1L
             //7L
-            fabricSessionBean.createNewFabric(new FabricEntity("Grey Wool Fabric", new BigDecimal("0.00"), "Glacer Grey, Wool", "GlacierGreyWool.jpg"), 1L); //7L
+            fabricSessionBean.createNewFabric(new FabricEntity("Grey Wool Fabric", new BigDecimal("3.99"), "Glacer Grey, Wool", "GlacierGreyWool.jpg"), 1L); //7L
             //2L
             colourSessionBean.createNewColour(new ColourEntity("Hurley", "#FFFFED")); //2L
+            //3L
+            colourSessionBean.createNewColour(new ColourEntity("Hazel", "#a5c6bb")); //3L
             //8L
             fabricSessionBean.createNewFabric(new FabricEntity("Hurley Linen", new BigDecimal("0.00"), "Hurley, Linen", "HurleyLinen.jpg"), 1L); //7L
+            //9L
+            jacketStyleSessionBean.createNewJacketStyle(new JacketStyleEntity("Mandarin", new BigDecimal("40.00"), "Mandarin Collar Jacket Style", "MandarinCollar.png")); //4L
+            //10L
+            pocketStyleSessionBean.createNewPocketStyle(new PocketStyleEntity("Patched", new BigDecimal("8.60"), "Patched Style", "Patched.png")); //2L
+            //11L
+            pantsCuttingSessionBean.createNewPantsCutting(new PantsCuttingEntity("Cuffed Pants", new BigDecimal("0.00"), "Cuffed Pants Style", "CuffedPants.png")); //6L
+            //12L
+            fabricSessionBean.createNewFabric(new FabricEntity("Arona Hazel Fabric", new BigDecimal("2.55"), "Dark Arona Hazel Fabric", "AronaHazel.png"), 3L); //7L
 
             //PocketStyleEntity(String name, BigDecimal additionalPrice, String description, String image)
             //new pocketStyleEntity(String name, BigDecimal additionalPrice, String description, String image)
@@ -382,7 +480,7 @@ public class DataInitSessionBean {
             //PantsMeasurementEntity(Long pantsMeasurementId, BigDecimal legsLength, BigDecimal lowerWaistGirth, BigDecimal hipGirth, BigDecimal crotch, BigDecimal thighGrith, BigDecimal kneeGrith, BigDecimal calfGrith, BigDecimal pantsOpeningWidth) {
 
             //CREATE CUSTOMISED JACKET (Bobby)
-            CustomizedJacketEntity customisedJacket = new CustomizedJacketEntity("Formal Suit", "New Formal Suit", new BigDecimal("0.00"), "Male");
+            CustomizedJacketEntity customisedJacket = new CustomizedJacketEntity("Formal Suit", "New Formal Suit", "defaultJacket.png", new BigDecimal("0.00"), "Male");
             //CustomizedJacketEntity(String name, String description, BigDecimal totalPrice, String gender) 
             customisedJacket.setJacketMeasurement(jacketMeasurement);
             customisedJacket.setInnerFabric(fabricSessionBean.retrieveFabricById(7L));
@@ -393,7 +491,7 @@ public class DataInitSessionBean {
             System.out.println(customizedJacketSessionBean.retrieveCustomizedJacketById(newId));
             //createNewCustomizedJacket(CustomizedJacketEntity newCustomizedJacket, Long pocketStyleId, Long jacketStyleId, Long innerFabricId, Long outerFabricId, Long jacketMeasurementId)
             //CREATE CUSTOMISED PANTS (Bobby)
-            CustomizedPantsEntity customisedPants = new CustomizedPantsEntity("Formal Pants", "New Formal Pants", new BigDecimal("0.00"), "Male");
+            CustomizedPantsEntity customisedPants = new CustomizedPantsEntity("Formal Pants", "New Formal Pants", "defaultPants.png", new BigDecimal("0.00"), "Male");
             customisedPants.setPantsCutting(pantsCuttingSessionBean.retrievePantsCuttingById(5L));
             customisedPants.setPantsMeasurement(pantsMeasurement);
             customisedPants.setFabric(fabricSessionBean.retrieveFabricById(7L));
@@ -443,10 +541,9 @@ public class DataInitSessionBean {
             supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Suit came in the wrong colour", "Hi, I ordered a suit in navy but it came in grey. It also doesn't seem to fit me well. By any chance, was the wrong suit delivered to me?", new Date()), 1L);
             supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("When will my suit come?", "Hello I ordered my suit 2 days ago but it still has not arrived. When is it coming?", new Date(), "Hello Mr Bobby, thank you for reaching out to us. Since you opted for normal delivery, the expected delivery time is 3-7 days. Thank you for your understanding and do reach out to us should you require any assistance. Cheers, The SuitUp Team."), 1L);
 
-            customerSessionBeanLocal.createNewCustomer(new CustomerEntity("Suzy", "Bae", "suzy@hotmail.com", "password", "88888888")); //Customer - 3L
-            supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Seeking colour recommendation", "Which colour will suit my skin tone more? I can't decide between navy and grey.", new Date()), 2L);
+            supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Seeking colour recommendation", "Which colour will suit my skin tone more? I can't decide between navy and grey.", new Date()), 3L);
             supportTicketSessionBeanLocal.createNewSupportTicket(new SupportTicketEntity("Female Suits", "Do you also customise female suits?", new Date(), "Hello Ms Suzy, we do offer customisation services for female suits, with a wide range of fabrics and customisations to choose from. Do let us know if there is any way we can help should you require further assistance. Cheers, The SuitUp Team."), 2L);
-        } catch (CustomerEmailExistException | SupportTicketIdExistException | UnsuccessfulTicketException | InputDataValidationException | UnknownPersistenceException ex) {
+        } catch (SupportTicketIdExistException | UnsuccessfulTicketException | InputDataValidationException | UnknownPersistenceException ex) {
             ex.printStackTrace();
         }
 

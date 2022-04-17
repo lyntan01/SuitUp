@@ -71,6 +71,10 @@ public class StaffManagementManagedBean implements Serializable {
         try {
                         
             newStaffEntity.setAccessRightEnum(AccessRightEnum.valueOf(newAccessRightEnumString));
+            
+            StoreEntity storeEntity = newStoreId == null ? null : storeSessionBeanLocal.retrieveStoreByStoreId(newStoreId);
+            newStaffEntity.setStore(storeEntity);
+            
             Long staffId = staffSessionBeanLocal.createNewStaff(newStaffEntity);
             StaffEntity newStaff = staffSessionBeanLocal.retrieveStaffByStaffId(staffId);
             staffEntities.add(newStaff);
@@ -82,7 +86,7 @@ public class StaffManagementManagedBean implements Serializable {
             newStaffEntity = new StaffEntity();
             newStoreId = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New staff created successfully (Staff ID: " + staffId + ")", null));
-        } catch (UnknownPersistenceException | InputDataValidationException | StaffNotFoundException | StaffUsernameExistException ex) {
+        } catch (UnknownPersistenceException | InputDataValidationException | StaffNotFoundException | StaffUsernameExistException | StoreNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occurred when creating new staff: " + ex.getMessage(), null));
         }
 

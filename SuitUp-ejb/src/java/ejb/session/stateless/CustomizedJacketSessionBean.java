@@ -70,6 +70,8 @@ public class CustomizedJacketSessionBean implements CustomizedJacketSessionBeanL
         
         if (constraintViolations.isEmpty()) {
             try {
+                System.out.println("pocketStyleIdSUPPPPPP" + pocketStyleId);
+                System.out.println("jacketStyleIdFWAEFAFWEFWEAFAWFEWAF" + jacketStyleId);
                 PocketStyleEntity pocketStyle = pocketStyleSessionBeanLocal.retrievePocketStyleById(pocketStyleId);
                 JacketStyleEntity jacketStyle = jacketStyleSessionBeanLocal.retrieveJacketStyleById(jacketStyleId);
                 FabricEntity innerFabric = fabricSessionBeanLocal.retrieveFabricById(innerFabricId);
@@ -104,6 +106,46 @@ public class CustomizedJacketSessionBean implements CustomizedJacketSessionBeanL
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
+    
+
+    @Override
+    public Long createNewCustomizedJacket(CustomizedJacketEntity newCustomizedJacket) throws CustomizedProductIdExistsException, JacketMeasurementNotFoundException, CustomizationNotFoundException, UnknownPersistenceException, InputDataValidationException {
+        Set<ConstraintViolation<CustomizedJacketEntity>> constraintViolations = validator.validate(newCustomizedJacket);
+        
+        if (constraintViolations.isEmpty()) {
+            try {
+              
+                System.out.println("newCustomizedJacket" + newCustomizedJacket);
+                System.out.println("customer measurements" + newCustomizedJacket.getJacketMeasurement());
+                BigDecimal totalPrice = new BigDecimal("200.00").add(newCustomizedJacket.getPocketStyle().getAdditionalPrice()).add(newCustomizedJacket.getJacketStyle().getAdditionalPrice()).add(newCustomizedJacket.getInnerFabric().getAdditionalPrice()).add(newCustomizedJacket.getOuterFabric().getAdditionalPrice());
+                newCustomizedJacket.setTotalPrice(totalPrice);
+                
+                em.persist(newCustomizedJacket);
+                em.flush();
+               
+                return newCustomizedJacket.getProductId();
+            } catch (PersistenceException ex) {
+                if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
+                    if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
+                        throw new CustomizedProductIdExistsException("Customized Product ID already exists.");
+                    } else {
+                        throw new UnknownPersistenceException(ex.getMessage());
+                    }
+                } else {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }
+            } 
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     
     @Override
     public List<CustomizedJacketEntity> retrieveAllCustomizedJackets() {

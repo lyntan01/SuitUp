@@ -155,7 +155,7 @@ public class AppointmentEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "AppointmentEntity{" + "appointmentId=" + appointmentId + ", appointmentDateTime=" + appointmentDateTime + ", appointmentTypeEnum=" + appointmentTypeEnum + ", isFree=" + isFree + ", store=" + store + ", customer=" + customer + ", transaction=" + transaction + '}';
+        return "AppointmentEntity{" + "appointmentId=" + appointmentId + ", appointmentDateTime=" + appointmentDateTime + ", appointmentTypeEnum=" + appointmentTypeEnum + ", isFree=" + isFree + ", store=" + store + ", customer=" + customer.getFirstName() + ", transaction=" + transaction + '}';
     }
 
 }
