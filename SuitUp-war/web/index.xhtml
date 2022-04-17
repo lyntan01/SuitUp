@@ -52,19 +52,19 @@
 
         </h:form>
         
-        <h:panelGroup rendered="${sessionScope.isLogin == true}" style="margin-top: 10%">
+        <h:panelGroup rendered="${sessionScope.isLogin == true}" style="margin-top: 10%;">
             <h:outputText value="Welcome Back, #{sessionScope.currentStaffEntity.firstName} #{sessionScope.currentStaffEntity.lastName}." /><br />
             <h:outputText value="You are currently logged in as #{sessionScope.currentStaffEntity.accessRightEnum.name}." />
   
-             <div class="flexBox">
+             <div class="flexBox" style="width: 80%; margin: 30px auto;">
                 <h:form id="formAllReports">
                    
 
-                    <p:panel header="Orders Report">
+                    <p:panel header="Orders Report" style="width: 48%; float: left;">
                         <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateOrdersReport}" ajax="false" />
                     </p:panel>
                     
-                    <p:panel header="Staff Report">
+                    <p:panel header="Staff Report" style="width: 48%; float: right;">
                         <p:commandButton value="Generate Report" actionListener="#{reportManagedBean.generateStaffReport}" ajax="false" />
                     </p:panel>
 
