@@ -98,8 +98,6 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     public OrderEntity createNewOrder(Long customerId, Long addressId, OrderEntity newOrderEntity) throws CustomerNotFoundException, CreateNewOrderException, InputDataValidationException, AddressNotFoundException, StackOverflowError {
         Set<ConstraintViolation<OrderEntity>> constraintViolations = validator.validate(newOrderEntity);
 
-        System.out.println("TESTTT---");
-        System.out.println(newOrderEntity);
 
         if (constraintViolations.isEmpty()) {
 

@@ -43,10 +43,10 @@
     </context-param>
      <context-param>
         <param-name>alternatedocroot_1</param-name>
-        <param-value>/Users/keithcharleschan/glassfish-5.1.0-uploadedfiles/uploadedFiles</param-value>
+        <param-value>/Users/keithcharleschan/glassfish-5.1.0-uploadedfiles/uploadedFiles/productImages</param-value>
     </context-param>
     <context-param>
         <param-name>uploadedFilesPath</param-name>
-        <param-value>/uploadedFiles</param-value>
+        <param-value>glassfish-5.1.0-uploadedfiles/uploadedFiles</param-value>
     </context-param>
 </web-app>

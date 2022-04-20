@@ -113,7 +113,7 @@ public class OrderLineItemEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "OrderLineItemEntity{" + "orderLineItemId=" + orderLineItemId + ", quantity=" + quantity + ", subTotal=" + subTotal + ", product=" + product + '}';
+        return product.getName() + " × " + quantity + " ($" + subTotal + ")";
     }
 
     
